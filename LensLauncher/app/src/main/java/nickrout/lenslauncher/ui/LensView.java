@@ -141,7 +141,9 @@ public class LensView extends View {
     private void launchApp() {
         if (mPackageManager != null) {
             if (mSelectIndex >= 0) {
-                AppUtil.launchApp(getContext(), mPackageManager, (String) mApps.get(mSelectIndex).getName());
+                if (mInsideRect) {
+                    AppUtil.launchApp(getContext(), mPackageManager, (String) mApps.get(mSelectIndex).getName());
+                }
             }
         }
     }
