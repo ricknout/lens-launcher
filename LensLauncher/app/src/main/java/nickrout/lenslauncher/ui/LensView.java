@@ -3,7 +3,6 @@ package nickrout.lenslauncher.ui;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -22,6 +21,7 @@ import nickrout.lenslauncher.model.Grid;
 import nickrout.lenslauncher.util.AppUtil;
 import nickrout.lenslauncher.util.BitmapUtil;
 import nickrout.lenslauncher.util.LensCalculator;
+import nickrout.lenslauncher.util.Settings;
 
 /**
  * Created by nickrout on 2016/04/02.
@@ -99,7 +99,10 @@ public class LensView extends View {
         if (mApps != null) {
             drawGrid(canvas, mApps.size());
         }
-        //drawTouchPoint(canvas);
+        Settings settings = new Settings(getContext());
+        if (settings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION)) {
+            drawTouchPoint(canvas);
+        }
     }
 
     private void drawTouchPoint(Canvas canvas) {
@@ -142,6 +145,10 @@ public class LensView extends View {
         if (mPackageManager != null) {
             if (mSelectIndex >= 0) {
                 if (mInsideRect) {
+                    Settings settings = new Settings(getContext());
+                    if (settings.getBoolean(Settings.KEY_VIBRATE_APP_LAUNCH)) {
+                        performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                    }
                     AppUtil.launchApp(getContext(), mPackageManager, (String) mApps.get(mSelectIndex).getName());
                 }
             }
@@ -161,13 +168,14 @@ public class LensView extends View {
                     rect.top = (y + 1.0f) * grid.getSpacingVertical() + y * grid.getItemSize();
                     rect.right = rect.left + grid.getItemSize();
                     rect.bottom = rect.top + grid.getItemSize();
-                    float lensSize = getContext().getResources().getDimension(R.dimen.lens_size);
-                    float shiftedCenterX = LensCalculator.shiftPoint(mTouchX, rect.centerX(), lensSize);
-                    float shiftedCenterY = LensCalculator.shiftPoint(mTouchY, rect.centerY(), lensSize);
-                    float scaledCenterX = LensCalculator.scalePoint(mTouchX, rect.centerX(), rect.width(), lensSize);
-                    float scaledCenterY = LensCalculator.scalePoint(mTouchY, rect.centerY(), rect.height(), lensSize);
+                    Settings settings = new Settings(getContext());
+                    float lensDiameter = LensCalculator.convertDpToPixel(settings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
+                    float shiftedCenterX = LensCalculator.shiftPoint(getContext(), mTouchX, rect.centerX(), lensDiameter);
+                    float shiftedCenterY = LensCalculator.shiftPoint(getContext(), mTouchY, rect.centerY(), lensDiameter);
+                    float scaledCenterX = LensCalculator.scalePoint(getContext(), mTouchX, rect.centerX(), rect.width(), lensDiameter);
+                    float scaledCenterY = LensCalculator.scalePoint(getContext(), mTouchY, rect.centerY(), rect.height(), lensDiameter);
                     float newSize = LensCalculator.calculateSquareScaledSize(scaledCenterX, shiftedCenterX, scaledCenterY, shiftedCenterY);
-                    if (LensCalculator.calculateDistance(mTouchX, rect.centerX(), mTouchY, rect.centerY()) <= lensSize / 2.0f) {
+                    if (LensCalculator.calculateDistance(mTouchX, rect.centerX(), mTouchY, rect.centerY()) <= lensDiameter / 2.0f) {
                         rect = LensCalculator.calculateRect(shiftedCenterX, shiftedCenterY, newSize);
                         if (LensCalculator.isInsideRect(mTouchX, mTouchY, rect)) {
                             mInsideRect = true;
@@ -181,13 +189,16 @@ public class LensView extends View {
                 }
             }
         }
-        performVibration();
+        performHoverVibration();
     }
 
-    private void performVibration() {
+    private void performHoverVibration() {
         if (mInsideRect) {
             if (mMustVibrate) {
-                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                Settings settings = new Settings(getContext());
+                if (settings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER)) {
+                    performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                }
                 mMustVibrate = false;
             }
         } else {

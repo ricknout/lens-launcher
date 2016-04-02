@@ -25,7 +25,6 @@
             android:orientation="vertical"
             android:layout_margin="16dp">
 
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,13 +41,38 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:textColor="@color/colorValue"
-                    android:text="300dp"/>
+                    android:textColor="@color/colorValue"/>
 
             </RelativeLayout>
 
             <android.support.v7.widget.AppCompatSeekBar
                 android:id="@+id/seek_bar_lens_diameter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/setting_min_icon_size"/>
+
+                <TextView
+                    android:id="@+id/value_min_icon_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/colorValue"/>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/seek_bar_min_icon_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"/>
@@ -69,8 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:textColor="@color/colorValue"
-                    android:text="2.0"/>
+                    android:textColor="@color/colorValue"/>
 
             </RelativeLayout>
 
@@ -96,8 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:textColor="@color/colorValue"
-                    android:text="2.0"/>
+                    android:textColor="@color/colorValue"/>
 
             </RelativeLayout>
 

@@ -4,7 +4,5 @@
     <!-- Lens Dimens -->
     <dimen name="padding_activity">16dp</dimen>
     <dimen name="item_padding_min">4dp</dimen>
-    <dimen name="item_size_min">12dp</dimen>
-    <dimen name="lens_size">300dp</dimen>
 
 </resources>
