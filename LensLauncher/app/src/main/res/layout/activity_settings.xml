@@ -25,23 +25,54 @@
             android:orientation="vertical"
             android:layout_margin="16dp">
 
-            <TextView
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/setting_lens_size"/>
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/setting_lens_diameter"/>
+
+                <TextView
+                    android:id="@+id/value_lens_diameter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/colorValue"
+                    android:text="300dp"/>
+
+            </RelativeLayout>
 
             <android.support.v7.widget.AppCompatSeekBar
-                android:id="@+id/seek_bar_lens_size"
+                android:id="@+id/seek_bar_lens_diameter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"/>
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/setting_distortion_factor"/>
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/setting_distortion_factor"/>
+
+                <TextView
+                    android:id="@+id/value_distortion_factor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/colorValue"
+                    android:text="2.0"/>
+
+            </RelativeLayout>
 
             <android.support.v7.widget.AppCompatSeekBar
                 android:id="@+id/seek_bar_distortion_factor"
@@ -49,11 +80,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"/>
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/setting_scale_factor"/>
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/setting_scale_factor"/>
+
+                <TextView
+                    android:id="@+id/value_scale_factor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/colorValue"
+                    android:text="2.0"/>
+
+            </RelativeLayout>
 
             <android.support.v7.widget.AppCompatSeekBar
                 android:id="@+id/seek_bar_scale_factor"
@@ -85,6 +131,35 @@
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switch_vibrate_app_hover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDivider"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:text="@string/setting_vibrate_app_launch"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switch_vibrate_app_launch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"

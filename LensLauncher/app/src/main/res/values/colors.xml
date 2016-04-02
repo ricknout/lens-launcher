@@ -9,5 +9,6 @@
     <!-- View Colors -->
     <color name="colorTransparent">#00FFFFFF</color>
     <color name="colorDivider">#DDDDDD</color>
+    <color name="colorValue">#000000</color>
 
 </resources>
