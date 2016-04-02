@@ -1,10 +1,13 @@
-package com.nickrout.testlens;
+package nickrout.lenslauncher.util;
 
 import android.content.Context;
 import android.graphics.RectF;
 
+import nickrout.lenslauncher.R;
+import nickrout.lenslauncher.model.Grid;
+
 /**
- * Created by nicholasrout on 2016/03/31.
+ * Created by nickrout on 2016/04/02.
  */
 public class LensCalculator {
 
@@ -78,9 +81,9 @@ public class LensCalculator {
 
     public static RectF calculateRect(float newCenterX, float newCenterY, float newSize) {
         RectF newRect = new RectF(newCenterX - newSize / 2.0f,
-                                  newCenterY - newSize / 2.0f,
-                                  newCenterX + newSize / 2.0f,
-                                  newCenterY + newSize / 2.0f);
+                newCenterY - newSize / 2.0f,
+                newCenterX + newSize / 2.0f,
+                newCenterY + newSize / 2.0f);
         return newRect;
     }
 
