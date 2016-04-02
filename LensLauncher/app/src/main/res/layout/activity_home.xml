@@ -5,12 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Top margin for dragging of status bar -->
+    <!-- Could include top margin for dragging of status bar (but clips drawing)... -->
     <nickrout.lenslauncher.ui.LensView
-        android:id="@+id/lens_view"
+        android:id="@+id/lens_view_apps"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="32dp"
         android:hapticFeedbackEnabled="true"/>
 
 </LinearLayout>

@@ -4,9 +4,10 @@
     <!-- App Colors -->
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#00796B</color>
-    <color name="colorAccent">#FF3D00</color>
+    <color name="colorAccent">#009688</color>
 
     <!-- View Colors -->
     <color name="colorTransparent">#00FFFFFF</color>
+    <color name="colorDivider">#DDDDDD</color>
 
 </resources>

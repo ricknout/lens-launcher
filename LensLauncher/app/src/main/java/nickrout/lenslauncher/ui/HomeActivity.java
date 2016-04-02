@@ -27,7 +27,7 @@ public class HomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        mLensView = (LensView) findViewById(R.id.lens_view);
+        mLensView = (LensView) findViewById(R.id.lens_view_apps);
         loadApps();
         mLensView.setApps(mApps);
         mLensView.setPackageManager(mPackageManager);
