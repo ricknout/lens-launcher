@@ -7,8 +7,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -24,6 +27,9 @@ public class LensView extends View {
 
     private float mTouchX = -Float.MAX_VALUE;
     private float mTouchY = -Float.MAX_VALUE;
+
+    private boolean mInsideRect = false;
+    private boolean mMustVibrate = true;
 
     public LensView(Context context) {
         super(context);
@@ -66,6 +72,7 @@ public class LensView extends View {
         super.onDraw(canvas);
         drawGrid(canvas, 200);
         drawTouchPoint(canvas);
+        performVibration();
     }
 
     private void drawTouchPoint(Canvas canvas) {
@@ -104,9 +111,11 @@ public class LensView extends View {
 
     private void drawGrid(Canvas canvas, int itemCount) {
         Grid grid = LensCalculator.calculateGrid(getContext(), getWidth(), getHeight(), itemCount);
+        mInsideRect = false;
         for (float y = 0.0f; y < (float) grid.getItemCountVertical(); y += 1.0f) {
             for (float x = 0.0f; x < (float) grid.getItemCountHorizontal(); x += 1.0f) {
                 int currentItem = (int) (y * ((float) grid.getItemCountHorizontal()) + (x + 1.0f));
+                int currentIndex = currentItem - 1;
                 if (currentItem <= grid.getItemCount()) {
                     RectF rect = new RectF();
                     rect.left = (x + 1.0f) * grid.getSpacingHorizontal() + x * grid.getItemSize();
@@ -121,12 +130,26 @@ public class LensView extends View {
                     float newSize = LensCalculator.calculateSquareScaledSize(scaledCenterX, shiftedCenterX, scaledCenterY, shiftedCenterY);
                     if (LensCalculator.calculateDistance(mTouchX, rect.centerX(), mTouchY, rect.centerY()) <= lensSize / 2.0f) {
                         rect = LensCalculator.calculateRect(shiftedCenterX, shiftedCenterY, newSize);
+                        if (mTouchX >= rect.left && mTouchX <= rect.right && mTouchY >= rect.top && mTouchY <= rect.bottom) {
+                            mInsideRect = true;
+                        }
                     }
                     mPaint.setStyle(Paint.Style.FILL);
                     Rect src = new Rect(0, 0, mBitmap.getWidth()-1, mBitmap.getHeight()-1);
                     canvas.drawBitmap(mBitmap, src, rect, mPaint);
                 }
             }
+        }
+    }
+
+    private void performVibration() {
+        if (mInsideRect) {
+            if (mMustVibrate) {
+                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                mMustVibrate = false;
+            }
+        } else {
+            mMustVibrate = true;
         }
     }
 }
