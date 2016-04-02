@@ -17,7 +17,7 @@ public class Settings {
     private static final boolean DEFAULT_VIBRATE_APP_LAUNCH = true;
     private static final boolean DEFAULT_SHOW_TOUCH_SELECTION = false;
 
-    public static final int MAX_LENS_DIAMETER = 800;
+    public static final int MAX_LENS_DIAMETER = 1000;
     public static final int MAX_MIN_ICON_SIZE = 30;
     public static final int MAX_DISTORTION_FACTOR = 5;
     public static final int MAX_SCALE_FACTOR = 5;
@@ -28,7 +28,7 @@ public class Settings {
     public static final String KEY_LENS_DIAMETER = "lens_diameter";
     public static final String KEY_MIN_ICON_SIZE = "min_icon_size";
     public static final String KEY_DISTORTION_FACTOR = "distortion_factor";
-    public static final String KEY_SCALE_FACTOR = "distortion_factor";
+    public static final String KEY_SCALE_FACTOR = "scale_factor";
     public static final String KEY_VIBRATE_APP_HOVER = "vibrate_app_hover";
     public static final String KEY_VIBRATE_APP_LAUNCH = "vibrate_app_launch";
     public static final String KEY_SHOW_TOUCH_SELECTION = "show_touch_selection";

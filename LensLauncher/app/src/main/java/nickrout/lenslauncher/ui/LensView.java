@@ -176,7 +176,11 @@ public class LensView extends View {
                     float scaledCenterY = LensCalculator.scalePoint(getContext(), mTouchY, rect.centerY(), rect.height(), lensDiameter);
                     float newSize = LensCalculator.calculateSquareScaledSize(scaledCenterX, shiftedCenterX, scaledCenterY, shiftedCenterY);
                     if (LensCalculator.calculateDistance(mTouchX, rect.centerX(), mTouchY, rect.centerY()) <= lensDiameter / 2.0f) {
-                        rect = LensCalculator.calculateRect(shiftedCenterX, shiftedCenterY, newSize);
+                        if (settings.getFloat(Settings.KEY_DISTORTION_FACTOR) > 0.0f && settings.getFloat(Settings.KEY_SCALE_FACTOR) > 0.0f) {
+                            rect = LensCalculator.calculateRect(shiftedCenterX, shiftedCenterY, newSize);
+                        } else if (settings.getFloat(Settings.KEY_DISTORTION_FACTOR) > 0.0f && settings.getFloat(Settings.KEY_SCALE_FACTOR) == 0.0f) {
+                            rect = LensCalculator.calculateRect(shiftedCenterX, shiftedCenterY, rect.width());
+                        }
                         if (LensCalculator.isInsideRect(mTouchX, mTouchY, rect)) {
                             mInsideRect = true;
                             mSelectIndex = currentIndex;

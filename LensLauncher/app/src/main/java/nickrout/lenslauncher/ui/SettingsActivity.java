@@ -92,10 +92,8 @@ public class SettingsActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 String distortionFactor = progress + "";
                 mValueDistortionFactor.setText(distortionFactor);
-                float progressFloat = (float) progress;
-                // TODO - Need to have condition (in her or in LensView) to prevent 0 distortion
                 Settings settings = new Settings(getBaseContext());
-                settings.save(Settings.KEY_DISTORTION_FACTOR, progressFloat);
+                settings.save(Settings.KEY_DISTORTION_FACTOR, (float) progress);
             }
 
             @Override
@@ -114,10 +112,8 @@ public class SettingsActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 String scaleFactor = progress + "";
                 mValueScaleFactor.setText(scaleFactor);
-                // TODO - Need to have condition (in her or in LensView) to prevent 0 scale
-                float progressFloat = (float) progress;
                 Settings settings = new Settings(getBaseContext());
-                settings.save(Settings.KEY_SCALE_FACTOR, progressFloat);
+                settings.save(Settings.KEY_SCALE_FACTOR, (float) progress);
             }
 
             @Override
