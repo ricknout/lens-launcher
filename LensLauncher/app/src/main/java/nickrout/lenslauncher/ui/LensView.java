@@ -42,6 +42,18 @@ public class LensView extends View {
     private ArrayList<Bitmap> mAppIcons;
     private PackageManager mPackageManager;
 
+    public enum DrawType {
+        APPS,
+        CIRCLES
+    }
+
+    private DrawType mDrawType;
+
+    public void setDrawType(DrawType drawType) {
+        mDrawType = drawType;
+        invalidate();
+    }
+
     public LensView(Context context) {
         super(context);
         init(context);
@@ -75,6 +87,7 @@ public class LensView extends View {
         mContext = context;
         mApps = new ArrayList<>();
         mAppIcons = new ArrayList<>();
+        mDrawType = DrawType.APPS;
         setBackground();
         setupPaint();
     }
@@ -96,12 +109,18 @@ public class LensView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (mApps != null) {
-            drawGrid(canvas, mApps.size());
-        }
-        Settings settings = new Settings(getContext());
-        if (settings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION)) {
-            drawTouchPoint(canvas);
+        if (mDrawType == DrawType.APPS) {
+            if (mApps != null) {
+                drawGrid(canvas, mApps.size());
+            }
+            Settings settings = new Settings(getContext());
+            if (settings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION)) {
+                drawTouchPoint(canvas);
+            }
+        } else if (mDrawType == DrawType.CIRCLES) {
+            mTouchX = getWidth() / 2;
+            mTouchY = getHeight() / 2;
+            drawGrid(canvas, 100);
         }
     }
 
@@ -114,35 +133,38 @@ public class LensView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN: {
-                mTouchX = event.getX();
-                mTouchY = event.getY();
-                mSelectIndex = -1;
-                if (!touchWithinStatusBar(mTouchY)) {
-                    invalidate();
+        if (mDrawType == DrawType.APPS) {
+            switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN: {
+                    mTouchX = event.getX();
+                    mTouchY = event.getY();
+                    mSelectIndex = -1;
+                    if (!touchWithinStatusBar(mTouchY)) {
+                        invalidate();
+                    }
+                    return true;
                 }
-                return true;
-            }
-            case MotionEvent.ACTION_MOVE: {
-                mTouchX = event.getX();
-                mTouchY = event.getY();
-                if (!touchWithinStatusBar(mTouchY)) {
-                    invalidate();
+                case MotionEvent.ACTION_MOVE: {
+                    mTouchX = event.getX();
+                    mTouchY = event.getY();
+                    if (!touchWithinStatusBar(mTouchY)) {
+                        invalidate();
+                    }
+                    return true;
                 }
-                return true;
-            }
-            case MotionEvent.ACTION_UP: {
-                mTouchX = -Float.MAX_VALUE;
-                mTouchY = -Float.MAX_VALUE;
-                launchApp();
-                invalidate();
-                return true;
-            }
-            default: {
-                return super.onTouchEvent(event);
+                case MotionEvent.ACTION_UP: {
+                    mTouchX = -Float.MAX_VALUE;
+                    mTouchY = -Float.MAX_VALUE;
+                    launchApp();
+                    invalidate();
+                    return true;
+                }
+                default: {
+                    return super.onTouchEvent(event);
+                }
             }
         }
+        return super.onTouchEvent(event);
     }
 
     private void launchApp() {
@@ -163,12 +185,15 @@ public class LensView extends View {
         Grid grid = LensCalculator.calculateGrid(getContext(), getWidth(), getHeight(), itemCount);
         mInsideRect = false;
         int selectIndex = -1;
-        float statusBarHeight = (float) getStatusBarHeight();
+        float statusBarHeight = 0;
+        if (mDrawType == DrawType.APPS) {
+            statusBarHeight = getStatusBarHeight();
+        }
         for (float y = 0.0f; y < (float) grid.getItemCountVertical(); y += 1.0f) {
             for (float x = 0.0f; x < (float) grid.getItemCountHorizontal(); x += 1.0f) {
                 int currentItem = (int) (y * ((float) grid.getItemCountHorizontal()) + (x + 1.0f));
                 int currentIndex = currentItem - 1;
-                if (currentItem <= grid.getItemCount()) {
+                if (currentItem <= grid.getItemCount() || mDrawType == DrawType.CIRCLES) {
                     RectF rect = new RectF();
                     rect.left = (x + 1.0f) * grid.getSpacingHorizontal() + x * grid.getItemSize();
                     rect.top = statusBarHeight + (y + 1.0f) * grid.getSpacingVertical() + y * grid.getItemSize();
@@ -193,9 +218,13 @@ public class LensView extends View {
                         }
                     }
                     mPaint.setStyle(Paint.Style.FILL);
-                    Bitmap appIcon = mAppIcons.get(currentIndex);
-                    Rect src = new Rect(0, 0, appIcon.getWidth() - 1, appIcon.getHeight() - 1);
-                    canvas.drawBitmap(appIcon, src, rect, mPaint);
+                    if (mDrawType == DrawType.APPS) {
+                        Bitmap appIcon = mAppIcons.get(currentIndex);
+                        Rect src = new Rect(0, 0, appIcon.getWidth() - 1, appIcon.getHeight() - 1);
+                        canvas.drawBitmap(appIcon, src, rect, mPaint);
+                    } else if (mDrawType == DrawType.CIRCLES) {
+                        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2.0f, mPaint);
+                    }
                 }
             }
         }
@@ -209,7 +238,9 @@ public class LensView extends View {
             mMustVibrate = false;
         }
         mSelectIndex = selectIndex;
-        performHoverVibration();
+        if (mDrawType == DrawType.APPS) {
+            performHoverVibration();
+        }
     }
 
     private void performHoverVibration() {

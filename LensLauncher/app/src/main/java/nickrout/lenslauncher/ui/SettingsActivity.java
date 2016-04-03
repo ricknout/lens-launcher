@@ -21,6 +21,7 @@ import nickrout.lenslauncher.util.Settings;
  */
 public class SettingsActivity extends AppCompatActivity {
 
+    private LensView mLensView;
     private AppCompatSeekBar mLensDiameter;
     private TextView mValueLensDiameter;
     private AppCompatSeekBar mMinIconSize;
@@ -44,6 +45,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void setupViews() {
         Settings settings = new Settings(getBaseContext());
+        mLensView = (LensView) findViewById(R.id.lens_view_settings);
+        mLensView.setDrawType(LensView.DrawType.CIRCLES);
         mLensDiameter = (AppCompatSeekBar) findViewById(R.id.seek_bar_lens_diameter);
         mLensDiameter.setMax(settings.MAX_LENS_DIAMETER);
         mValueLensDiameter = (TextView) findViewById(R.id.value_lens_diameter);
@@ -55,6 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
                 mValueLensDiameter.setText(lensDiameter);
                 Settings settings = new Settings(getBaseContext());
                 settings.save(Settings.KEY_LENS_DIAMETER, (float) appropriateProgress);
+                mLensView.invalidate();
             }
 
             @Override
@@ -76,6 +80,7 @@ public class SettingsActivity extends AppCompatActivity {
                 mValueMinIconSize.setText(minIconSize);
                 Settings settings = new Settings(getBaseContext());
                 settings.save(Settings.KEY_MIN_ICON_SIZE, (float) appropriateProgress);
+                mLensView.invalidate();
             }
 
             @Override
@@ -96,6 +101,7 @@ public class SettingsActivity extends AppCompatActivity {
                 mValueDistortionFactor.setText(distortionFactor);
                 Settings settings = new Settings(getBaseContext());
                 settings.save(Settings.KEY_DISTORTION_FACTOR, (float) progress);
+                mLensView.invalidate();
             }
 
             @Override
@@ -116,6 +122,7 @@ public class SettingsActivity extends AppCompatActivity {
                 mValueScaleFactor.setText(scaleFactor);
                 Settings settings = new Settings(getBaseContext());
                 settings.save(Settings.KEY_SCALE_FACTOR, (float) progress);
+                mLensView.invalidate();
             }
 
             @Override
@@ -132,6 +139,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Settings settings = new Settings(getBaseContext());
                 settings.save(Settings.KEY_VIBRATE_APP_HOVER, isChecked);
+                mLensView.invalidate();
             }
         });
         mVibrateAppLaunch = (SwitchCompat) findViewById(R.id.switch_vibrate_app_launch);
@@ -140,6 +148,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Settings settings = new Settings(getBaseContext());
                 settings.save(Settings.KEY_VIBRATE_APP_LAUNCH, isChecked);
+                mLensView.invalidate();
             }
         });
         mShowTouchSelection = (SwitchCompat) findViewById(R.id.switch_show_touch_selection);
@@ -148,6 +157,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Settings settings = new Settings(getBaseContext());
                 settings.save(Settings.KEY_SHOW_TOUCH_SELECTION, isChecked);
+                mLensView.invalidate();
             }
         });
     }
