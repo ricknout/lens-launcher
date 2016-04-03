@@ -119,13 +119,17 @@ public class LensView extends View {
                 mTouchX = event.getX();
                 mTouchY = event.getY();
                 mSelectIndex = -1;
-                invalidate();
+                if (!touchWithinStatusBar(mTouchY)) {
+                    invalidate();
+                }
                 return true;
             }
             case MotionEvent.ACTION_MOVE: {
                 mTouchX = event.getX();
                 mTouchY = event.getY();
-                invalidate();
+                if (!touchWithinStatusBar(mTouchY)) {
+                    invalidate();
+                }
                 return true;
             }
             case MotionEvent.ACTION_UP: {
@@ -158,6 +162,8 @@ public class LensView extends View {
     private void drawGrid(Canvas canvas, int itemCount) {
         Grid grid = LensCalculator.calculateGrid(getContext(), getWidth(), getHeight(), itemCount);
         mInsideRect = false;
+        int selectIndex = -1;
+        float statusBarHeight = (float) getStatusBarHeight();
         for (float y = 0.0f; y < (float) grid.getItemCountVertical(); y += 1.0f) {
             for (float x = 0.0f; x < (float) grid.getItemCountHorizontal(); x += 1.0f) {
                 int currentItem = (int) (y * ((float) grid.getItemCountHorizontal()) + (x + 1.0f));
@@ -165,7 +171,7 @@ public class LensView extends View {
                 if (currentItem <= grid.getItemCount()) {
                     RectF rect = new RectF();
                     rect.left = (x + 1.0f) * grid.getSpacingHorizontal() + x * grid.getItemSize();
-                    rect.top = (y + 1.0f) * grid.getSpacingVertical() + y * grid.getItemSize();
+                    rect.top = statusBarHeight + (y + 1.0f) * grid.getSpacingVertical() + y * grid.getItemSize();
                     rect.right = rect.left + grid.getItemSize();
                     rect.bottom = rect.top + grid.getItemSize();
                     Settings settings = new Settings(getContext());
@@ -183,7 +189,7 @@ public class LensView extends View {
                         }
                         if (LensCalculator.isInsideRect(mTouchX, mTouchY, rect)) {
                             mInsideRect = true;
-                            mSelectIndex = currentIndex;
+                            selectIndex = currentIndex;
                         }
                     }
                     mPaint.setStyle(Paint.Style.FILL);
@@ -193,6 +199,16 @@ public class LensView extends View {
                 }
             }
         }
+        if (selectIndex >= 0) {
+            if (selectIndex != mSelectIndex) {
+                mMustVibrate = true;
+            } else {
+                mMustVibrate = false;
+            }
+        } else {
+            mMustVibrate = false;
+        }
+        mSelectIndex = selectIndex;
         performHoverVibration();
     }
 
@@ -208,5 +224,18 @@ public class LensView extends View {
         } else {
             mMustVibrate = true;
         }
+    }
+
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return 2 * result;
+    }
+
+    private boolean touchWithinStatusBar(float touchY) {
+        return (touchY <= (float) getStatusBarHeight() && touchY >= 0.0f);
     }
 }
