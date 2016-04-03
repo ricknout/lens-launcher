@@ -12,6 +12,9 @@ import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 
 import java.util.ArrayList;
 
@@ -41,6 +44,9 @@ public class LensView extends View {
     private ArrayList<App> mApps;
     private ArrayList<Bitmap> mAppIcons;
     private PackageManager mPackageManager;
+
+    private float mLensDiameter = 10.0f;
+    private boolean mLensDiameterHiding = false;
 
     public enum DrawType {
         APPS,
@@ -140,7 +146,8 @@ public class LensView extends View {
                     mTouchY = event.getY();
                     mSelectIndex = -1;
                     if (!touchWithinStatusBar(mTouchY)) {
-                        invalidate();
+                        LensDiameterAnimation lensDiameterShowAnimation = new LensDiameterAnimation(true);
+                        startAnimation(lensDiameterShowAnimation);
                     }
                     return true;
                 }
@@ -153,10 +160,9 @@ public class LensView extends View {
                     return true;
                 }
                 case MotionEvent.ACTION_UP: {
-                    mTouchX = -Float.MAX_VALUE;
-                    mTouchY = -Float.MAX_VALUE;
-                    launchApp();
-                    invalidate();
+                    performLaunchVibration();
+                    LensDiameterAnimation lensDiameterHideAnimation = new LensDiameterAnimation(false);
+                    startAnimation(lensDiameterHideAnimation);
                     return true;
                 }
                 default: {
@@ -165,20 +171,6 @@ public class LensView extends View {
             }
         }
         return super.onTouchEvent(event);
-    }
-
-    private void launchApp() {
-        if (mPackageManager != null) {
-            if (mSelectIndex >= 0) {
-                if (mInsideRect) {
-                    Settings settings = new Settings(getContext());
-                    if (settings.getBoolean(Settings.KEY_VIBRATE_APP_LAUNCH)) {
-                        performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                    }
-                    AppUtil.launchApp(getContext(), mPackageManager, (String) mApps.get(mSelectIndex).getName());
-                }
-            }
-        }
     }
 
     private void drawGrid(Canvas canvas, int itemCount) {
@@ -200,7 +192,10 @@ public class LensView extends View {
                     rect.right = rect.left + grid.getItemSize();
                     rect.bottom = rect.top + grid.getItemSize();
                     Settings settings = new Settings(getContext());
-                    float lensDiameter = LensCalculator.convertDpToPixel(settings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
+                    float lensDiameter = mLensDiameter;
+                    if (mDrawType == DrawType.CIRCLES) {
+                        lensDiameter = LensCalculator.convertDpToPixel(settings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
+                    }
                     float shiftedCenterX = LensCalculator.shiftPoint(getContext(), mTouchX, rect.centerX(), lensDiameter);
                     float shiftedCenterY = LensCalculator.shiftPoint(getContext(), mTouchY, rect.centerY(), lensDiameter);
                     float scaledCenterX = LensCalculator.scalePoint(getContext(), mTouchX, rect.centerX(), rect.width(), lensDiameter);
@@ -237,7 +232,9 @@ public class LensView extends View {
         } else {
             mMustVibrate = false;
         }
-        mSelectIndex = selectIndex;
+        if (!mLensDiameterHiding) {
+            mSelectIndex = selectIndex;
+        }
         if (mDrawType == DrawType.APPS) {
             performHoverVibration();
         }
@@ -257,11 +254,86 @@ public class LensView extends View {
         }
     }
 
+    private void performLaunchVibration() {
+        if (mPackageManager != null) {
+            if (mSelectIndex >= 0) {
+                if (mInsideRect) {
+                    Settings settings = new Settings(getContext());
+                    if (settings.getBoolean(Settings.KEY_VIBRATE_APP_LAUNCH)) {
+                        performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                    }
+                }
+            }
+        }
+    }
+
     private float getStatusBarHeight() {
         return getResources().getDimension(R.dimen.status_bar_touch_area);
+        // Dynamic Method (does not always work) from: http://stackoverflow.com/questions/3407256/height-of-status-bar-in-android
+        /* int result = 0;
+           int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+           if (resourceId > 0) {
+               result = getResources().getDimensionPixelSize(resourceId);
+           }
+           return result;
+        */
     }
 
     private boolean touchWithinStatusBar(float touchY) {
         return (touchY <= getStatusBarHeight() && touchY >= 0.0f);
+    }
+
+    private class LensDiameterAnimation extends Animation {
+
+        private static final float SPEED = 10.0f;
+
+        private float mStart;
+        private float mEnd;
+        private boolean mShow;
+
+        public LensDiameterAnimation(boolean show) {
+            mStart = 10.0f;
+            Settings settings = new Settings(getContext());
+            mEnd = LensCalculator.convertDpToPixel(settings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
+            mShow = show;
+            setInterpolator(new AccelerateDecelerateInterpolator());
+            float duration = Math.abs(mEnd - mStart) / SPEED;
+            setDuration((long) duration);
+            setAnimationListener(new AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    if (!mShow) {
+                        mLensDiameterHiding = true;
+                    }
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    if (!mShow) {
+                        if (mSelectIndex >= 0) {
+                            AppUtil.launchApp(getContext(), mPackageManager, (String) mApps.get(mSelectIndex).getName());
+                        }
+                        mTouchX = -Float.MAX_VALUE;
+                        mTouchY = -Float.MAX_VALUE;
+                        mLensDiameterHiding = false;
+                    }
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+        }
+
+        @Override
+        protected void applyTransformation(float interpolatedTime, Transformation t) {
+            super.applyTransformation(interpolatedTime, t);
+            if (mShow) {
+                mLensDiameter = mStart + interpolatedTime * mEnd;
+            } else {
+                mLensDiameter = mStart + (1.0f - interpolatedTime) * mEnd;
+            }
+            postInvalidate();
+        }
     }
 }
