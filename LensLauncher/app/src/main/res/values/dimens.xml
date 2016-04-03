@@ -2,7 +2,6 @@
 <resources>
 
     <!-- Lens Dimens -->
-    <dimen name="padding_activity">16dp</dimen>
-    <dimen name="item_padding_min">4dp</dimen>
+    <dimen name="status_bar_touch_area">40dp</dimen>
 
 </resources>

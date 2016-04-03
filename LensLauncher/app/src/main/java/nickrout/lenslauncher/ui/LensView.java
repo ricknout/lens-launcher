@@ -226,16 +226,11 @@ public class LensView extends View {
         }
     }
 
-    private int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return 2 * result;
+    private float getStatusBarHeight() {
+        return getResources().getDimension(R.dimen.status_bar_touch_area);
     }
 
     private boolean touchWithinStatusBar(float touchY) {
-        return (touchY <= (float) getStatusBarHeight() && touchY >= 0.0f);
+        return (touchY <= getStatusBarHeight() && touchY >= 0.0f);
     }
 }
