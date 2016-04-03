@@ -97,10 +97,11 @@ public class SettingsActivity extends AppCompatActivity {
         mDistortionFactor.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String distortionFactor = progress + "";
+                float appropriateProgress = (float) progress / 2.0f;
+                String distortionFactor = appropriateProgress + "";
                 mValueDistortionFactor.setText(distortionFactor);
                 Settings settings = new Settings(getBaseContext());
-                settings.save(Settings.KEY_DISTORTION_FACTOR, (float) progress);
+                settings.save(Settings.KEY_DISTORTION_FACTOR, appropriateProgress);
                 mLensView.invalidate();
             }
 
@@ -118,10 +119,11 @@ public class SettingsActivity extends AppCompatActivity {
         mScaleFactor.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String scaleFactor = progress + "";
+                float appropriateProgress = (float) progress / 2.0f;
+                String scaleFactor = appropriateProgress + "";
                 mValueScaleFactor.setText(scaleFactor);
                 Settings settings = new Settings(getBaseContext());
-                settings.save(Settings.KEY_SCALE_FACTOR, (float) progress);
+                settings.save(Settings.KEY_SCALE_FACTOR, appropriateProgress);
                 mLensView.invalidate();
             }
 
@@ -170,11 +172,11 @@ public class SettingsActivity extends AppCompatActivity {
         mMinIconSize.setProgress((int) settings.getFloat(Settings.KEY_MIN_ICON_SIZE) - settings.MIN_MIN_ICON_SIZE);
         String minIconSize = (int) settings.getFloat(Settings.KEY_MIN_ICON_SIZE) + "dp";
         mValueMinIconSize.setText(minIconSize);
-        mDistortionFactor.setProgress((int) settings.getFloat(Settings.KEY_DISTORTION_FACTOR));
-        String distortionFactor = (int) settings.getFloat(Settings.KEY_DISTORTION_FACTOR) + "";
+        mDistortionFactor.setProgress((int) (2.0f * settings.getFloat(Settings.KEY_DISTORTION_FACTOR)));
+        String distortionFactor = settings.getFloat(Settings.KEY_DISTORTION_FACTOR) + "";
         mValueDistortionFactor.setText(distortionFactor);
-        mScaleFactor.setProgress((int) settings.getFloat(Settings.KEY_SCALE_FACTOR));
-        String scaleFactor = (int) settings.getFloat(Settings.KEY_SCALE_FACTOR) + "";
+        mScaleFactor.setProgress((int) (2.0f * settings.getFloat(Settings.KEY_SCALE_FACTOR)));
+        String scaleFactor = settings.getFloat(Settings.KEY_SCALE_FACTOR) + "";
         mValueScaleFactor.setText(scaleFactor);
         mVibrateAppHover.setChecked(settings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER));
         mVibrateAppLaunch.setChecked(settings.getBoolean(Settings.KEY_VIBRATE_APP_LAUNCH));

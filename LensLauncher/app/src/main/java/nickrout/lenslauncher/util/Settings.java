@@ -19,8 +19,8 @@ public class Settings {
 
     public static final int MAX_LENS_DIAMETER = 900;
     public static final int MAX_MIN_ICON_SIZE = 20;
-    public static final int MAX_DISTORTION_FACTOR = 5;
-    public static final int MAX_SCALE_FACTOR = 5;
+    public static final int MAX_DISTORTION_FACTOR = 10;
+    public static final int MAX_SCALE_FACTOR = 10;
 
     public static final int MIN_LENS_DIAMETER = 100;
     public static final int MIN_MIN_ICON_SIZE = 10;
