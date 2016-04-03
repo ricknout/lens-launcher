@@ -50,10 +50,11 @@ public class SettingsActivity extends AppCompatActivity {
         mLensDiameter.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String lensDiameter = progress + "dp";
+                int appropriateProgress = progress + Settings.MIN_LENS_DIAMETER;
+                String lensDiameter = appropriateProgress + "dp";
                 mValueLensDiameter.setText(lensDiameter);
                 Settings settings = new Settings(getBaseContext());
-                settings.save(Settings.KEY_LENS_DIAMETER, (float) progress);
+                settings.save(Settings.KEY_LENS_DIAMETER, (float) appropriateProgress);
             }
 
             @Override
@@ -70,10 +71,11 @@ public class SettingsActivity extends AppCompatActivity {
         mMinIconSize.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String minIconSize = progress + "dp";
+                int appropriateProgress = progress + Settings.MIN_MIN_ICON_SIZE;
+                String minIconSize = appropriateProgress + "dp";
                 mValueMinIconSize.setText(minIconSize);
                 Settings settings = new Settings(getBaseContext());
-                settings.save(Settings.KEY_MIN_ICON_SIZE, (float) progress);
+                settings.save(Settings.KEY_MIN_ICON_SIZE, (float) appropriateProgress);
             }
 
             @Override
@@ -152,10 +154,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void assignValues() {
         Settings settings = new Settings(getBaseContext());
-        mLensDiameter.setProgress((int) settings.getFloat(Settings.KEY_LENS_DIAMETER));
+        mLensDiameter.setProgress((int) settings.getFloat(Settings.KEY_LENS_DIAMETER) - settings.MIN_LENS_DIAMETER);
         String lensDiameter = (int) settings.getFloat(Settings.KEY_LENS_DIAMETER) + "dp";
         mValueLensDiameter.setText(lensDiameter);
-        mMinIconSize.setProgress((int) settings.getFloat(Settings.KEY_MIN_ICON_SIZE));
+        mMinIconSize.setProgress((int) settings.getFloat(Settings.KEY_MIN_ICON_SIZE) - settings.MIN_MIN_ICON_SIZE);
         String minIconSize = (int) settings.getFloat(Settings.KEY_MIN_ICON_SIZE) + "dp";
         mValueMinIconSize.setText(minIconSize);
         mDistortionFactor.setProgress((int) settings.getFloat(Settings.KEY_DISTORTION_FACTOR));

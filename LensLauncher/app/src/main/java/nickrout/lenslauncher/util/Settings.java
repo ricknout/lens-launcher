@@ -17,10 +17,13 @@ public class Settings {
     private static final boolean DEFAULT_VIBRATE_APP_LAUNCH = true;
     private static final boolean DEFAULT_SHOW_TOUCH_SELECTION = false;
 
-    public static final int MAX_LENS_DIAMETER = 1000;
-    public static final int MAX_MIN_ICON_SIZE = 30;
+    public static final int MAX_LENS_DIAMETER = 900;
+    public static final int MAX_MIN_ICON_SIZE = 20;
     public static final int MAX_DISTORTION_FACTOR = 5;
     public static final int MAX_SCALE_FACTOR = 5;
+
+    public static final int MIN_LENS_DIAMETER = 100;
+    public static final int MIN_MIN_ICON_SIZE = 10;
 
     public static final float DEFAULT_FLOAT = Float.MIN_VALUE;
     public static final boolean DEFAULT_BOOLEAN = false;
