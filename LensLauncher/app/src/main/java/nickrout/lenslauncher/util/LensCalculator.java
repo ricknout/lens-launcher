@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.RectF;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import nickrout.lenslauncher.model.Grid;
 
@@ -108,6 +109,17 @@ public class LensCalculator {
         } else {
             return false;
         }
+    }
+
+    public static float calculateGridOffset(Grid grid, float height) {
+        if (grid.getItemCount() > 0) {
+            float offsetTop = grid.getSpacingVertical();
+            double actualItemCountVertical = Math.ceil((double) (((float) grid.getItemCount()) / ((float) grid.getItemCountHorizontal())));
+            float offsetBottom = height - (((float) actualItemCountVertical) * (grid.getSpacingVertical() + grid.getItemSize()));
+            float offsetAverage = (offsetTop + offsetBottom) / 2.0f;
+            return offsetAverage - offsetTop;
+        }
+        return 0.0f;
     }
 
     public static float convertDpToPixel(float dp, Context context){

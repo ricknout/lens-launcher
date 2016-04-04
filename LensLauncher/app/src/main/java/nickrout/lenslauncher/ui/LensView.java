@@ -173,6 +173,7 @@ public class LensView extends View {
         Grid grid = LensCalculator.calculateGrid(getContext(), getWidth(), getHeight(), itemCount);
         mInsideRect = false;
         int selectIndex = -1;
+        float offset = LensCalculator.calculateGridOffset(grid, getHeight());
         for (float y = 0.0f; y < (float) grid.getItemCountVertical(); y += 1.0f) {
             for (float x = 0.0f; x < (float) grid.getItemCountHorizontal(); x += 1.0f) {
                 int currentItem = (int) (y * ((float) grid.getItemCountHorizontal()) + (x + 1.0f));
@@ -180,7 +181,7 @@ public class LensView extends View {
                 if (currentItem <= grid.getItemCount() || mDrawType == DrawType.CIRCLES) {
                     RectF rect = new RectF();
                     rect.left = (x + 1.0f) * grid.getSpacingHorizontal() + x * grid.getItemSize();
-                    rect.top = (y + 1.0f) * grid.getSpacingVertical() + y * grid.getItemSize();
+                    rect.top = offset + (y + 1.0f) * grid.getSpacingVertical() + y * grid.getItemSize();
                     rect.right = rect.left + grid.getItemSize();
                     rect.bottom = rect.top + grid.getItemSize();
                     Settings settings = new Settings(getContext());
