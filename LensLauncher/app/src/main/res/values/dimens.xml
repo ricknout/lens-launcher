@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <!-- Lens Dimens -->
-    <dimen name="status_bar_touch_area">40dp</dimen>
-
-</resources>

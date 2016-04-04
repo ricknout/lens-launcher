@@ -145,18 +145,14 @@ public class LensView extends View {
                     mTouchX = event.getX();
                     mTouchY = event.getY();
                     mSelectIndex = -1;
-                    if (!touchWithinStatusBar(mTouchY)) {
-                        LensDiameterAnimation lensDiameterShowAnimation = new LensDiameterAnimation(true);
-                        startAnimation(lensDiameterShowAnimation);
-                    }
+                    LensDiameterAnimation lensDiameterShowAnimation = new LensDiameterAnimation(true);
+                    startAnimation(lensDiameterShowAnimation);
                     return true;
                 }
                 case MotionEvent.ACTION_MOVE: {
                     mTouchX = event.getX();
                     mTouchY = event.getY();
-                    if (!touchWithinStatusBar(mTouchY)) {
-                        invalidate();
-                    }
+                    invalidate();
                     return true;
                 }
                 case MotionEvent.ACTION_UP: {
@@ -177,10 +173,6 @@ public class LensView extends View {
         Grid grid = LensCalculator.calculateGrid(getContext(), getWidth(), getHeight(), itemCount);
         mInsideRect = false;
         int selectIndex = -1;
-        float statusBarHeight = 0;
-        if (mDrawType == DrawType.APPS) {
-            statusBarHeight = getStatusBarHeight();
-        }
         for (float y = 0.0f; y < (float) grid.getItemCountVertical(); y += 1.0f) {
             for (float x = 0.0f; x < (float) grid.getItemCountHorizontal(); x += 1.0f) {
                 int currentItem = (int) (y * ((float) grid.getItemCountHorizontal()) + (x + 1.0f));
@@ -188,7 +180,7 @@ public class LensView extends View {
                 if (currentItem <= grid.getItemCount() || mDrawType == DrawType.CIRCLES) {
                     RectF rect = new RectF();
                     rect.left = (x + 1.0f) * grid.getSpacingHorizontal() + x * grid.getItemSize();
-                    rect.top = statusBarHeight + (y + 1.0f) * grid.getSpacingVertical() + y * grid.getItemSize();
+                    rect.top = (y + 1.0f) * grid.getSpacingVertical() + y * grid.getItemSize();
                     rect.right = rect.left + grid.getItemSize();
                     rect.bottom = rect.top + grid.getItemSize();
                     Settings settings = new Settings(getContext());
@@ -201,7 +193,9 @@ public class LensView extends View {
                     float scaledCenterX = LensCalculator.scalePoint(getContext(), mTouchX, rect.centerX(), rect.width(), lensDiameter);
                     float scaledCenterY = LensCalculator.scalePoint(getContext(), mTouchY, rect.centerY(), rect.height(), lensDiameter);
                     float newSize = LensCalculator.calculateSquareScaledSize(scaledCenterX, shiftedCenterX, scaledCenterY, shiftedCenterY);
-                    if (LensCalculator.calculateDistance(mTouchX, rect.centerX(), mTouchY, rect.centerY()) <= lensDiameter / 2.0f) {
+                    if (LensCalculator.isFrameWithinLens(rect, mTouchX, mTouchY, lensDiameter)) {
+                    // Old Method - calculates circular distance but causes some unwanted icon overlap
+                    //if (LensCalculator.calculateDistance(mTouchX, rect.centerX(), mTouchY, rect.centerY()) <= lensDiameter / 2.0f) {
                         if (settings.getFloat(Settings.KEY_DISTORTION_FACTOR) > 0.0f && settings.getFloat(Settings.KEY_SCALE_FACTOR) > 0.0f) {
                             rect = LensCalculator.calculateRect(shiftedCenterX, shiftedCenterY, newSize);
                         } else if (settings.getFloat(Settings.KEY_DISTORTION_FACTOR) > 0.0f && settings.getFloat(Settings.KEY_SCALE_FACTOR) == 0.0f) {
@@ -265,22 +259,6 @@ public class LensView extends View {
                 }
             }
         }
-    }
-
-    private float getStatusBarHeight() {
-        return getResources().getDimension(R.dimen.status_bar_touch_area);
-        // Dynamic Method (does not always work) from: http://stackoverflow.com/questions/3407256/height-of-status-bar-in-android
-        /* int result = 0;
-           int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-           if (resourceId > 0) {
-               result = getResources().getDimensionPixelSize(resourceId);
-           }
-           return result;
-        */
-    }
-
-    private boolean touchWithinStatusBar(float touchY) {
-        return (touchY <= getStatusBarHeight() && touchY >= 0.0f);
     }
 
     private class LensDiameterAnimation extends Animation {

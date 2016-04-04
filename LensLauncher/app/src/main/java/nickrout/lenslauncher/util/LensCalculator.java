@@ -34,6 +34,17 @@ public class LensCalculator {
         return Math.sqrt(Math.pow((double)(x2 - x1), 2) + Math.pow((double)(y2 - y1), 2));
     }
 
+    public static boolean isFrameWithinLens(RectF rect, float touchX, float touchY, float lensDiameter) {
+        if (rect.left >= touchX - lensDiameter / 2.0f &&
+            rect.right <= touchX + lensDiameter / 2.0f &&
+            rect.top >= touchY - lensDiameter / 2.0f &&
+            rect.bottom <= touchY + lensDiameter / 2.0f) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static float shiftPoint(Context context, float lensPosition, float itemPosition, float boundary) {
         if(lensPosition < 0) {
             return itemPosition;

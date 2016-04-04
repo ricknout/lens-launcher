@@ -7,8 +7,9 @@
     <color name="colorAccent">#F50057</color>
 
     <!-- View Colors -->
+    <color name="colorBlack">#000000</color>
     <color name="colorTransparent">#00FFFFFF</color>
     <color name="colorDivider">#DDDDDD</color>
-    <color name="colorValue">#000000</color>
+    <color name="colorValue">@color/colorBlack</color>
 
 </resources>
