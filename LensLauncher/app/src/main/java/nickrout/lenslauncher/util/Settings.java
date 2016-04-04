@@ -9,15 +9,15 @@ import android.preference.PreferenceManager;
  */
 public class Settings {
 
-    private static final float DEFAULT_LENS_DIAMETER = 300.0f;
-    private static final float DEFAULT_MIN_ICON_SIZE = 12.0f;
-    private static final float DEFAULT_DISTORTION_FACTOR = 2.0f;
+    private static final float DEFAULT_LENS_DIAMETER = 600.0f;
+    private static final float DEFAULT_MIN_ICON_SIZE = 18.0f;
+    private static final float DEFAULT_DISTORTION_FACTOR = 2.5f;
     private static final float DEFAULT_SCALE_FACTOR = 2.0f;
     private static final boolean DEFAULT_VIBRATE_APP_HOVER = true;
     private static final boolean DEFAULT_VIBRATE_APP_LAUNCH = true;
     private static final boolean DEFAULT_SHOW_TOUCH_SELECTION = false;
 
-    public static final int MAX_LENS_DIAMETER = 900;
+    public static final int MAX_LENS_DIAMETER = 1500;
     public static final int MAX_MIN_ICON_SIZE = 20;
     public static final int MAX_DISTORTION_FACTOR = 10;
     public static final int MAX_SCALE_FACTOR = 10;
