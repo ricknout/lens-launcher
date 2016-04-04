@@ -15,6 +15,7 @@ public class Settings {
     private static final float DEFAULT_SCALE_FACTOR = 2.0f;
     private static final boolean DEFAULT_VIBRATE_APP_HOVER = true;
     private static final boolean DEFAULT_VIBRATE_APP_LAUNCH = true;
+    private static final boolean DEFAULT_SHOW_NAME_APP_HOVER = true;
     private static final boolean DEFAULT_SHOW_TOUCH_SELECTION = false;
 
     public static final int MAX_LENS_DIAMETER = 1500;
@@ -34,6 +35,7 @@ public class Settings {
     public static final String KEY_SCALE_FACTOR = "scale_factor";
     public static final String KEY_VIBRATE_APP_HOVER = "vibrate_app_hover";
     public static final String KEY_VIBRATE_APP_LAUNCH = "vibrate_app_launch";
+    public static final String KEY_SHOW_NAME_APP_HOVER = "show_name_app_hover";
     public static final String KEY_SHOW_TOUCH_SELECTION = "show_touch_selection";
 
     private Context mContext;
@@ -77,6 +79,8 @@ public class Settings {
             return sharedPreferences().getBoolean(name, DEFAULT_VIBRATE_APP_HOVER);
         } else if (name.equals(KEY_VIBRATE_APP_LAUNCH)) {
             return sharedPreferences().getBoolean(name, DEFAULT_VIBRATE_APP_LAUNCH);
+        } else if (name.equals(KEY_SHOW_NAME_APP_HOVER)) {
+            return sharedPreferences().getBoolean(name, DEFAULT_SHOW_NAME_APP_HOVER);
         } else if (name.equals(KEY_SHOW_TOUCH_SELECTION)) {
             return sharedPreferences().getBoolean(name, DEFAULT_SHOW_TOUCH_SELECTION);
         } else {

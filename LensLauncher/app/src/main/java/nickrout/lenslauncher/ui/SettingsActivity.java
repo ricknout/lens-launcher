@@ -32,6 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
     private TextView mValueScaleFactor;
     private SwitchCompat mVibrateAppHover;
     private SwitchCompat mVibrateAppLaunch;
+    private SwitchCompat mShowNameAppHover;
     private SwitchCompat mShowTouchSelection;
 
     @Override
@@ -153,13 +154,20 @@ public class SettingsActivity extends AppCompatActivity {
                 mLensView.invalidate();
             }
         });
+        mShowNameAppHover = (SwitchCompat) findViewById(R.id.switch_show_name_app_hover);
+        mShowNameAppHover.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Settings settings = new Settings(getBaseContext());
+                settings.save(Settings.KEY_SHOW_NAME_APP_HOVER, isChecked);
+            }
+        });
         mShowTouchSelection = (SwitchCompat) findViewById(R.id.switch_show_touch_selection);
         mShowTouchSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Settings settings = new Settings(getBaseContext());
                 settings.save(Settings.KEY_SHOW_TOUCH_SELECTION, isChecked);
-                mLensView.invalidate();
             }
         });
     }
@@ -180,6 +188,7 @@ public class SettingsActivity extends AppCompatActivity {
         mValueScaleFactor.setText(scaleFactor);
         mVibrateAppHover.setChecked(settings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER));
         mVibrateAppLaunch.setChecked(settings.getBoolean(Settings.KEY_VIBRATE_APP_LAUNCH));
+        mShowNameAppHover.setChecked(settings.getBoolean(Settings.KEY_SHOW_NAME_APP_HOVER));
         mShowTouchSelection.setChecked(settings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION));
     }
 

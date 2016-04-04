@@ -8,6 +8,7 @@
 
     <!-- View Colors -->
     <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFFFFF</color>
     <color name="colorTransparent">#00FFFFFF</color>
     <color name="colorDivider">#DDDDDD</color>
     <color name="colorValue">@color/colorBlack</color>

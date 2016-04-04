@@ -10,6 +10,7 @@
     <string name="setting_scale_factor">Scale Factor</string>
     <string name="setting_vibrate_app_hover">Vibrate on App Hover</string>
     <string name="setting_vibrate_app_launch">Vibrate on App Launch</string>
+    <string name="setting_show_name_app_hover">Show Name on App Hover</string>
     <string name="setting_show_touch_selection">Show Touch Selection</string>
 
 </resources>
