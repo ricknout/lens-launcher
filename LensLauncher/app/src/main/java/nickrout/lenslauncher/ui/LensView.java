@@ -205,6 +205,11 @@ public class LensView extends View {
                         if (LensCalculator.isInsideRect(mTouchX, mTouchY, rect)) {
                             mInsideRect = true;
                             selectIndex = currentIndex;
+                            if (mDrawType == DrawType.APPS) {
+                                mPaint.setAlpha(127);
+                            }
+                        } else {
+                            mPaint.setAlpha(255);
                         }
                     }
                     mPaint.setStyle(Paint.Style.FILL);
