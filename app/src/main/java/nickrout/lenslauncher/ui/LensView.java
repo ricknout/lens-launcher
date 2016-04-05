@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
@@ -32,8 +31,10 @@ import nickrout.lenslauncher.util.Settings;
  */
 public class LensView extends View {
 
-    private Context mContext;
-    private Paint mPaint;
+    private Paint mPaintIcons;
+    private Paint mPaintCircles;
+    private Paint mPaintTouchSelection;
+    private Paint mPaintText;
 
     private float mTouchX = -Float.MAX_VALUE;
     private float mTouchY = -Float.MAX_VALUE;
@@ -49,6 +50,8 @@ public class LensView extends View {
     private float mLensDiameter = 10.0f;
     private boolean mLensDiameterHiding = false;
 
+    private Settings mSettings;
+
     public enum DrawType {
         APPS,
         CIRCLES
@@ -63,17 +66,17 @@ public class LensView extends View {
 
     public LensView(Context context) {
         super(context);
-        init(context);
+        init();
     }
 
     public LensView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init();
     }
 
     public LensView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(context);
+        init();
     }
 
     public void setApps(ArrayList<App> apps) {
@@ -90,26 +93,38 @@ public class LensView extends View {
         mPackageManager = packageManager;
     }
 
-    private void init(Context context) {
-        mContext = context;
+    private void init() {
         mApps = new ArrayList<>();
         mAppIcons = new ArrayList<>();
         mDrawType = DrawType.APPS;
-        setBackground();
-        setupPaint();
+        setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTransparent));
+        setupPaints();
+        mSettings = new Settings(getContext());
     }
 
-    private void setBackground() {
-        if (android.os.Build.VERSION.SDK_INT >= 23) {
-            setBackgroundColor(mContext.getResources().getColor(R.color.colorTransparent, null));
-        } else {
-            setBackgroundColor(mContext.getResources().getColor(R.color.colorTransparent));
-        }
-    }
+    private void setupPaints() {
+        mPaintIcons = new Paint();
+        mPaintIcons.setAntiAlias(true);
+        mPaintIcons.setStyle(Paint.Style.FILL);
 
-    private void setupPaint() {
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
+        mPaintCircles = new Paint();
+        mPaintCircles.setAntiAlias(true);
+        mPaintCircles.setStyle(Paint.Style.FILL);
+        mPaintCircles.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+
+        mPaintTouchSelection = new Paint();
+        mPaintTouchSelection.setAntiAlias(true);
+        mPaintTouchSelection.setStyle(Paint.Style.STROKE);
+        mPaintTouchSelection.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+        mPaintTouchSelection.setStrokeWidth(getResources().getDimension(R.dimen.stroke_width_touch_selection));
+
+        mPaintText = new Paint();
+        mPaintText.setAntiAlias(true);
+        mPaintText.setStyle(Paint.Style.FILL);
+        mPaintText.setColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
+        mPaintText.setShadowLayer(5.0f, 5.0f, 5.0f, ContextCompat.getColor(getContext(), R.color.colorBlack));
+        mPaintText.setTextSize(getResources().getDimension(R.dimen.text_size_lens));
+        mPaintText.setTextAlign(Paint.Align.CENTER);
     }
 
     @Override
@@ -119,8 +134,7 @@ public class LensView extends View {
             if (mApps != null) {
                 drawGrid(canvas, mApps.size());
             }
-            Settings settings = new Settings(getContext());
-            if (settings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION)) {
+            if (mSettings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION)) {
                 drawTouchPoint(canvas);
             }
         } else if (mDrawType == DrawType.CIRCLES) {
@@ -131,11 +145,7 @@ public class LensView extends View {
     }
 
     private void drawTouchPoint(Canvas canvas) {
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        mPaint.setStrokeWidth(5);
-        mPaint.setAlpha(255);
-        canvas.drawCircle(mTouchX, mTouchY, 100, mPaint);
+        canvas.drawCircle(mTouchX, mTouchY, getResources().getDimension(R.dimen.radius_touch_selection), mPaintTouchSelection);
     }
 
     @Override
@@ -186,10 +196,9 @@ public class LensView extends View {
                     rect.top = offset + (y + 1.0f) * grid.getSpacingVertical() + y * grid.getItemSize();
                     rect.right = rect.left + grid.getItemSize();
                     rect.bottom = rect.top + grid.getItemSize();
-                    Settings settings = new Settings(getContext());
                     float lensDiameter = mLensDiameter;
                     if (mDrawType == DrawType.CIRCLES) {
-                        lensDiameter = LensCalculator.convertDpToPixel(settings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
+                        lensDiameter = LensCalculator.convertDpToPixel(mSettings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
                     }
                     float shiftedCenterX = LensCalculator.shiftPoint(getContext(), mTouchX, rect.centerX(), lensDiameter);
                     float shiftedCenterY = LensCalculator.shiftPoint(getContext(), mTouchY, rect.centerY(), lensDiameter);
@@ -197,11 +206,13 @@ public class LensView extends View {
                     float scaledCenterY = LensCalculator.scalePoint(getContext(), mTouchY, rect.centerY(), rect.height(), lensDiameter);
                     float newSize = LensCalculator.calculateSquareScaledSize(scaledCenterX, shiftedCenterX, scaledCenterY, shiftedCenterY);
                     if (LensCalculator.isFrameWithinLens(rect, mTouchX, mTouchY, lensDiameter)) {
+
                     // Old Method - calculates circular distance but causes some unwanted icon overlap
                     //if (LensCalculator.calculateDistance(mTouchX, rect.centerX(), mTouchY, rect.centerY()) <= lensDiameter / 2.0f) {
-                        if (settings.getFloat(Settings.KEY_DISTORTION_FACTOR) > 0.0f && settings.getFloat(Settings.KEY_SCALE_FACTOR) > 0.0f) {
+
+                        if (mSettings.getFloat(Settings.KEY_DISTORTION_FACTOR) > 0.0f && mSettings.getFloat(Settings.KEY_SCALE_FACTOR) > 0.0f) {
                             rect = LensCalculator.calculateRect(shiftedCenterX, shiftedCenterY, newSize);
-                        } else if (settings.getFloat(Settings.KEY_DISTORTION_FACTOR) > 0.0f && settings.getFloat(Settings.KEY_SCALE_FACTOR) == 0.0f) {
+                        } else if (mSettings.getFloat(Settings.KEY_DISTORTION_FACTOR) > 0.0f && mSettings.getFloat(Settings.KEY_SCALE_FACTOR) == 0.0f) {
                             rect = LensCalculator.calculateRect(shiftedCenterX, shiftedCenterY, rect.width());
                         }
                         if (LensCalculator.isInsideRect(mTouchX, mTouchY, rect)) {
@@ -210,14 +221,12 @@ public class LensView extends View {
                             rectToSelect = rect;
                         }
                     }
-                    mPaint.setStyle(Paint.Style.FILL);
                     if (mDrawType == DrawType.APPS) {
                         Bitmap appIcon = mAppIcons.get(currentIndex);
                         Rect src = new Rect(0, 0, appIcon.getWidth() - 1, appIcon.getHeight() - 1);
-                        canvas.drawBitmap(appIcon, src, rect, mPaint);
+                        canvas.drawBitmap(appIcon, src, rect, mPaintIcons);
                     } else if (mDrawType == DrawType.CIRCLES) {
-                        mPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-                        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2.0f, mPaint);
+                        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2.0f, mPaintCircles);
                     }
                 }
             }
@@ -238,24 +247,19 @@ public class LensView extends View {
             performHoverVibration();
         }
         if (rectToSelect != null && mDrawType == DrawType.APPS && mApps != null) {
-            Settings settings = new Settings(getContext());
-            if (settings.getBoolean(Settings.KEY_SHOW_NAME_APP_HOVER)) {
-                mPaint.setTextSize(getResources().getDimension(R.dimen.text_size_lens));
-                mPaint.setTextAlign(Paint.Align.CENTER);
-                mPaint.setStyle(Paint.Style.FILL);
-                mPaint.setColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
-                mPaint.setShadowLayer(5.0f, 5.0f, 5.0f, ContextCompat.getColor(getContext(), R.color.colorBlack));
-                canvas.drawText((String) mApps.get(mSelectIndex).getLabel(), rectToSelect.centerX(), rectToSelect.bottom + getResources().getDimension(R.dimen.margin_lens_text), mPaint);
+            if (mSettings.getBoolean(Settings.KEY_SHOW_NAME_APP_HOVER)) {
+                canvas.drawText((String) mApps.get(mSelectIndex).getLabel(),
+                        rectToSelect.centerX(),
+                        rectToSelect.bottom + getResources().getDimension(R.dimen.margin_lens_text),
+                        mPaintText);
             }
         }
-        mPaint.setShadowLayer(0, 0, 0, 0);
     }
 
     private void performHoverVibration() {
         if (mInsideRect) {
             if (mMustVibrate) {
-                Settings settings = new Settings(getContext());
-                if (settings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER)) {
+                if (mSettings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER)) {
                     performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 }
                 mMustVibrate = false;
@@ -269,8 +273,7 @@ public class LensView extends View {
         if (mPackageManager != null) {
             if (mSelectIndex >= 0) {
                 if (mInsideRect) {
-                    Settings settings = new Settings(getContext());
-                    if (settings.getBoolean(Settings.KEY_VIBRATE_APP_LAUNCH)) {
+                    if (mSettings.getBoolean(Settings.KEY_VIBRATE_APP_LAUNCH)) {
                         performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                     }
                 }
@@ -288,8 +291,7 @@ public class LensView extends View {
 
         public LensDiameterAnimation(boolean show) {
             mStart = 10.0f;
-            Settings settings = new Settings(getContext());
-            mEnd = LensCalculator.convertDpToPixel(settings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
+            mEnd = LensCalculator.convertDpToPixel(mSettings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
             mShow = show;
             setInterpolator(new AccelerateDecelerateInterpolator());
             float duration = Math.abs(mEnd - mStart) / SPEED;
