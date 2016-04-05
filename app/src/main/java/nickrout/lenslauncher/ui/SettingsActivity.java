@@ -36,6 +36,11 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         setupViews();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         assignValues();
     }
 

@@ -122,7 +122,10 @@ public class LensView extends View {
         mPaintText.setAntiAlias(true);
         mPaintText.setStyle(Paint.Style.FILL);
         mPaintText.setColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
-        mPaintText.setShadowLayer(5.0f, 5.0f, 5.0f, ContextCompat.getColor(getContext(), R.color.colorBlack));
+        mPaintText.setShadowLayer(getResources().getDimension(R.dimen.shadow_text),
+                                  getResources().getDimension(R.dimen.shadow_text),
+                                  getResources().getDimension(R.dimen.shadow_text),
+                                  ContextCompat.getColor(getContext(), R.color.colorBlack));
         mPaintText.setTextSize(getResources().getDimension(R.dimen.text_size_lens));
         mPaintText.setTextAlign(Paint.Align.CENTER);
     }
