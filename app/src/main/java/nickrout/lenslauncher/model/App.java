@@ -46,8 +46,8 @@ public class App {
     @Override
     public String toString() {
         return "App{" +
-                "mLabel='" + mLabel + '\'' +
-                ", mName='" + mName + '\'' +
+                "mLabel=" + mLabel +
+                ", mName=" + mName +
                 ", mIcon=" + mIcon +
                 '}';
     }

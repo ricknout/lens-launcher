@@ -1,9 +1,12 @@
 package nickrout.lenslauncher.util;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 
 /**
  * Created by nickrout on 2016/04/02.
@@ -16,6 +19,8 @@ public class BitmapUtil {
 
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            bitmapDrawable.setAntiAlias(true);
+            bitmapDrawable.setTargetDensity(DisplayMetrics.DENSITY_XXXHIGH);
             if(bitmapDrawable.getBitmap() != null) {
                 return bitmapDrawable.getBitmap();
             }
@@ -30,6 +35,13 @@ public class BitmapUtil {
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
+        return bitmap;
+    }
+
+    public static Bitmap resIdToBitmap(Resources res, int resId) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        Bitmap bitmap = BitmapFactory.decodeResource(res, resId, options);
         return bitmap;
     }
 }
