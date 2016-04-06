@@ -30,7 +30,7 @@ public class HomeActivity extends BaseActivity {
         mLensView = (LensView) findViewById(R.id.lens_view_apps);
         mPackageManager = getPackageManager();
         mApps = AppUtil.getApps(mPackageManager);
-        mLensView.setApps(mApps);
         mLensView.setPackageManager(mPackageManager);
+        mLensView.setApps(mApps);
     }
 }

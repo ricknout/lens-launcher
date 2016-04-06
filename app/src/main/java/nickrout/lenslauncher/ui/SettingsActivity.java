@@ -3,6 +3,9 @@ package nickrout.lenslauncher.ui;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.SwitchCompat;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -195,5 +198,23 @@ public class SettingsActivity extends BaseActivity {
         mVibrateAppLaunch.setChecked(settings.getBoolean(Settings.KEY_VIBRATE_APP_LAUNCH));
         mShowNameAppHover.setChecked(settings.getBoolean(Settings.KEY_SHOW_NAME_APP_HOVER));
         mShowTouchSelection.setChecked(settings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.menu_settings, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_about:
+                // TODO - Show About Screen / Fragment / View
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

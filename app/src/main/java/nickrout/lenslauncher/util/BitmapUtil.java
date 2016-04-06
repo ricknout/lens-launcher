@@ -1,5 +1,7 @@
 package nickrout.lenslauncher.util;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +22,7 @@ public class BitmapUtil {
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
             bitmapDrawable.setAntiAlias(true);
+            bitmapDrawable.setDither(true);
             bitmapDrawable.setTargetDensity(DisplayMetrics.DENSITY_XXXHIGH);
             if(bitmapDrawable.getBitmap() != null) {
                 return bitmapDrawable.getBitmap();
@@ -41,7 +44,22 @@ public class BitmapUtil {
     public static Bitmap resIdToBitmap(Resources res, int resId) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
+        options.inDither = false;
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        options.inPreferQualityOverSpeed = true;
         Bitmap bitmap = BitmapFactory.decodeResource(res, resId, options);
         return bitmap;
+    }
+
+    public static Bitmap packageNameToBitmap(PackageManager packageManager, String packageName) {
+        try {
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+            Resources resources = packageManager.getResourcesForApplication(applicationInfo);
+            int appIconResId = applicationInfo.icon;
+            return resIdToBitmap(resources, appIconResId);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

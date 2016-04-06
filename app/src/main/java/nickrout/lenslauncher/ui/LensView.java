@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -83,8 +84,11 @@ public class LensView extends View {
         mApps = apps;
         for (int i = 0; i < mApps.size(); i++) {
             App app = mApps.get(i);
-            Bitmap appIcon = BitmapUtil.drawableToBitmap(app.getIcon());
-            mAppIcons.add(appIcon);
+            //Bitmap appIcon = BitmapUtil.drawableToBitmap(app.getIcon());
+            Bitmap appIcon = BitmapUtil.packageNameToBitmap(mPackageManager, (String) app.getName());
+            if (appIcon != null) {
+                mAppIcons.add(appIcon);
+            }
         }
         invalidate();
     }
@@ -106,6 +110,8 @@ public class LensView extends View {
         mPaintIcons = new Paint();
         mPaintIcons.setAntiAlias(true);
         mPaintIcons.setStyle(Paint.Style.FILL);
+        mPaintIcons.setFilterBitmap(true);
+        mPaintIcons.setDither(true);
 
         mPaintCircles = new Paint();
         mPaintCircles.setAntiAlias(true);
@@ -266,7 +272,7 @@ public class LensView extends View {
 
     private void drawAppIcon(Canvas canvas, RectF rect, int index) {
         Bitmap appIcon = mAppIcons.get(index);
-        Rect src = new Rect(0, 0, appIcon.getWidth() - 1, appIcon.getHeight() - 1);
+        Rect src = new Rect(0, 0, appIcon.getWidth(), appIcon.getHeight());
         canvas.drawBitmap(appIcon, src, rect, mPaintIcons);
     }
 

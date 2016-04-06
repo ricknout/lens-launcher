@@ -13,4 +13,7 @@
     <string name="setting_show_name_app_hover">Show Name on App Hover</string>
     <string name="setting_show_touch_selection">Show Touch Selection</string>
 
+    <!-- Menu Strings -->
+    <string name="menu_title_about">About</string>
+
 </resources>
