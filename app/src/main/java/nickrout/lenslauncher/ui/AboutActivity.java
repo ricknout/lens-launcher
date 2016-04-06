@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import nickrout.lenslauncher.R;
 
+/**
+ * Created by nickrout on 2016/04/06.
+ */
 public class AboutActivity extends BaseActivity {
 
     private TextView mTextViewAbout;

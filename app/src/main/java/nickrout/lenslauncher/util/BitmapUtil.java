@@ -15,6 +15,7 @@ import android.util.DisplayMetrics;
  */
 public class BitmapUtil {
 
+    // Old method - does not allow for adding options i.e. lower quality
     // Source: http://stackoverflow.com/questions/3035692/how-to-convert-a-drawable-to-a-bitmap
     public static Bitmap drawableToBitmap (Drawable drawable) {
         Bitmap bitmap = null;
@@ -23,7 +24,6 @@ public class BitmapUtil {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
             bitmapDrawable.setAntiAlias(true);
             bitmapDrawable.setDither(true);
-            bitmapDrawable.setTargetDensity(DisplayMetrics.DENSITY_XXXHIGH);
             if(bitmapDrawable.getBitmap() != null) {
                 return bitmapDrawable.getBitmap();
             }
@@ -41,6 +41,7 @@ public class BitmapUtil {
         return bitmap;
     }
 
+    // Get bitmap from resource id, with quality options
     public static Bitmap resIdToBitmap(Resources res, int resId) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
@@ -51,6 +52,7 @@ public class BitmapUtil {
         return bitmap;
     }
 
+    // Get bitmap from app package name
     public static Bitmap packageNameToBitmap(PackageManager packageManager, String packageName) {
         try {
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);

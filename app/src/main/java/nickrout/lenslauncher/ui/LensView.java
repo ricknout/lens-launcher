@@ -218,7 +218,7 @@ public class LensView extends View {
                         lensDiameter = LensCalculator.convertDpToPixel(mSettings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
                     }
 
-                    if (LensCalculator.isFrameWithinLens(rect, mTouchX, mTouchY, lensDiameter)) {
+                    if (LensCalculator.isRectWithinLens(rect, mTouchX, mTouchY, lensDiameter)) {
                     // Old Method - calculates circular distance but causes some unwanted icon overlap
                     //if (LensCalculator.calculateDistance(mTouchX, rect.centerX(), mTouchY, rect.centerY()) <= lensDiameter / 2.0f) {
 

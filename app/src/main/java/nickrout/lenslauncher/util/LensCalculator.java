@@ -13,6 +13,7 @@ import nickrout.lenslauncher.model.Grid;
  */
 public class LensCalculator {
 
+    // Algorithm for calculating equispaced grid
     public static Grid calculateGrid(Context context, int screenWidth, int screenHeight, int itemCount) {
         Grid grid = new Grid();
         grid.setItemCount(itemCount);
@@ -31,11 +32,13 @@ public class LensCalculator {
         return grid;
     }
 
+    // Algorithm for circular distance
     public static double calculateDistance(float x1, float x2, float y1, float y2) {
         return Math.sqrt(Math.pow((double)(x2 - x1), 2) + Math.pow((double)(y2 - y1), 2));
     }
 
-    public static boolean isFrameWithinLens(RectF rect, float touchX, float touchY, float lensDiameter) {
+    // Algorithm for determining whether a rect is within a given lens (centered at touchX, touchY)
+    public static boolean isRectWithinLens(RectF rect, float touchX, float touchY, float lensDiameter) {
         if (rect.left >= touchX - lensDiameter / 2.0f &&
             rect.right <= touchX + lensDiameter / 2.0f &&
             rect.top >= touchY - lensDiameter / 2.0f &&
@@ -46,6 +49,7 @@ public class LensCalculator {
         }
     }
 
+    // Graphical Fisheye Lens algorithm for shifting
     public static float shiftPoint(Context context, float lensPosition, float itemPosition, float boundary) {
         if(lensPosition < 0) {
             return itemPosition;
@@ -66,6 +70,7 @@ public class LensCalculator {
         return shiftedPosition;
     }
 
+    // Graphical Fisheye Lens algorithm for scaling
     public static float scalePoint(Context context, float lensPosition, float itemPosition, float itemSize, float boundary) {
         if(lensPosition < 0) {
             return itemSize;
@@ -91,10 +96,12 @@ public class LensCalculator {
         return scaledPosition;
     }
 
+    // Graphical Fisheye Lens algorithm for determining final scaled size
     public static float calculateSquareScaledSize(float scaledPositionX, float shiftedPositionX, float scaledPositionY, float shiftedPositionY) {
         return 2.0f * Math.min(Math.abs(scaledPositionX - shiftedPositionX), Math.abs(scaledPositionY - shiftedPositionY));
     }
 
+    // Algorithm for calculating new rect
     public static RectF calculateRect(float newCenterX, float newCenterY, float newSize) {
         RectF newRect = new RectF(newCenterX - newSize / 2.0f,
                 newCenterY - newSize / 2.0f,
@@ -103,6 +110,7 @@ public class LensCalculator {
         return newRect;
     }
 
+    // Algorithm for determining if touch point is within rect
     public static boolean isInsideRect(float x, float y, RectF rect) {
         if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
             return true;
@@ -111,6 +119,7 @@ public class LensCalculator {
         }
     }
 
+    // Algorithm for determining grid offset in order to center vertically
     public static float calculateGridOffset(Grid grid, float height) {
         if (grid.getItemCount() > 0) {
             float offsetTop = grid.getSpacingVertical();
@@ -122,6 +131,7 @@ public class LensCalculator {
         return 0.0f;
     }
 
+    // Algorithm for converting dp measurements to pixels
     public static float convertDpToPixel(float dp, Context context){
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
@@ -129,6 +139,7 @@ public class LensCalculator {
         return px;
     }
 
+    // Algorithm for converting pixels to dp measurements
     public static float convertPixelsToDp(float px, Context context){
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();

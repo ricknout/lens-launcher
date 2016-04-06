@@ -18,6 +18,7 @@ import nickrout.lenslauncher.model.App;
  */
 public class AppUtil {
 
+    // Get all available apps for launcher
     public static ArrayList<App> getApps(PackageManager packageManager) {
         ArrayList<App> apps = new ArrayList<>();
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
@@ -39,6 +40,7 @@ public class AppUtil {
         return apps;
     }
 
+    // Launch apps, for launcher :-P
     public static void launchApp(Context context, PackageManager packageManager, String appName) {
         Intent intent = packageManager.getLaunchIntentForPackage(appName);
         context.startActivity(intent);
