@@ -7,12 +7,12 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="32dp"
+            android:padding="@dimen/padding_about"
             android:background="@color/colorBlack">
 
             <LinearLayout
@@ -24,7 +24,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="@dimen/header_margin_about"
                     android:layout_gravity="center"
                     android:src="@drawable/im_lens"/>
 
@@ -47,7 +47,7 @@
             android:gravity="center"
             android:textColorHighlight="@color/colorPrimary"
             android:textColorLink="@color/colorAccent"
-            android:padding="32dp"/>
+            android:padding="@dimen/padding_about"/>
 
     </LinearLayout>
 
