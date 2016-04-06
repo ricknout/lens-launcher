@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -318,8 +317,6 @@ public class LensView extends View {
 
     private class LensDiameterAnimation extends Animation {
 
-        private static final float SPEED = 10.0f;
-
         private float mStart;
         private float mEnd;
         private boolean mShow;
@@ -329,7 +326,8 @@ public class LensView extends View {
             mEnd = LensCalculator.convertDpToPixel(mSettings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
             mShow = show;
             setInterpolator(new AccelerateDecelerateInterpolator());
-            float duration = Math.abs(mEnd - mStart) / SPEED;
+            float speed = (mSettings.getFloat(Settings.KEY_LENS_DIAMETER) / (float) Settings.MAX_LENS_DIAMETER) * 15.0f;
+            float duration = Math.abs(mEnd - mStart) / speed;
             setDuration((long) duration);
             setAnimationListener(new AnimationListener() {
                 @Override
