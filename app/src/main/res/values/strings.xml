@@ -1,7 +1,7 @@
 <resources>
 
     <!-- App & Activity Strings -->
-    <string name="app_name">Lens Launcher</string>
+    <string name="app_name"><b>Lens</b> Launcher</string>
     <string name="activity_title_about">About</string>
 
     <!-- Settings Strings -->
