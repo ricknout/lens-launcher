@@ -12,5 +12,6 @@
     <color name="colorTransparent">#00FFFFFF</color>
     <color name="colorDivider">#DDDDDD</color>
     <color name="colorValue">@color/colorBlack</color>
+    <color name="colorShadow">#80000000</color>
 
 </resources>
