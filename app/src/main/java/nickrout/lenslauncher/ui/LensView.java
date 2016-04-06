@@ -49,6 +49,10 @@ public class LensView extends View {
 
     private float mLensDiameter = 10.0f;
     private boolean mLensDiameterHiding = false;
+    private final float mMinimumLensSize = 10.0f;
+    private final float mBaseAnimationSpeed = 15.0f;
+
+    private final int mNumberOfCircles = 100;
 
     private Settings mSettings;
 
@@ -148,7 +152,7 @@ public class LensView extends View {
         } else if (mDrawType == DrawType.CIRCLES) {
             mTouchX = getWidth() / 2;
             mTouchY = getHeight() / 2;
-            drawGrid(canvas, 100);
+            drawGrid(canvas, mNumberOfCircles);
         }
     }
 
@@ -322,11 +326,11 @@ public class LensView extends View {
         private boolean mShow;
 
         public LensDiameterAnimation(boolean show) {
-            mStart = 10.0f;
+            mStart = mMinimumLensSize;
             mEnd = LensCalculator.convertDpToPixel(mSettings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
             mShow = show;
             setInterpolator(new AccelerateDecelerateInterpolator());
-            float speed = (mSettings.getFloat(Settings.KEY_LENS_DIAMETER) / (float) Settings.MAX_LENS_DIAMETER) * 15.0f;
+            float speed = (mSettings.getFloat(Settings.KEY_LENS_DIAMETER) / (float) Settings.MAX_LENS_DIAMETER) * mBaseAnimationSpeed;
             float duration = Math.abs(mEnd - mStart) / speed;
             setDuration((long) duration);
             setAnimationListener(new AnimationListener() {

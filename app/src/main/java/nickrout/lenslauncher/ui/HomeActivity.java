@@ -1,14 +1,9 @@
 package nickrout.lenslauncher.ui;
 
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;

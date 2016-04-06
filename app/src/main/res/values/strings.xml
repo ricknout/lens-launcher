@@ -1,7 +1,8 @@
 <resources>
 
-    <!-- App Strings -->
+    <!-- App & Activity Strings -->
     <string name="app_name">Lens Launcher</string>
+    <string name="activity_title_about">About</string>
 
     <!-- Settings Strings -->
     <string name="setting_lens_diameter">Lens Diameter</string>
