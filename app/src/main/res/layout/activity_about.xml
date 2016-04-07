@@ -26,7 +26,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/header_margin_about"
                     android:layout_gravity="center"
-                    android:src="@drawable/im_lens"/>
+                    android:src="@drawable/im_lens_white_120dp"/>
 
                 <TextView
                     android:layout_width="match_parent"

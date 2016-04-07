@@ -1,8 +1,6 @@
 package nickrout.lenslauncher.ui;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.SwitchCompat;
@@ -213,13 +211,13 @@ public class SettingsActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_item_show_apps:
+                Intent homeIntent = new Intent(SettingsActivity.this, HomeActivity.class);
+                startActivity(homeIntent);
+                return true;
             case R.id.menu_item_about:
-                Intent intent = new Intent(SettingsActivity.this, AboutActivity.class);
-                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(SettingsActivity.this).toBundle());
-                } else {
-                    startActivity(intent);
-                }
+                Intent aboutIntent = new Intent(SettingsActivity.this, AboutActivity.class);
+                startActivity(aboutIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

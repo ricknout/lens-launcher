@@ -9,4 +9,11 @@
         app:showAsAction="never">
     </item>
 
+    <item
+        android:id="@+id/menu_item_show_apps"
+        android:title="@string/menu_title_show_apps"
+        android:icon="@drawable/ic_apps_white_24dp"
+        app:showAsAction="ifRoom">
+    </item>
+
 </menu>

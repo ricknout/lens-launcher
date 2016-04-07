@@ -28,4 +28,9 @@ public class HomeActivity extends BaseActivity {
         mLensView.setPackageManager(mPackageManager);
         mLensView.setApps(mApps);
     }
+
+    @Override
+    public void onBackPressed() {
+        // Do Nothing
+    }
 }

@@ -42,7 +42,7 @@ public class AppUtil {
 
     // Launch apps, for launcher :-P
     public static void launchApp(Context context, PackageManager packageManager, String appName) {
-        Intent intent = packageManager.getLaunchIntentForPackage(appName);
-        context.startActivity(intent);
+        Intent appIntent = packageManager.getLaunchIntentForPackage(appName);
+        context.startActivity(appIntent);
     }
 }
