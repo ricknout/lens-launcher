@@ -23,6 +23,10 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mLensView = (LensView) findViewById(R.id.lens_view_apps);
+        loadApps();
+    }
+
+    private void loadApps() {
         mPackageManager = getPackageManager();
         mApps = AppUtil.getApps(mPackageManager);
         mLensView.setPackageManager(mPackageManager);
