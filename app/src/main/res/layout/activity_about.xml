@@ -9,36 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_about"
-            android:background="@color/colorBlack">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_centerInParent="true">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/header_margin_about"
-                    android:layout_gravity="center"
-                    android:src="@drawable/im_lens_white_120dp"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="@dimen/text_size_about"
-                    android:textColor="@color/colorWhite"
-                    android:text="@string/app_name"/>
-
-            </LinearLayout>
-
-        </RelativeLayout>
+            android:scaleType="centerCrop"
+            android:src="@drawable/im_about"/>
 
         <TextView
             android:id="@+id/text_view_about"

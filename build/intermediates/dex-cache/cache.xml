@@ -1,2 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        jar="/Users/nickrout/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.2.1/support-annotations-23.2.1.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="ccb693bc0774fcb637246f7360de25b4af7df318">
+        <dex dex="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-23.2.1_082b6a1a17ce1ac7c3a6899f8468c9bab0015688/classes.dex" />
+    </item>
+    <item
+        jar="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.2.1/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="673d77a5bbddd766037f088e775df525c46407f0">
+        <dex dex="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-23.2.1_d617585ff23cc1784f4f98bace24ad82788ab2ba/classes.dex" />
+    </item>
+    <item
+        jar="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="f54a8959a7173c451bd3693b5130a76487114901">
+        <dex dex="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_cb0e099542fe048694b0ecc79ddc398ee491773c/classes.dex" />
+    </item>
+    <item
+        jar="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.2.1/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="3469cb457f10f74c28cbc05f069b6c894f6cbdd0">
+        <dex dex="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-23.2.1_bb59a150bdd4f5d7dd243254ba7cd6a0fa46826a/classes.dex" />
+    </item>
+    <item
+        jar="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="3be474b1b21b31cf2fa93fe6bd641ae108d96452">
+        <dex dex="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-23.2.1_e3bc898d7b231283da454ae8c115727441e31829/classes.dex" />
+    </item>
+    <item
+        jar="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.2.1/jars/classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="e4d0cbb0b999604b349062f0214a0a228a7fd151">
+        <dex dex="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-23.2.1_56ef766d45495a28e986b5eb478926e318eaa08a/classes.dex" />
+    </item>
+    <item
+        jar="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="92ee20eb1f56c6522476aeb850a56c2d37e804b9">
+        <dex dex="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_48922d24bc2dbb439d81dca4471de8d3c02f7b0a/classes.dex" />
+    </item>
+    <item
+        jar="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/jars/libs/internal_impl-23.2.1.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="607a3d0b8013b4ccbfeb0b7cb293351994e021fb">
+        <dex dex="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-23.2.1_7aac1d462c42b64d5058d292f67e35ea582f3581/classes.dex" />
+    </item>
+
+</items>
