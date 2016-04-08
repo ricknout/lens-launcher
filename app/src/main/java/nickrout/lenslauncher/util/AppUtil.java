@@ -2,8 +2,10 @@ package nickrout.lenslauncher.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -28,7 +30,6 @@ public class AppUtil {
             App app = new App();
             app.setLabel(resolveInfo.loadLabel(packageManager));
             app.setName(resolveInfo.activityInfo.packageName);
-            app.setIcon(resolveInfo.activityInfo.loadIcon(packageManager));
             apps.add(app);
         }
         Collections.sort(apps, new Comparator<App>() {
@@ -44,5 +45,19 @@ public class AppUtil {
     public static void launchApp(Context context, PackageManager packageManager, String appName) {
         Intent appIntent = packageManager.getLaunchIntentForPackage(appName);
         context.startActivity(appIntent);
+    }
+
+    public static App getApp(PackageManager packageManager, String packageName) {
+        App app = new App();
+        app.setName(packageName);
+        try {
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+            Resources resources = packageManager.getResourcesForApplication(applicationInfo);
+            app.setLabel(applicationInfo.loadLabel(packageManager));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return app;
     }
 }

@@ -9,14 +9,12 @@ public class App {
 
     private CharSequence mLabel;
     private CharSequence mName;
-    private Drawable mIcon;
 
     public App() {}
 
-    public App(String label, String name, Drawable icon) {
+    public App(String label, String name) {
         mLabel = label;
         mName = name;
-        mIcon = icon;
     }
 
     public CharSequence getLabel() {
@@ -35,20 +33,11 @@ public class App {
         mName = name;
     }
 
-    public Drawable getIcon() {
-        return mIcon;
-    }
-
-    public void setIcon(Drawable icon) {
-        mIcon = icon;
-    }
-
     @Override
     public String toString() {
         return "App{" +
                 "mLabel=" + mLabel +
                 ", mName=" + mName +
-                ", mIcon=" + mIcon +
                 '}';
     }
 }

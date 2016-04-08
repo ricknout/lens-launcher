@@ -85,12 +85,35 @@ public class LensView extends View {
 
     public void setApps(ArrayList<App> apps) {
         mApps = apps;
+        mAppIcons = new ArrayList<>();
         for (int i = 0; i < mApps.size(); i++) {
             App app = mApps.get(i);
             //Bitmap appIcon = BitmapUtil.drawableToBitmap(app.getIcon());
             Bitmap appIcon = BitmapUtil.packageNameToBitmap(mPackageManager, (String) app.getName());
             if (appIcon != null) {
                 mAppIcons.add(appIcon);
+            } else {
+                mApps.remove(app);
+            }
+        }
+        invalidate();
+    }
+
+    public void addApp(App app) {
+        Bitmap appIcon = BitmapUtil.packageNameToBitmap(mPackageManager, (String) app.getName());
+        if (appIcon != null) {
+            mApps.add(app);
+            mAppIcons.add(appIcon);
+        }
+        invalidate();
+    }
+
+    public void removeApp(App app) {
+        for (int i = 0; i < mApps.size(); i++) {
+            if (mApps.get(i).getName().equals(app.getName())) {
+                mApps.remove(i);
+                mAppIcons.remove(i);
+                break;
             }
         }
         invalidate();

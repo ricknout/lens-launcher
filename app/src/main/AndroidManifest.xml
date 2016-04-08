@@ -23,6 +23,20 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".ui.HomeActivity$AppAddedBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".ui.HomeActivity$AppRemovedBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/app_name"
