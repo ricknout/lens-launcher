@@ -1,2 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        jar="/Users/nicholasrout/Desktop/Personal/Lens Launcher/lens-launcher/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="8a034dd16c0dfd75fe86c52c2cd581592acc684a">
+        <dex dex="/Users/nicholasrout/Desktop/Personal/Lens Launcher/lens-launcher/app/build/intermediates/pre-dexed/release/com.android.support-support-v4-23.3.0_e750d6ee9ae817942a71402db234a7e0669fca14.jar" />
+    </item>
+    <item
+        jar="/Users/nicholasrout/Desktop/Personal/Lens Launcher/lens-launcher/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.3.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="23be6993826b8fd88bbc8d14928bb3b8960d3d4e">
+        <dex dex="/Users/nicholasrout/Desktop/Personal/Lens Launcher/lens-launcher/app/build/intermediates/pre-dexed/release/com.android.support-animated-vector-drawable-23.3.0_607c64d9ab3a7590973dd1870d1f5e71ff195ec8.jar" />
+    </item>
+    <item
+        jar="/Users/nicholasrout/Desktop/Personal/Lens Launcher/lens-launcher/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.3.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="a0b5d60246cd9d4f3f2443611b3b4c25265840b5">
+        <dex dex="/Users/nicholasrout/Desktop/Personal/Lens Launcher/lens-launcher/app/build/intermediates/pre-dexed/release/com.android.support-support-vector-drawable-23.3.0_ec2272c8dd8d75bf36ad25b7a0e8e78fc13fc5cf.jar" />
+    </item>
+    <item
+        jar="/Users/nicholasrout/Desktop/Personal/Lens Launcher/lens-launcher/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.3.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="1b8e03daaa43fb0a4cd57e378167c2fd70454c1e">
+        <dex dex="/Users/nicholasrout/Desktop/Personal/Lens Launcher/lens-launcher/app/build/intermediates/pre-dexed/release/com.android.support-appcompat-v7-23.3.0_5d1b4912c0729460a26abd7ae38b3110c9e2c051.jar" />
+    </item>
+    <item
+        jar="/Users/nicholasrout/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.3.0/support-annotations-23.3.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="db7791d75a07fef9844d06236c1c59ba7bf6997c">
+        <dex dex="/Users/nicholasrout/Desktop/Personal/Lens Launcher/lens-launcher/app/build/intermediates/pre-dexed/release/support-annotations-23.3.0_18492929440a0b5edfccaf308cc3000104c5b5c3.jar" />
+    </item>
+    <item
+        jar="/Users/nicholasrout/Desktop/Personal/Lens Launcher/lens-launcher/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.3.0/jars/libs/internal_impl-23.3.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="4da5a4d697d32497c6f85567a5112e62fdfd0676">
+        <dex dex="/Users/nicholasrout/Desktop/Personal/Lens Launcher/lens-launcher/app/build/intermediates/pre-dexed/release/internal_impl-23.3.0_6dbdea4ac41bccd43df936055d3701f733f76556.jar" />
+    </item>
+
+</items>
