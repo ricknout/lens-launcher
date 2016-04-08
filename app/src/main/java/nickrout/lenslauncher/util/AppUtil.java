@@ -6,13 +6,14 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
-import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
 
 /**
@@ -44,7 +45,11 @@ public class AppUtil {
     // Launch apps, for launcher :-P
     public static void launchApp(Context context, PackageManager packageManager, String appName) {
         Intent appIntent = packageManager.getLaunchIntentForPackage(appName);
-        context.startActivity(appIntent);
+        if (appIntent != null) {
+            context.startActivity(appIntent);
+        } else {
+            Toast.makeText(context, R.string.error_app_not_found, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public static App getApp(PackageManager packageManager, String packageName) {
