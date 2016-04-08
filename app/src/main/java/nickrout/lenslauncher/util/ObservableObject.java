@@ -21,4 +21,8 @@ public class ObservableObject extends Observable {
             notifyObservers(data);
         }
     }
+
+    public void update() {
+        updateValue(null);
+    }
 }

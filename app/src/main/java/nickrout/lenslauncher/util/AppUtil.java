@@ -2,10 +2,9 @@ package nickrout.lenslauncher.util;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -52,17 +51,33 @@ public class AppUtil {
         }
     }
 
-    public static App getApp(PackageManager packageManager, String packageName) {
-        App app = new App();
-        app.setName(packageName);
-        try {
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
-            Resources resources = packageManager.getResourcesForApplication(applicationInfo);
-            app.setLabel(applicationInfo.loadLabel(packageManager));
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+    // Determine difference between two sets of apps
+    public static App determineChangedApp(ArrayList<App> smallerSet, ArrayList<App> largerSet) {
+        if (smallerSet == null || largerSet == null) {
+            Log.d("AppUtil", "determineChangedApp - sets cannot be null");
             return null;
         }
-        return app;
+        if (smallerSet.size() == largerSet.size()) {
+            Log.d("AppUtil", "determineChangedApp - sets must be of different sizes");
+            return null;
+        }
+        if (smallerSet.size() > largerSet.size()) {
+            Log.d("AppUtil", "determineChangedApp - first set must be smaller than second set");
+            return null;
+        }
+        for (int i = 0; i < largerSet.size(); i++) {
+            App largerSetApp = largerSet.get(i);
+            boolean contains = false;
+            for (int j = 0; j < smallerSet.size(); j++) {
+                App smallerSetApp = smallerSet.get(j);
+                if (largerSetApp.getName().equals(smallerSetApp.getName())) {
+                    contains = true;
+                }
+            }
+            if (!contains) {
+                return largerSetApp;
+            }
+        }
+        return null;
     }
 }

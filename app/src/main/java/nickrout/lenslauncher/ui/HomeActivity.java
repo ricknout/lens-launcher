@@ -1,20 +1,24 @@
 package nickrout.lenslauncher.ui;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Observable;
 import java.util.Observer;
 
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
-import nickrout.lenslauncher.model.AppChange;
 import nickrout.lenslauncher.util.AppUtil;
+import nickrout.lenslauncher.util.BitmapUtil;
 import nickrout.lenslauncher.util.ObservableObject;
 
 /**
@@ -32,35 +36,12 @@ public class HomeActivity extends BaseActivity implements Observer {
         setContentView(R.layout.activity_home);
         ObservableObject.getInstance().addObserver(this);
         mLensView = (LensView) findViewById(R.id.lens_view_apps);
-        loadApps();
+        mLensView.setActivity(HomeActivity.this);
+        loadApps(true);
     }
 
-    private void loadApps() {
-        mPackageManager = getPackageManager();
-        mApps = AppUtil.getApps(mPackageManager);
-        mLensView.setPackageManager(mPackageManager);
-        mLensView.setApps(mApps);
-    }
-
-    private void addApp(App app) {
-        if (mApps != null) {
-            mApps.add(app);
-            mLensView.setPackageManager(mPackageManager);
-            mLensView.addApp(app);
-        }
-    }
-
-    private void removeApp(App app) {
-        if (mApps != null) {
-            for (int i = 0; i < mApps.size(); i++) {
-                if (mApps.get(i).getName().equals(app.getName())) {
-                    mApps.remove(i);
-                    break;
-                }
-            }
-            mLensView.setPackageManager(mPackageManager);
-            mLensView.removeApp(app);
-        }
+    private void loadApps(boolean isLoad) {
+        new UpdateAppsTask(isLoad).execute();
     }
 
     @Override
@@ -68,37 +49,71 @@ public class HomeActivity extends BaseActivity implements Observer {
         // Do Nothing
     }
 
-    public static class AppAddedBroadcastReceiver extends BroadcastReceiver {
+    public static class AppsUpdatedReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String packageName = intent.getData().getSchemeSpecificPart();
-            AppChange appChange = new AppChange(AppChange.ChangeType.ADD, packageName);
-            ObservableObject.getInstance().updateValue(appChange);
-        }
-    }
-
-    public static class AppRemovedBroadcastReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String packageName = intent.getData().getSchemeSpecificPart();
-            AppChange appChange = new AppChange(AppChange.ChangeType.REMOVE, packageName);
-            ObservableObject.getInstance().updateValue(appChange);
+            ObservableObject.getInstance().update();
         }
     }
 
     @Override
     public void update(Observable observable, Object data) {
-        if (data instanceof AppChange) {
-            AppChange appChange = (AppChange) data;
-            if (appChange.getChangeType() == AppChange.ChangeType.ADD) {
-                App app = AppUtil.getApp(mPackageManager, appChange.getPackageName());
-                //addApp(app);
-                loadApps();
+        loadApps(false);
+    }
 
-            } else if (appChange.getChangeType() == AppChange.ChangeType.REMOVE) {
-                App app = AppUtil.getApp(mPackageManager, appChange.getPackageName());
-                //removeApp(app);
-                loadApps();
+    private class UpdateAppsTask extends AsyncTask<Void, Void, Void> {
+
+        ProgressDialog mProgressDialog;
+        boolean mIsLoad;
+
+        public UpdateAppsTask(boolean isLoad) {
+            mProgressDialog = new ProgressDialog(HomeActivity.this);
+            mIsLoad = isLoad;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            if (mIsLoad) {
+                mProgressDialog.setMessage(getString(R.string.progress_loading_apps));
+                mProgressDialog.show();
+            }
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            mPackageManager = getPackageManager();
+            mApps = AppUtil.getApps(mPackageManager);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            mLensView.setPackageManager(mPackageManager);
+            if (mIsLoad) {
+                mLensView.setApps(mApps);
+                mProgressDialog.dismiss();
+            } else {
+                updateApps();
+            }
+            super.onPostExecute(result);
+        }
+    }
+
+    private void updateApps() {
+        if (mLensView != null) {
+            if (mLensView.getApps() != null && mApps != null) {
+                if (mLensView.getApps().size() > mApps.size()) {
+                    App changedApp = AppUtil.determineChangedApp(mApps, mLensView.getApps());
+                    if (changedApp != null) {
+                        mLensView.removeApp(changedApp);
+                    }
+                } else if (mApps.size() > mLensView.getApps().size()) {
+                    App changedApp = AppUtil.determineChangedApp(mLensView.getApps(), mApps);
+                    if (changedApp != null) {
+                        mLensView.addApp(changedApp, mApps.indexOf(changedApp));
+                    }
+                }
             }
         }
     }

@@ -1,5 +1,7 @@
 package nickrout.lenslauncher.ui;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -7,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
@@ -30,6 +33,8 @@ import nickrout.lenslauncher.util.Settings;
  * Created by nickrout on 2016/04/02.
  */
 public class LensView extends View {
+
+    private Activity mActivity;
 
     private Paint mPaintIcons;
     private Paint mPaintCircles;
@@ -83,29 +88,27 @@ public class LensView extends View {
         init();
     }
 
-    public void setApps(ArrayList<App> apps) {
-        mApps = apps;
-        mAppIcons = new ArrayList<>();
-        for (int i = 0; i < mApps.size(); i++) {
-            App app = mApps.get(i);
-            //Bitmap appIcon = BitmapUtil.drawableToBitmap(app.getIcon());
-            Bitmap appIcon = BitmapUtil.packageNameToBitmap(mPackageManager, (String) app.getName());
-            if (appIcon != null) {
-                mAppIcons.add(appIcon);
-            } else {
-                mApps.remove(app);
-            }
-        }
-        invalidate();
+    public void setActivity(Activity activity) {
+        mActivity = activity;
     }
 
-    public void addApp(App app) {
+    public void setApps(ArrayList<App> apps) {
+        mApps = apps;
+        new LoadIconsTask().execute();
+    }
+
+    public ArrayList<App> getApps() {
+        return mApps;
+    }
+
+    public void addApp(App app, int index) {
         Bitmap appIcon = BitmapUtil.packageNameToBitmap(mPackageManager, (String) app.getName());
         if (appIcon != null) {
-            mApps.add(app);
-            mAppIcons.add(appIcon);
+            mApps.add(index, app);
+            mAppIcons.add(index, appIcon);
+            invalidate();
         }
-        invalidate();
+
     }
 
     public void removeApp(App app) {
@@ -113,10 +116,10 @@ public class LensView extends View {
             if (mApps.get(i).getName().equals(app.getName())) {
                 mApps.remove(i);
                 mAppIcons.remove(i);
+                invalidate();
                 break;
             }
         }
-        invalidate();
     }
 
     public void setPackageManager(PackageManager packageManager) {
@@ -389,6 +392,50 @@ public class LensView extends View {
                 mLensDiameter = mStart + (1.0f - interpolatedTime) * mEnd;
             }
             postInvalidate();
+        }
+    }
+
+    private class LoadIconsTask extends AsyncTask<Void, Void, Void> {
+
+        ProgressDialog mProgressDialog;
+
+        public LoadIconsTask() {
+            if (mActivity != null) {
+                mProgressDialog = new ProgressDialog(mActivity);
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            if (mProgressDialog != null) {
+                mProgressDialog.setMessage(getContext().getString(R.string.progress_loading_icons));
+                mProgressDialog.show();
+            }
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            mAppIcons = new ArrayList<>();
+            for (int i = 0; i < mApps.size(); i++) {
+                App app = mApps.get(i);
+                Bitmap appIcon = BitmapUtil.packageNameToBitmap(mPackageManager, (String) app.getName());
+                if (appIcon != null) {
+                    mAppIcons.add(appIcon);
+                } else {
+                    mApps.remove(app);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            invalidate();
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
+            }
+            super.onPostExecute(result);
         }
     }
 }

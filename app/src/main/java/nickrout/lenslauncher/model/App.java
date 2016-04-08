@@ -1,7 +1,5 @@
 package nickrout.lenslauncher.model;
 
-import android.graphics.drawable.Drawable;
-
 /**
  * Created by nickrout on 2016/04/02.
  */
