@@ -12,6 +12,7 @@ import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -300,9 +301,11 @@ public class LensView extends View {
     }
 
     private void drawAppIcon(Canvas canvas, RectF rect, int index) {
-        Bitmap appIcon = mAppIcons.get(index);
-        Rect src = new Rect(0, 0, appIcon.getWidth(), appIcon.getHeight());
-        canvas.drawBitmap(appIcon, src, rect, mPaintIcons);
+        if (index < mAppIcons.size()) {
+            Bitmap appIcon = mAppIcons.get(index);
+            Rect src = new Rect(0, 0, appIcon.getWidth(), appIcon.getHeight());
+            canvas.drawBitmap(appIcon, src, rect, mPaintIcons);
+        }
     }
 
     private void drawCircle(Canvas canvas, RectF rect) {
