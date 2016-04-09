@@ -391,8 +391,10 @@ public class LensView extends View {
             super.applyTransformation(interpolatedTime, t);
             if (mShow) {
                 mLensDiameter = mStart + interpolatedTime * mEnd;
+                mPaintTouchSelection.setAlpha((int) (255.0f * interpolatedTime));
             } else {
                 mLensDiameter = mStart + (1.0f - interpolatedTime) * mEnd;
+                mPaintTouchSelection.setAlpha((int) (255.0f * (1.0f - interpolatedTime)));
             }
             postInvalidate();
         }
