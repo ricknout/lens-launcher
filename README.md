@@ -14,3 +14,6 @@ The Graphical Fisheye Lens algorithm is derived from methods proposed by Manojit
 https://drive.google.com/open?id=0B6Nqy9y098RLa2pqNVFUcUhIZXM
 
 Lens Launcher also includes a full Settings menu to tweak all aspects of the Lens; Distortion, Scaling, Icon Size, Haptic Feedback, etc.
+
+You can download Lens Launcher on Google Play:
+https://play.google.com/store/apps/details?id=nickrout.lenslauncher
