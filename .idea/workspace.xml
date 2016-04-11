@@ -10,11 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bf6b7cb4-b0c8-45a6-8310-244931397e3c" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/LensView.java" afterPath="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/LensView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/LensCalculator.java" afterPath="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/LensCalculator.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
     </list>
     <ignored path="lens-launcher.iws" />
@@ -40,14 +40,18 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/LensView.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="95" column="23" selection-start-line="95" selection-start-column="16" selection-end-line="95" selection-end-column="23" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#2488#2489#0" expanded="false" />
-                <element signature="e#2524#2525#0" expanded="false" />
-                <element signature="e#2678#2679#0" expanded="false" />
-                <element signature="e#2706#2707#0" expanded="false" />
-              </folding>
+              <caret line="263" column="47" selection-start-line="263" selection-start-column="47" selection-end-line="263" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LensCalculator.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/LensCalculator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="2.3714285">
+              <caret line="89" column="75" selection-start-line="89" selection-start-column="75" selection-end-line="89" selection-end-column="75" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -57,9 +61,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="33" column="57" selection-start-line="33" selection-start-column="57" selection-end-line="33" selection-end-column="57" />
-              <folding>
-                <element signature="imports" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -76,10 +78,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.31428573">
+            <state vertical-scroll-proportion="0.0">
               <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
               <folding />
             </state>
@@ -102,7 +104,7 @@
       <file leaf-file-name="strings.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.352941">
+            <state vertical-scroll-proportion="0.0">
               <caret line="28" column="570" selection-start-line="28" selection-start-column="570" selection-end-line="28" selection-end-column="570" />
               <folding />
             </state>
@@ -114,9 +116,17 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="56" column="26" selection-start-line="56" selection-start-column="19" selection-end-line="56" selection-end-column="26" />
-              <folding>
-                <element signature="imports" expanded="false" />
-              </folding>
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BitmapUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/BitmapUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -1703,10 +1713,11 @@
         <option value="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/model/App.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/ObservableObject.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/AboutActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/LensView.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/HomeActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/LensView.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/LensCalculator.java" />
       </list>
     </option>
   </component>
@@ -1740,9 +1751,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -1765,8 +1773,64 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lens-launcher" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lens-launcher" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lenslauncher" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lens-launcher" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lenslauncher" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -1873,6 +1937,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2177,7 +2242,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24958949" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24958949" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -2212,13 +2277,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#2488#2489#0" expanded="false" />
-            <element signature="e#2524#2525#0" expanded="false" />
-            <element signature="e#2678#2679#0" expanded="false" />
-            <element signature="e#2706#2707#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2226,9 +2285,33 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="33" column="57" selection-start-line="33" selection-start-column="57" selection-end-line="33" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="false" />
+            <marker date="1460134493000" expanded="true" signature="1104:1262" placeholder="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/LensView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/AboutActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="33" column="57" selection-start-line="33" selection-start-column="57" selection-end-line="33" selection-end-column="57" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2275,7 +2358,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="27" column="1" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2290,13 +2372,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="109" column="9" selection-start-line="109" selection-start-column="9" selection-end-line="109" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#2488#2489#0" expanded="false" />
-            <element signature="e#2524#2525#0" expanded="false" />
-            <element signature="e#2678#2679#0" expanded="false" />
-            <element signature="e#2706#2707#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2311,9 +2387,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="34" column="8" selection-start-line="34" selection-start-column="8" selection-end-line="34" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2342,7 +2416,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="23" column="1" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2350,13 +2423,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#2488#2489#0" expanded="false" />
-            <element signature="e#2524#2525#0" expanded="false" />
-            <element signature="e#2678#2679#0" expanded="false" />
-            <element signature="e#2706#2707#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2371,9 +2438,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="34" column="8" selection-start-line="34" selection-start-column="8" selection-end-line="39" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2402,13 +2467,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#2488#2489#0" expanded="false" />
-            <element signature="e#2524#2525#0" expanded="false" />
-            <element signature="e#2678#2679#0" expanded="false" />
-            <element signature="e#2706#2707#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2416,9 +2475,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="48" column="0" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2436,13 +2493,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/BitmapUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.6857143">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gradle.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -2454,7 +2504,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6571429">
           <caret line="27" column="1" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2482,27 +2531,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/LensView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="95" column="23" selection-start-line="95" selection-start-column="16" selection-end-line="95" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#2488#2489#0" expanded="false" />
-            <element signature="e#2524#2525#0" expanded="false" />
-            <element signature="e#2678#2679#0" expanded="false" />
-            <element signature="e#2706#2707#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/AboutActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="33" column="57" selection-start-line="33" selection-start-column="57" selection-end-line="33" selection-end-column="57" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -2517,28 +2558,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/AppUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="56" column="26" selection-start-line="56" selection-start-column="19" selection-end-line="56" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.352941">
+        <state vertical-scroll-proportion="0.0">
           <caret line="28" column="570" selection-start-line="28" selection-start-column="570" selection-end-line="28" selection-end-column="570" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/AppUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31428573">
-          <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="56" column="26" selection-start-line="56" selection-start-column="19" selection-end-line="56" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/BitmapUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/LensView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="263" column="47" selection-start-line="263" selection-start-column="47" selection-end-line="263" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/LensCalculator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.3714285">
+          <caret line="89" column="75" selection-start-line="89" selection-start-column="75" selection-end-line="89" selection-end-column="75" />
           <folding />
         </state>
       </provider>

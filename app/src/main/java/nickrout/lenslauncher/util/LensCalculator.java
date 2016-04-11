@@ -60,13 +60,14 @@ public class LensCalculator {
         float x = a / (boundary / 2.0f);
         float y = ((1.0f + settings.getFloat(Settings.KEY_DISTORTION_FACTOR)) * x) / (1.0f + (settings.getFloat(Settings.KEY_DISTORTION_FACTOR) * x));
         float newDistanceFromCenter = (boundary / 2.0f) * y;
-        if ((lensPosition + boundary / 2.0f) >= itemPosition && (lensPosition - boundary / 2) <= itemPosition) {
+        // Removed - handled in LensView and causes weird edge 'ballooning'
+        //if ((lensPosition + boundary / 2.0f) >= itemPosition && (lensPosition - boundary / 2) <= itemPosition) {
             if (lensPosition > itemPosition) {
                 shiftedPosition = lensPosition - newDistanceFromCenter;
             } else if (lensPosition < itemPosition) {
                 shiftedPosition = lensPosition + newDistanceFromCenter;
             }
-        }
+        //}
         return shiftedPosition;
     }
 
@@ -86,13 +87,14 @@ public class LensCalculator {
         float x = a / (boundary / 2.0f);
         float y = ((1.0f + settings.getFloat(Settings.KEY_DISTORTION_FACTOR)) * x) / (1.0f + (settings.getFloat(Settings.KEY_DISTORTION_FACTOR) * x));
         float scaledDistanceFromCenter = (boundary / 2.0f) * y;
-        if ((lensPosition + boundary / 2.0f) >= itemPosition && (lensPosition - boundary / 2) <= itemPosition) {
+        // Removed - handled in LensView and causes weird edge 'ballooning'
+        //if ((lensPosition + boundary / 2.0f) >= itemPosition && (lensPosition - boundary / 2) <= itemPosition) {
             if (lensPosition > itemPosition) {
                 scaledPosition = lensPosition - scaledDistanceFromCenter;
             } else if (lensPosition < itemPosition) {
                 scaledPosition = lensPosition + scaledDistanceFromCenter;
             }
-        }
+        //}
         return scaledPosition;
     }
 

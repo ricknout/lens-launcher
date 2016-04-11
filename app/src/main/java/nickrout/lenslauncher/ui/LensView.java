@@ -188,16 +188,32 @@ public class LensView extends View {
         if (mDrawType == DrawType.APPS) {
             switch (event.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN: {
-                    mTouchX = event.getX();
-                    mTouchY = event.getY();
+                    if (event.getX() < 0.0f) {
+                        mTouchX = 0.0f;
+                    } else {
+                        mTouchX = event.getX();
+                    }
+                    if (event.getY() < 0.0f) {
+                        mTouchY = 0.0f;
+                    } else {
+                        mTouchY = event.getY();
+                    }
                     mSelectIndex = -1;
                     LensDiameterAnimation lensDiameterShowAnimation = new LensDiameterAnimation(true);
                     startAnimation(lensDiameterShowAnimation);
                     return true;
                 }
                 case MotionEvent.ACTION_MOVE: {
-                    mTouchX = event.getX();
-                    mTouchY = event.getY();
+                    if (event.getX() < 0.0f) {
+                        mTouchX = 0.0f;
+                    } else {
+                        mTouchX = event.getX();
+                    }
+                    if (event.getY() < 0.0f) {
+                        mTouchY = 0.0f;
+                    } else {
+                        mTouchY = event.getY();
+                    }
                     invalidate();
                     return true;
                 }
