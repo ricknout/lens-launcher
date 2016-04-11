@@ -99,17 +99,31 @@ public class HomeActivity extends BaseActivity implements Observer {
     private void updateApps() {
         if (mLensView != null) {
             if (mLensView.getApps() != null && mApps != null) {
+                // App Removed
                 if (mLensView.getApps().size() > mApps.size()) {
                     App changedApp = AppUtil.determineChangedApp(mApps, mLensView.getApps());
                     if (changedApp != null) {
                         mLensView.removeApp(changedApp);
                     }
+                // App Added
                 } else if (mApps.size() > mLensView.getApps().size()) {
                     App changedApp = AppUtil.determineChangedApp(mLensView.getApps(), mApps);
                     if (changedApp != null) {
                         mLensView.addApp(changedApp, mApps.indexOf(changedApp));
                     }
-                }
+                // App Changed (eg. Name, Icon) - Need to Test
+                // Remember to add <action android:name="android.intent.action.PACKAGE_CHANGED" /> to Manifest
+                } /*else {
+                    for (int i = 0; i < mApps.size(); i++) {
+                        App potentialChangedApp = mApps.get(i);
+                        App oldApp = mLensView.getApps().get(i);
+                        if (potentialChangedApp.getIconResId() != oldApp.getIconResId() ||
+                                potentialChangedApp.getLabel() != oldApp.getLabel()) {
+                            mLensView.addApp(potentialChangedApp, i);
+                            break;
+                        }
+                    }
+                }*/
             }
         }
     }

@@ -1,5 +1,7 @@
 package nickrout.lenslauncher.model;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by nickrout on 2016/04/02.
  */
@@ -7,6 +9,8 @@ public class App {
 
     private CharSequence mLabel;
     private CharSequence mName;
+    private int mIconResId;
+    private Bitmap mIcon;
 
     public App() {}
 
@@ -29,6 +33,22 @@ public class App {
 
     public void setName(CharSequence name) {
         mName = name;
+    }
+
+    public int getIconResId() {
+        return mIconResId;
+    }
+
+    public void setIconResId(int iconResId) {
+        mIconResId = iconResId;
+    }
+
+    public Bitmap getIcon() {
+        return mIcon;
+    }
+
+    public void setIcon(Bitmap icon) {
+        mIcon = icon;
     }
 
     @Override

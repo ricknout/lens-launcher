@@ -23,6 +23,7 @@ public class BitmapUtil {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
             bitmapDrawable.setAntiAlias(true);
             bitmapDrawable.setDither(true);
+            bitmapDrawable.setTargetDensity(Integer.MAX_VALUE);
             if(bitmapDrawable.getBitmap() != null) {
                 return bitmapDrawable.getBitmap();
             }
@@ -51,6 +52,17 @@ public class BitmapUtil {
         return bitmap;
     }
 
+    // Get res id from app package name
+    public static int packageNameToResId(PackageManager packageManager, String packageName) {
+        try {
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+            return applicationInfo.icon;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
     // Get bitmap from app package name
     public static Bitmap packageNameToBitmap(PackageManager packageManager, String packageName) {
         try {
@@ -58,6 +70,18 @@ public class BitmapUtil {
             Resources resources = packageManager.getResourcesForApplication(applicationInfo);
             int appIconResId = applicationInfo.icon;
             return resIdToBitmap(resources, appIconResId);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Get bitmap from app package name (with res id)
+    public static Bitmap packageNameToBitmap(PackageManager packageManager, String packageName, int resId) {
+        try {
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+            Resources resources = packageManager.getResourcesForApplication(applicationInfo);
+            return resIdToBitmap(resources, resId);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return null;

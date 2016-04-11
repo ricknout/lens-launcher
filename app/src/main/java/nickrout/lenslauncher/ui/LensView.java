@@ -440,7 +440,9 @@ public class LensView extends View {
             mAppIcons = new ArrayList<>();
             for (int i = 0; i < mApps.size(); i++) {
                 App app = mApps.get(i);
-                Bitmap appIcon = BitmapUtil.packageNameToBitmap(mPackageManager, (String) app.getName());
+                //Bitmap appIcon = BitmapUtil.packageNameToBitmap(mPackageManager, (String) app.getName());
+                //Bitmap appIcon = BitmapUtil.drawableToBitmap(app.getIcon());
+                Bitmap appIcon = app.getIcon();
                 if (appIcon != null) {
                     mAppIcons.add(appIcon);
                 } else {

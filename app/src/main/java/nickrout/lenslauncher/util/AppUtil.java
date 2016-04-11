@@ -30,6 +30,8 @@ public class AppUtil {
             App app = new App();
             app.setLabel(resolveInfo.loadLabel(packageManager));
             app.setName(resolveInfo.activityInfo.packageName);
+            app.setIconResId(resolveInfo.activityInfo.getIconResource());
+            app.setIcon(BitmapUtil.packageNameToBitmap(packageManager, resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.getIconResource()));
             apps.add(app);
         }
         Collections.sort(apps, new Comparator<App>() {
