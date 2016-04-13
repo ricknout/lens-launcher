@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        jar="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="e68ef9637c2fc482e9afee0a94849ea61f2c7bca">
+        <dex dex="/Users/nickrout/Desktop/Personal/Launcher/lens-launcher/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_cb0e099542fe048694b0ecc79ddc398ee491773c/classes.dex" />
+    </item>
+
+</items>

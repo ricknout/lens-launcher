@@ -12,7 +12,6 @@ import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,7 +25,6 @@ import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.model.Grid;
 import nickrout.lenslauncher.util.AppUtil;
-import nickrout.lenslauncher.util.BitmapUtil;
 import nickrout.lenslauncher.util.LensCalculator;
 import nickrout.lenslauncher.util.Settings;
 
@@ -103,13 +101,12 @@ public class LensView extends View {
     }
 
     public void addApp(App app, int index) {
-        Bitmap appIcon = BitmapUtil.packageNameToBitmap(mPackageManager, (String) app.getName());
+        Bitmap appIcon = app.getIcon();
         if (appIcon != null) {
             mApps.add(index, app);
             mAppIcons.add(index, appIcon);
             invalidate();
         }
-
     }
 
     public void removeApp(App app) {
@@ -120,6 +117,17 @@ public class LensView extends View {
                 invalidate();
                 break;
             }
+        }
+    }
+
+    public void setApp(App app, int oldIndex, int newIndex) {
+        Bitmap appIcon = app.getIcon();
+        if (appIcon != null) {
+            mApps.remove(oldIndex);
+            mAppIcons.remove(oldIndex);
+            mApps.add(newIndex, app);
+            mAppIcons.add(newIndex, appIcon);
+            invalidate();
         }
     }
 

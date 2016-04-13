@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -113,14 +114,24 @@ public class HomeActivity extends BaseActivity implements Observer {
                     }
                 // App Changed (eg. Name, Icon) - Need to Test
                 // Remember to add <action android:name="android.intent.action.PACKAGE_CHANGED" /> to Manifest
+                // Works, but breaks when two apps with same package name in mApps (eg. Dashlane / Dashlane Browser) ...
                 } /*else {
+                    boolean changedApp = false;
                     for (int i = 0; i < mApps.size(); i++) {
-                        App potentialChangedApp = mApps.get(i);
-                        App oldApp = mLensView.getApps().get(i);
-                        if (potentialChangedApp.getIconResId() != oldApp.getIconResId() ||
-                                potentialChangedApp.getLabel() != oldApp.getLabel()) {
-                            mLensView.addApp(potentialChangedApp, i);
+                        if (changedApp) {
                             break;
+                        }
+                        App potentialChangedApp = mApps.get(i);
+                        for (int j = 0; j < mLensView.getApps().size(); j++) {
+                            App oldApp = mLensView.getApps().get(j);
+                            if (oldApp.getName().equals(potentialChangedApp.getName())) {
+                                if (potentialChangedApp.getIconResId() != oldApp.getIconResId() ||
+                                        !(potentialChangedApp.getLabel().equals(oldApp.getLabel()))) {
+                                    mLensView.setApp(potentialChangedApp, j, i);
+                                    changedApp = true;
+                                }
+                                break;
+                            }
                         }
                     }
                 }*/
