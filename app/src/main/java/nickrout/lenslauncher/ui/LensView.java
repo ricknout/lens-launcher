@@ -96,41 +96,6 @@ public class LensView extends View {
         new LoadIconsTask().execute();
     }
 
-    public ArrayList<App> getApps() {
-        return mApps;
-    }
-
-    public void addApp(App app, int index) {
-        Bitmap appIcon = app.getIcon();
-        if (appIcon != null) {
-            mApps.add(index, app);
-            mAppIcons.add(index, appIcon);
-            invalidate();
-        }
-    }
-
-    public void removeApp(App app) {
-        for (int i = 0; i < mApps.size(); i++) {
-            if (mApps.get(i).getName().equals(app.getName())) {
-                mApps.remove(i);
-                mAppIcons.remove(i);
-                invalidate();
-                break;
-            }
-        }
-    }
-
-    public void setApp(App app, int oldIndex, int newIndex) {
-        Bitmap appIcon = app.getIcon();
-        if (appIcon != null) {
-            mApps.remove(oldIndex);
-            mAppIcons.remove(oldIndex);
-            mApps.add(newIndex, app);
-            mAppIcons.add(newIndex, appIcon);
-            invalidate();
-        }
-    }
-
     public void setPackageManager(PackageManager packageManager) {
         mPackageManager = packageManager;
     }
@@ -265,7 +230,7 @@ public class LensView extends View {
 
                     float lensDiameter = mLensDiameter;
                     if (mDrawType == DrawType.CIRCLES) {
-                        // Animation does not affect lens size for Settings mode
+                        // Animation does not affect lens size for Settings (Circles) mode
                         lensDiameter = LensCalculator.convertDpToPixel(mSettings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
                     }
 
@@ -448,8 +413,6 @@ public class LensView extends View {
             mAppIcons = new ArrayList<>();
             for (int i = 0; i < mApps.size(); i++) {
                 App app = mApps.get(i);
-                //Bitmap appIcon = BitmapUtil.packageNameToBitmap(mPackageManager, (String) app.getName());
-                //Bitmap appIcon = BitmapUtil.drawableToBitmap(app.getIcon());
                 Bitmap appIcon = app.getIcon();
                 if (appIcon != null) {
                     mAppIcons.add(appIcon);

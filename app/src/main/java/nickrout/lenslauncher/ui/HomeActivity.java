@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -87,55 +86,11 @@ public class HomeActivity extends BaseActivity implements Observer {
         @Override
         protected void onPostExecute(Void result) {
             mLensView.setPackageManager(mPackageManager);
+            mLensView.setApps(mApps);
             if (mIsLoad) {
-                mLensView.setApps(mApps);
                 mProgressDialog.dismiss();
-            } else {
-                updateApps();
             }
             super.onPostExecute(result);
-        }
-    }
-
-    private void updateApps() {
-        if (mLensView != null) {
-            if (mLensView.getApps() != null && mApps != null) {
-                // App Removed
-                if (mLensView.getApps().size() > mApps.size()) {
-                    App changedApp = AppUtil.determineChangedApp(mApps, mLensView.getApps());
-                    if (changedApp != null) {
-                        mLensView.removeApp(changedApp);
-                    }
-                // App Added
-                } else if (mApps.size() > mLensView.getApps().size()) {
-                    App changedApp = AppUtil.determineChangedApp(mLensView.getApps(), mApps);
-                    if (changedApp != null) {
-                        mLensView.addApp(changedApp, mApps.indexOf(changedApp));
-                    }
-                // App Changed (eg. Name, Icon) - Need to Test
-                // Remember to add <action android:name="android.intent.action.PACKAGE_CHANGED" /> to Manifest
-                // Works, but breaks when two apps with same package name in mApps (eg. Dashlane / Dashlane Browser) ...
-                } /*else {
-                    boolean changedApp = false;
-                    for (int i = 0; i < mApps.size(); i++) {
-                        if (changedApp) {
-                            break;
-                        }
-                        App potentialChangedApp = mApps.get(i);
-                        for (int j = 0; j < mLensView.getApps().size(); j++) {
-                            App oldApp = mLensView.getApps().get(j);
-                            if (oldApp.getName().equals(potentialChangedApp.getName())) {
-                                if (potentialChangedApp.getIconResId() != oldApp.getIconResId() ||
-                                        !(potentialChangedApp.getLabel().equals(oldApp.getLabel()))) {
-                                    mLensView.setApp(potentialChangedApp, j, i);
-                                    changedApp = true;
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }*/
-            }
         }
     }
 }
