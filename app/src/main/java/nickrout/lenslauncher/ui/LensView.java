@@ -1,7 +1,5 @@
 package nickrout.lenslauncher.ui;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -9,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
@@ -32,8 +29,6 @@ import nickrout.lenslauncher.util.Settings;
  * Created by nickrout on 2016/04/02.
  */
 public class LensView extends View {
-
-    private Activity mActivity;
 
     private Paint mPaintIcons;
     private Paint mPaintCircles;
@@ -87,13 +82,10 @@ public class LensView extends View {
         init();
     }
 
-    public void setActivity(Activity activity) {
-        mActivity = activity;
-    }
-
-    public void setApps(ArrayList<App> apps) {
+    public void setApps(ArrayList<App> apps, ArrayList<Bitmap> appIcons) {
         mApps = apps;
-        new LoadIconsTask().execute();
+        mAppIcons = appIcons;
+        invalidate();
     }
 
     public void setPackageManager(PackageManager packageManager) {
@@ -313,7 +305,7 @@ public class LensView extends View {
     private void performHoverVibration() {
         if (mInsideRect) {
             if (mMustVibrate) {
-                if (mSettings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER)) {
+                if (mSettings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER) && !mLensDiameterHiding) {
                     performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 }
                 mMustVibrate = false;
@@ -356,6 +348,8 @@ public class LensView extends View {
                 public void onAnimationStart(Animation animation) {
                     if (!mShow) {
                         mLensDiameterHiding = true;
+                    } else {
+                        mLensDiameterHiding = false;
                     }
                 }
 
@@ -386,50 +380,6 @@ public class LensView extends View {
                 mPaintTouchSelection.setAlpha((int) (255.0f * (1.0f - interpolatedTime)));
             }
             postInvalidate();
-        }
-    }
-
-    private class LoadIconsTask extends AsyncTask<Void, Void, Void> {
-
-        ProgressDialog mProgressDialog;
-
-        public LoadIconsTask() {
-            if (mActivity != null) {
-                mProgressDialog = new ProgressDialog(mActivity);
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            if (mProgressDialog != null) {
-                mProgressDialog.setMessage(getContext().getString(R.string.progress_loading_icons));
-                mProgressDialog.show();
-            }
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            mAppIcons = new ArrayList<>();
-            for (int i = 0; i < mApps.size(); i++) {
-                App app = mApps.get(i);
-                Bitmap appIcon = app.getIcon();
-                if (appIcon != null) {
-                    mAppIcons.add(appIcon);
-                } else {
-                    mApps.remove(app);
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            invalidate();
-            if (mProgressDialog != null) {
-                mProgressDialog.dismiss();
-            }
-            super.onPostExecute(result);
         }
     }
 }

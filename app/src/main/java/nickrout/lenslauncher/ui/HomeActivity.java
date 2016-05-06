@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -25,6 +26,7 @@ public class HomeActivity extends BaseActivity implements Observer {
     private LensView mLensView;
     private PackageManager mPackageManager;
     private ArrayList<App> mApps;
+    private ArrayList<Bitmap> mAppIcons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,6 @@ public class HomeActivity extends BaseActivity implements Observer {
         setContentView(R.layout.activity_home);
         ObservableObject.getInstance().addObserver(this);
         mLensView = (LensView) findViewById(R.id.lens_view_apps);
-        mLensView.setActivity(HomeActivity.this);
         loadApps(true);
     }
 
@@ -59,11 +60,11 @@ public class HomeActivity extends BaseActivity implements Observer {
 
     private class UpdateAppsTask extends AsyncTask<Void, Void, Void> {
 
-        ProgressDialog mProgressDialog;
+        final ProgressDialog mProgressDialog = new ProgressDialog(HomeActivity.this);;
         boolean mIsLoad;
 
         public UpdateAppsTask(boolean isLoad) {
-            mProgressDialog = new ProgressDialog(HomeActivity.this);
+            mProgressDialog.setCanceledOnTouchOutside(false);
             mIsLoad = isLoad;
         }
 
@@ -80,13 +81,23 @@ public class HomeActivity extends BaseActivity implements Observer {
         protected Void doInBackground(Void... arg0) {
             mPackageManager = getPackageManager();
             mApps = AppUtil.getApps(mPackageManager);
+            mAppIcons = new ArrayList<>();
+            for (int i = 0; i < mApps.size(); i++) {
+                App app = mApps.get(i);
+                Bitmap appIcon = app.getIcon();
+                if (appIcon != null) {
+                    mAppIcons.add(appIcon);
+                } else {
+                    mApps.remove(app);
+                }
+            }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
             mLensView.setPackageManager(mPackageManager);
-            mLensView.setApps(mApps);
+            mLensView.setApps(mApps, mAppIcons);
             if (mIsLoad) {
                 mProgressDialog.dismiss();
             }

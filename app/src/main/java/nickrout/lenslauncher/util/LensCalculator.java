@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.RectF;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import nickrout.lenslauncher.model.Grid;
 
