@@ -1,5 +1,7 @@
 package nickrout.lenslauncher.util;
 
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,7 +31,8 @@ public class AppUtil {
         for(ResolveInfo resolveInfo : availableActivities){
             App app = new App();
             app.setLabel(resolveInfo.loadLabel(packageManager));
-            app.setName(resolveInfo.activityInfo.packageName);
+            app.setPackageName(resolveInfo.activityInfo.packageName);
+            app.setName(resolveInfo.activityInfo.name);
             app.setIconResId(resolveInfo.activityInfo.getIconResource());
             app.setIcon(BitmapUtil.packageNameToBitmap(packageManager, resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.getIconResource()));
             apps.add(app);
@@ -44,42 +47,18 @@ public class AppUtil {
     }
 
     // Launch apps, for launcher :-P
-    public static void launchApp(Context context, PackageManager packageManager, String appName) {
-        Intent appIntent = packageManager.getLaunchIntentForPackage(appName);
-        if (appIntent != null) {
-            context.startActivity(appIntent);
+    public static void launchComponent(String packageName, String name, Context context){
+        if (packageName != null && name != null) {
+            Intent componentIntent = new Intent();
+            componentIntent.setComponent(new ComponentName(packageName, name));
+            componentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                context.startActivity(componentIntent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(context, R.string.error_app_not_found, Toast.LENGTH_SHORT).show();
+            }
         } else {
             Toast.makeText(context, R.string.error_app_not_found, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    // Determine difference between two sets of apps
-    public static App determineChangedApp(ArrayList<App> smallerSet, ArrayList<App> largerSet) {
-        if (smallerSet == null || largerSet == null) {
-            Log.d("AppUtil", "determineChangedApp - sets cannot be null");
-            return null;
-        }
-        if (smallerSet.size() == largerSet.size()) {
-            Log.d("AppUtil", "determineChangedApp - sets must be of different sizes");
-            return null;
-        }
-        if (smallerSet.size() > largerSet.size()) {
-            Log.d("AppUtil", "determineChangedApp - first set must be smaller than second set");
-            return null;
-        }
-        for (int i = 0; i < largerSet.size(); i++) {
-            App largerSetApp = largerSet.get(i);
-            boolean contains = false;
-            for (int j = 0; j < smallerSet.size(); j++) {
-                App smallerSetApp = smallerSet.get(j);
-                if (largerSetApp.getName().equals(smallerSetApp.getName())) {
-                    contains = true;
-                }
-            }
-            if (!contains) {
-                return largerSetApp;
-            }
-        }
-        return null;
     }
 }

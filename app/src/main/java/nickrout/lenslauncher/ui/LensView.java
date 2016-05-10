@@ -324,8 +324,10 @@ public class LensView extends View {
     }
 
     private void launchApp() {
-        if (mPackageManager != null && mApps != null && mSelectIndex >= 0 ) {
-            AppUtil.launchApp(getContext(), mPackageManager, (String) mApps.get(mSelectIndex).getName());
+        if (mPackageManager != null && mApps != null && mSelectIndex >= 0) {
+            AppUtil.launchComponent((String) mApps.get(mSelectIndex).getPackageName(),
+                                    (String) mApps.get(mSelectIndex).getName(),
+                                    getContext());
         }
     }
 

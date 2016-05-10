@@ -11,9 +11,9 @@ public class Settings {
 
     private static final float DEFAULT_LENS_DIAMETER = 600.0f;
     private static final float DEFAULT_MIN_ICON_SIZE = 18.0f;
-    private static final float DEFAULT_DISTORTION_FACTOR = 3.0f;
+    private static final float DEFAULT_DISTORTION_FACTOR = 2.5f;
     private static final float DEFAULT_SCALE_FACTOR = 1.5f;
-    private static final boolean DEFAULT_VIBRATE_APP_HOVER = true;
+    private static final boolean DEFAULT_VIBRATE_APP_HOVER = false;
     private static final boolean DEFAULT_VIBRATE_APP_LAUNCH = true;
     private static final boolean DEFAULT_SHOW_NAME_APP_HOVER = true;
     private static final boolean DEFAULT_SHOW_TOUCH_SELECTION = false;

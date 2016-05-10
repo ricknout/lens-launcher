@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 public class App {
 
     private CharSequence mLabel;
+    private CharSequence mPackageName;
     private CharSequence mName;
     private int mIconResId;
     private Bitmap mIcon;
@@ -25,6 +26,14 @@ public class App {
 
     public void setLabel(CharSequence label) {
         mLabel = label;
+    }
+
+    public CharSequence getPackageName() {
+        return mPackageName;
+    }
+
+    public void setPackageName(CharSequence packageName) {
+        mPackageName = packageName;
     }
 
     public CharSequence getName() {
@@ -55,7 +64,10 @@ public class App {
     public String toString() {
         return "App{" +
                 "mLabel=" + mLabel +
+                ", mPackageName=" + mPackageName +
                 ", mName=" + mName +
+                ", mIconResId=" + mIconResId +
+                ", mIcon=" + mIcon +
                 '}';
     }
 }
