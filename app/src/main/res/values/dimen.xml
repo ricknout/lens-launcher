@@ -8,6 +8,7 @@
     <dimen name="text_stroke_lens">1dp</dimen>
     <dimen name="margin_lens_text">24dp</dimen>
     <dimen name="shadow_text">1dp</dimen>
+    <dimen name="margin_system">40dp</dimen>
 
     <!-- About Dimensions -->
     <dimen name="text_size_about">32sp</dimen>

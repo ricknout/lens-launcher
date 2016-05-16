@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.RectF;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import nickrout.lenslauncher.model.Grid;
 
@@ -13,7 +14,7 @@ import nickrout.lenslauncher.model.Grid;
 public class LensCalculator {
 
     // Algorithm for calculating equispaced grid
-    public static Grid calculateGrid(Context context, int screenWidth, int screenHeight, int itemCount) {
+    public static Grid calculateGrid(Context context, int screenWidth, int screenHeight, int itemCount, int desiredOffset) {
         Grid grid = new Grid();
         grid.setItemCount(itemCount);
         double multiplier = Math.sqrt((double) itemCount);
@@ -27,7 +28,13 @@ public class LensCalculator {
         float spacingHorizontal = (((float) screenWidth) - ((float) itemCountHorizontal * itemSize)) / ((float) (itemCountHorizontal + 1));
         grid.setSpacingHorizontal(spacingHorizontal);
         float spacingVertical = (((float) screenHeight) - ((float) itemCountVertical * itemSize)) / ((float) (itemCountVertical + 1));
-        grid.setSpacingVertical(spacingVertical);
+        int currentOffset = (int) (((float) screenHeight - ((float) itemCountVertical * (itemSize + spacingVertical))) / 2.0f);
+        if (currentOffset < desiredOffset) {
+            float newSpacingVertical = (((float) screenHeight - 2.0f * (float) desiredOffset) / (float) itemCountVertical) - itemSize;
+            grid.setSpacingVertical(newSpacingVertical);
+        } else {
+            grid.setSpacingVertical(spacingVertical);
+        }
         return grid;
     }
 

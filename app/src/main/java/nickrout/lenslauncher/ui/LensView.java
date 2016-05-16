@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
@@ -201,7 +202,11 @@ public class LensView extends View {
     }
 
     private void drawGrid(Canvas canvas, int itemCount) {
-        Grid grid = LensCalculator.calculateGrid(getContext(), getWidth(), getHeight(), itemCount);
+        int systemOffset = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mDrawType != DrawType.CIRCLES) {
+            systemOffset = (int) getResources().getDimension(R.dimen.margin_system);
+        }
+        Grid grid = LensCalculator.calculateGrid(getContext(), getWidth(), getHeight(), itemCount, systemOffset);
         mInsideRect = false;
         int selectIndex = -1;
         float offset = LensCalculator.calculateGridOffset(grid, getHeight());
