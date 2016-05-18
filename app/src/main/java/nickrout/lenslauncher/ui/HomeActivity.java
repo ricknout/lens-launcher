@@ -105,7 +105,7 @@ public class HomeActivity extends BaseActivity implements Observer {
         protected void onPostExecute(Void result) {
             mLensView.setPackageManager(mPackageManager);
             mLensView.setApps(mApps, mAppIcons);
-            if (mIsLoad) {
+            if ((mProgressDialog != null) && mProgressDialog.isShowing() && mIsLoad) {
                 mProgressDialog.dismiss();
             }
             super.onPostExecute(result);
