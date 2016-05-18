@@ -6,13 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.os.DeadObjectException;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import nickrout.lenslauncher.R;
@@ -36,6 +33,7 @@ public class AppUtil {
             Toast.makeText(context, R.string.error_too_many_apps, Toast.LENGTH_SHORT).show();
         }
         if (availableActivities != null) {
+            Collections.sort(availableActivities, new ResolveInfo.DisplayNameComparator(packageManager));
             for (ResolveInfo resolveInfo : availableActivities) {
                 App app = new App();
                 app.setLabel(resolveInfo.loadLabel(packageManager));
@@ -45,12 +43,6 @@ public class AppUtil {
                 app.setIcon(BitmapUtil.packageNameToBitmap(packageManager, resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.getIconResource()));
                 apps.add(app);
             }
-            Collections.sort(apps, new Comparator<App>() {
-                @Override
-                public int compare(App appOne, App appTwo) {
-                    return appOne.getLabel().toString().compareToIgnoreCase(appTwo.getLabel().toString());
-                }
-            });
         }
         return apps;
     }
@@ -61,7 +53,9 @@ public class AppUtil {
             Intent componentIntent = new Intent();
             componentIntent.setComponent(new ComponentName(packageName, name));
             componentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            componentIntent.setAction(Intent.ACTION_MAIN);
+            if (!packageName.equals("nickrout.lenslauncher")) {
+                componentIntent.setAction(Intent.ACTION_MAIN);
+            }
             componentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             try {
                 context.startActivity(componentIntent);

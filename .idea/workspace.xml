@@ -10,10 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bf6b7cb4-b0c8-45a6-8310-244931397e3c" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/HomeActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/HomeActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/AppUtil.java" afterPath="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/AppUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
     </list>
     <ignored path="lens-launcher.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -97,14 +98,12 @@
       <file leaf-file-name="AppUtil.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/AppUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.42477876">
-              <caret line="35" column="64" selection-start-line="35" selection-start-column="64" selection-end-line="35" selection-end-column="64" />
+            <state vertical-scroll-proportion="0.053097345">
+              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
               <folding>
-                <element signature="e#1175#1203#0" expanded="true" />
-                <element signature="e#1909#2158#0" expanded="true" />
-                <element signature="e#2157#2158#0" expanded="true" />
-                <element signature="e#2869#2897#0" expanded="true" />
-                <element signature="e#2994#3022#0" expanded="true" />
+                <element signature="e#1082#1110#0" expanded="true" />
+                <element signature="e#2677#2705#0" expanded="true" />
+                <element signature="e#2802#2830#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1782,8 +1781,8 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/dimen.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/LensCalculator.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/AppUtil.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/ui/HomeActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/AppUtil.java" />
       </list>
     </option>
   </component>
@@ -1932,7 +1931,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
-    <property name="device.picker.selection" value="d209e0e2" />
+    <property name="device.picker.selection" value="006ad88f447b9a13" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Releases" />
     <property name="ExportApk.ApkPath" value="$PROJECT_DIR$/../Releases" />
     <property name="ExportApk.Flavors" value="" />
@@ -2664,14 +2663,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/nickrout/lenslauncher/util/AppUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42477876">
-          <caret line="35" column="64" selection-start-line="35" selection-start-column="64" selection-end-line="35" selection-end-column="64" />
+        <state vertical-scroll-proportion="0.053097345">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
           <folding>
-            <element signature="e#1175#1203#0" expanded="true" />
-            <element signature="e#1909#2158#0" expanded="true" />
-            <element signature="e#2157#2158#0" expanded="true" />
-            <element signature="e#2869#2897#0" expanded="true" />
-            <element signature="e#2994#3022#0" expanded="true" />
+            <element signature="e#1082#1110#0" expanded="true" />
+            <element signature="e#2677#2705#0" expanded="true" />
+            <element signature="e#2802#2830#0" expanded="true" />
           </folding>
         </state>
       </provider>
