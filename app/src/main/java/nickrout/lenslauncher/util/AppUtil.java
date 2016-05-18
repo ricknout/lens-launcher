@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.DeadObjectException;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,26 +24,34 @@ import nickrout.lenslauncher.model.App;
 public class AppUtil {
 
     // Get all available apps for launcher
-    public static ArrayList<App> getApps(PackageManager packageManager) {
+    public static ArrayList<App> getApps(PackageManager packageManager, Context context) {
         ArrayList<App> apps = new ArrayList<>();
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        List<ResolveInfo> availableActivities = packageManager.queryIntentActivities(intent, 0);
-        for(ResolveInfo resolveInfo : availableActivities){
-            App app = new App();
-            app.setLabel(resolveInfo.loadLabel(packageManager));
-            app.setPackageName(resolveInfo.activityInfo.packageName);
-            app.setName(resolveInfo.activityInfo.name);
-            app.setIconResId(resolveInfo.activityInfo.getIconResource());
-            app.setIcon(BitmapUtil.packageNameToBitmap(packageManager, resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.getIconResource()));
-            apps.add(app);
+        List<ResolveInfo> availableActivities = null;
+        try {
+            availableActivities = packageManager.queryIntentActivities(intent, 0);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            Toast.makeText(context, R.string.error_too_many_apps, Toast.LENGTH_SHORT).show();
         }
-        Collections.sort(apps, new Comparator<App>() {
-            @Override
-            public int compare(App appOne, App appTwo) {
-                return appOne.getLabel().toString().compareToIgnoreCase(appTwo.getLabel().toString());
+        if (availableActivities != null) {
+            for (ResolveInfo resolveInfo : availableActivities) {
+                App app = new App();
+                app.setLabel(resolveInfo.loadLabel(packageManager));
+                app.setPackageName(resolveInfo.activityInfo.packageName);
+                app.setName(resolveInfo.activityInfo.name);
+                app.setIconResId(resolveInfo.activityInfo.getIconResource());
+                app.setIcon(BitmapUtil.packageNameToBitmap(packageManager, resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.getIconResource()));
+                apps.add(app);
             }
-        });
+            Collections.sort(apps, new Comparator<App>() {
+                @Override
+                public int compare(App appOne, App appTwo) {
+                    return appOne.getLabel().toString().compareToIgnoreCase(appTwo.getLabel().toString());
+                }
+            });
+        }
         return apps;
     }
 

@@ -87,7 +87,7 @@ public class HomeActivity extends BaseActivity implements Observer {
         @Override
         protected Void doInBackground(Void... arg0) {
             mPackageManager = getPackageManager();
-            mApps = AppUtil.getApps(mPackageManager);
+            mApps = AppUtil.getApps(mPackageManager, HomeActivity.this);
             mAppIcons = new ArrayList<>();
             for (int i = 0; i < mApps.size(); i++) {
                 App app = mApps.get(i);
