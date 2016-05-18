@@ -52,6 +52,8 @@ public class AppUtil {
             Intent componentIntent = new Intent();
             componentIntent.setComponent(new ComponentName(packageName, name));
             componentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            componentIntent.setAction(Intent.ACTION_MAIN);
+            componentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             try {
                 context.startActivity(componentIntent);
             } catch (ActivityNotFoundException e) {
