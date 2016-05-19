@@ -12,8 +12,24 @@ public class App {
     private CharSequence mName;
     private int mIconResId;
     private Bitmap mIcon;
+    private long installDate;
 
-    public App() {}
+    public App() {
+    }
+
+    public App(CharSequence mPackageName, CharSequence mLabel, long installDate) {
+        this.mPackageName = mPackageName;
+        this.mLabel = mLabel;
+        this.installDate = installDate;
+    }
+
+    public long getInstallDate() {
+        return installDate;
+    }
+
+    public void setInstallDate(long installDate) {
+        this.installDate = installDate;
+    }
 
     public App(String label, String name) {
         mLabel = label;
@@ -56,10 +72,6 @@ public class App {
         return mIcon;
     }
 
-    public void setIcon(Bitmap icon) {
-        mIcon = icon;
-    }
-
     @Override
     public String toString() {
         return "App{" +
@@ -68,6 +80,12 @@ public class App {
                 ", mName=" + mName +
                 ", mIconResId=" + mIconResId +
                 ", mIcon=" + mIcon +
+                ", installDate=" + installDate +
                 '}';
     }
+
+    public void setIcon(Bitmap icon) {
+        mIcon = icon;
+    }
+
 }

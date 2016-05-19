@@ -13,6 +13,8 @@
     <string name="setting_vibrate_app_launch">Vibrate on App Launch</string>
     <string name="setting_show_name_app_hover">Show Name on App Hover</string>
     <string name="setting_show_touch_selection">Show Touch Selection</string>
+    <string name="setting_show_touch_selection_color">Show Touch Selection Color</string>
+    <string name="setting_show_new_app_tag">Show New App Tag</string>
 
     <!-- Menu Strings -->
     <string name="menu_title_about">About</string>

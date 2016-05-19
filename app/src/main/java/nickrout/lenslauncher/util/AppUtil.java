@@ -20,6 +20,8 @@ import nickrout.lenslauncher.model.App;
  */
 public class AppUtil {
 
+    private static final String TAG = AppUtil.class.getSimpleName();
+
     // Get all available apps for launcher
     public static ArrayList<App> getApps(PackageManager packageManager, Context context) {
         ArrayList<App> apps = new ArrayList<>();
@@ -36,6 +38,11 @@ public class AppUtil {
             Collections.sort(availableActivities, new ResolveInfo.DisplayNameComparator(packageManager));
             for (ResolveInfo resolveInfo : availableActivities) {
                 App app = new App();
+                try {
+                    app.setInstallDate(packageManager.getPackageInfo(resolveInfo.activityInfo.packageName, 0).firstInstallTime);
+                } catch (PackageManager.NameNotFoundException e) {
+                    app.setInstallDate(0);
+                }
                 app.setLabel(resolveInfo.loadLabel(packageManager));
                 app.setPackageName(resolveInfo.activityInfo.packageName);
                 app.setName(resolveInfo.activityInfo.name);
@@ -48,7 +55,7 @@ public class AppUtil {
     }
 
     // Launch apps, for launcher :-P
-    public static void launchComponent(String packageName, String name, Context context){
+    public static void launchComponent(String packageName, String name, Context context) {
         if (packageName != null && name != null) {
             Intent componentIntent = new Intent();
             componentIntent.setComponent(new ComponentName(packageName, name));

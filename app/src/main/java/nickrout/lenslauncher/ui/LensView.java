@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -31,10 +32,13 @@ import nickrout.lenslauncher.util.Settings;
  */
 public class LensView extends View {
 
+    private static String TAG = LensView.class.getSimpleName();
+
     private Paint mPaintIcons;
     private Paint mPaintCircles;
     private Paint mPaintTouchSelection;
     private Paint mPaintText;
+    private Paint mPaintTag;
 
     private float mTouchX = -Float.MAX_VALUE;
     private float mTouchY = -Float.MAX_VALUE;
@@ -98,8 +102,8 @@ public class LensView extends View {
         mAppIcons = new ArrayList<>();
         mDrawType = DrawType.APPS;
         setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTransparent));
-        setupPaints();
         mSettings = new Settings(getContext());
+        setupPaints();
     }
 
     private void setupPaints() {
@@ -117,7 +121,7 @@ public class LensView extends View {
         mPaintTouchSelection = new Paint();
         mPaintTouchSelection.setAntiAlias(true);
         mPaintTouchSelection.setStyle(Paint.Style.STROKE);
-        mPaintTouchSelection.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+        mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
         mPaintTouchSelection.setStrokeWidth(getResources().getDimension(R.dimen.stroke_width_touch_selection));
 
         mPaintText = new Paint();
@@ -125,11 +129,23 @@ public class LensView extends View {
         mPaintText.setStyle(Paint.Style.FILL);
         mPaintText.setColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
         mPaintText.setShadowLayer(getResources().getDimension(R.dimen.shadow_text),
-                                  getResources().getDimension(R.dimen.shadow_text),
-                                  getResources().getDimension(R.dimen.shadow_text),
-                                  ContextCompat.getColor(getContext(), R.color.colorShadow));
+                getResources().getDimension(R.dimen.shadow_text),
+                getResources().getDimension(R.dimen.shadow_text),
+                ContextCompat.getColor(getContext(), R.color.colorShadow));
         mPaintText.setTextSize(getResources().getDimension(R.dimen.text_size_lens));
         mPaintText.setTextAlign(Paint.Align.CENTER);
+
+        mPaintTag = new Paint();
+        mPaintTag.setAntiAlias(true);
+        mPaintTag.setStyle(Paint.Style.FILL);
+        mPaintTag.setColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
+        mPaintTag.setDither(true);
+        mPaintTag.setShadowLayer(getResources().getDimension(R.dimen.shadow_text),
+                getResources().getDimension(R.dimen.shadow_text),
+                getResources().getDimension(R.dimen.shadow_text),
+                ContextCompat.getColor(getContext(), R.color.colorShadow));
+        mPaintTag.setTextSize(getResources().getDimension(R.dimen.text_size_lens));
+        mPaintTag.setTextAlign(Paint.Align.CENTER);
     }
 
     @Override
@@ -232,8 +248,8 @@ public class LensView extends View {
                     }
 
                     if (LensCalculator.isRectWithinLens(rect, mTouchX, mTouchY, lensDiameter)) {
-                    // Old Method - calculates circular distance but causes some unwanted icon overlap
-                    //if (LensCalculator.calculateDistance(mTouchX, rect.centerX(), mTouchY, rect.centerY()) <= lensDiameter / 2.0f) {
+                        // Old Method - calculates circular distance but causes some unwanted icon overlap
+                        //if (LensCalculator.calculateDistance(mTouchX, rect.centerX(), mTouchY, rect.centerY()) <= lensDiameter / 2.0f) {
 
                         float shiftedCenterX = LensCalculator.shiftPoint(getContext(), mTouchX, rect.centerX(), lensDiameter);
                         float shiftedCenterY = LensCalculator.shiftPoint(getContext(), mTouchY, rect.centerY(), lensDiameter);
@@ -291,6 +307,10 @@ public class LensView extends View {
             Bitmap appIcon = mAppIcons.get(index);
             Rect src = new Rect(0, 0, appIcon.getWidth(), appIcon.getHeight());
             canvas.drawBitmap(appIcon, src, rect, mPaintIcons);
+
+            if (mApps.get(index).getInstallDate() >= (System.currentTimeMillis() - Settings.SHOW_NEW_APP_TAG_DURATION)) {
+                drawAppTag(canvas, rect);
+            }
         }
     }
 
@@ -304,6 +324,12 @@ public class LensView extends View {
                     rect.centerX(),
                     rect.bottom + getResources().getDimension(R.dimen.margin_lens_text),
                     mPaintText);
+        }
+    }
+
+    private void drawAppTag(Canvas canvas, RectF rect) {
+        if (mSettings.getBoolean(Settings.KEY_SHOW_NEW_APP_TAG)) {
+            canvas.drawText("NEW!", rect.right - rect.width() / 2, rect.centerY(), mPaintText);
         }
     }
 
@@ -331,8 +357,8 @@ public class LensView extends View {
     private void launchApp() {
         if (mPackageManager != null && mApps != null && mSelectIndex >= 0) {
             AppUtil.launchComponent((String) mApps.get(mSelectIndex).getPackageName(),
-                                    (String) mApps.get(mSelectIndex).getName(),
-                                    getContext());
+                    (String) mApps.get(mSelectIndex).getName(),
+                    getContext());
         }
     }
 

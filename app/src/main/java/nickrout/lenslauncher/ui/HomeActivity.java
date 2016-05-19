@@ -67,7 +67,8 @@ public class HomeActivity extends BaseActivity implements Observer {
 
     private class UpdateAppsTask extends AsyncTask<Void, Void, Void> {
 
-        final ProgressDialog mProgressDialog = new ProgressDialog(HomeActivity.this);;
+        final ProgressDialog mProgressDialog = new ProgressDialog(HomeActivity.this);
+        ;
         boolean mIsLoad;
 
         public UpdateAppsTask(boolean isLoad) {
