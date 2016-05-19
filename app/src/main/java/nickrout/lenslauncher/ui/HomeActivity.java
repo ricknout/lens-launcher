@@ -87,15 +87,15 @@ public class HomeActivity extends BaseActivity implements Observer {
         @Override
         protected Void doInBackground(Void... arg0) {
             mPackageManager = getPackageManager();
-            mApps = AppUtil.getApps(mPackageManager, HomeActivity.this);
+            ArrayList<App> apps = AppUtil.getApps(mPackageManager, HomeActivity.this);
+            mApps = new ArrayList<>();
             mAppIcons = new ArrayList<>();
-            for (int i = 0; i < mApps.size(); i++) {
-                App app = mApps.get(i);
+            for (int i = 0; i < apps.size(); i++) {
+                App app = apps.get(i);
                 Bitmap appIcon = app.getIcon();
                 if (appIcon != null) {
+                    mApps.add(app);
                     mAppIcons.add(appIcon);
-                } else {
-                    mApps.remove(app);
                 }
             }
             return null;
