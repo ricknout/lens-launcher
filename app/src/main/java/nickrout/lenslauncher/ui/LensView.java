@@ -11,7 +11,6 @@ import android.graphics.RectF;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -140,14 +139,12 @@ public class LensView extends View {
         mPaintTag = new Paint();
         mPaintTag.setAntiAlias(true);
         mPaintTag.setStyle(Paint.Style.FILL);
-        mPaintTag.setColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
+        mPaintTag.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
         mPaintTag.setDither(true);
         mPaintTag.setShadowLayer(getResources().getDimension(R.dimen.shadow_text),
                 getResources().getDimension(R.dimen.shadow_text),
                 getResources().getDimension(R.dimen.shadow_text),
                 ContextCompat.getColor(getContext(), R.color.colorShadow));
-        mPaintTag.setTextSize(getResources().getDimension(R.dimen.text_size_lens_new_app_tag));
-        mPaintTag.setTextAlign(Paint.Align.CENTER);
     }
 
     @Override
@@ -311,7 +308,12 @@ public class LensView extends View {
             Rect src = new Rect(0, 0, appIcon.getWidth(), appIcon.getHeight());
             canvas.drawBitmap(appIcon, src, rect, mPaintIcons);
 
-            if (mApps.get(index).getInstallDate() >= (System.currentTimeMillis() - Settings.SHOW_NEW_APP_TAG_DURATION)) {
+            /**
+             * Check if the app was installed Settings.SHOW_NEW_APP_TAG_DURATION ago, and if it has been opened since.
+             * If not, drawAppTag()
+             */
+            if ((mApps.get(index).getInstallDate() >= (System.currentTimeMillis() - Settings.SHOW_NEW_APP_TAG_DURATION)
+                    && (AppPersistent.getOpenCountByPackageName(mApps.get(index).getPackageName().toString()) == 0))) {
                 drawAppTag(canvas, rect);
             }
         }
@@ -332,7 +334,8 @@ public class LensView extends View {
 
     private void drawAppTag(Canvas canvas, RectF rect) {
         if (mSettings.getBoolean(Settings.KEY_SHOW_NEW_APP_TAG)) {
-            canvas.drawText("NEW", rect.right - rect.width() / 2, rect.centerY(), mPaintTag);
+            float radius = getResources().getDimension(R.dimen.radius_new_app_tag);
+            canvas.drawCircle(rect.left - (radius / 2), rect.bottom, radius, mPaintTag);
         }
     }
 
@@ -363,9 +366,6 @@ public class LensView extends View {
                     (String) mApps.get(mSelectIndex).getName(),
                     getContext());
             AppPersistent.incrementAppCount((String) mApps.get(mSelectIndex).getPackageName());
-            for (AppPersistent appPersistent : AppPersistent.listAll(AppPersistent.class)) {
-                Log.d(TAG, appPersistent.toString());
-            }
         }
     }
 

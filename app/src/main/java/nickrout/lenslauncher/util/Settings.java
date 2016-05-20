@@ -24,7 +24,7 @@ public class Settings {
     public static final int MAX_MIN_ICON_SIZE = 20;
     public static final int MAX_DISTORTION_FACTOR = 10;
     public static final int MAX_SCALE_FACTOR = 10;
-    public static final int SHOW_NEW_APP_TAG_DURATION = 1 * 60 * 60 * 1000; /* An app has the new tag for one hour. TODO: This should later be changed by keeping a track if it has been opened, and removing the new_tag when openCount is more than 1.*/
+    public static final int SHOW_NEW_APP_TAG_DURATION = 12 * 60 * 60 * 1000; /* An app has the new tag for twelve hours. If openCount >= 1, the new tag is not drawn. */
 
     public static final int MIN_LENS_DIAMETER = 100;
     public static final int MIN_MIN_ICON_SIZE = 10;

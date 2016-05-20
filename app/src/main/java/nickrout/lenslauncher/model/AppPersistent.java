@@ -1,7 +1,5 @@
 package nickrout.lenslauncher.model;
 
-import android.util.Log;
-
 import com.orm.SugarRecord;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -24,19 +22,19 @@ public class AppPersistent extends SugarRecord {
         this.mOpenCount = mOpenCount;
     }
 
-    public String getmPackageName() {
+    public String getPackageName() {
         return mPackageName;
     }
 
-    public void setmPackageName(String mPackageName) {
+    public void setPackageName(String mPackageName) {
         this.mPackageName = mPackageName;
     }
 
-    public long getmOpenCount() {
+    public long getOpenCount() {
         return mOpenCount;
     }
 
-    public void setmOpenCount(long mOpenCount) {
+    public void setOpenCount(long mOpenCount) {
         this.mOpenCount = mOpenCount;
     }
 
@@ -51,11 +49,9 @@ public class AppPersistent extends SugarRecord {
     public static void incrementAppCount(String mPackageName) {
         AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mPackageName")).eq(mPackageName)).first();
         if (appPersistent != null) {
-            appPersistent.setmOpenCount(appPersistent.getmOpenCount() + 1);
+            appPersistent.setOpenCount(appPersistent.getOpenCount() + 1);
             appPersistent.save();
-            Log.d("AppPersistent", "Updated appCount by +1");
         } else {
-            Log.d("AppPersistent", "Unable to find mPackageName, creating new and setting incrementCountTo 0");
             AppPersistent newAppPersistent = new AppPersistent(mPackageName, 1); /* Set default incremented count to 1*/
             newAppPersistent.save();
         }
@@ -64,9 +60,8 @@ public class AppPersistent extends SugarRecord {
     public static long getOpenCountByPackageName(String mPackageName) {
         AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mPackageName")).eq(mPackageName)).first();
         if (appPersistent != null) {
-            return appPersistent.getmOpenCount();
+            return appPersistent.getOpenCount();
         } else {
-            Log.d("AppPersistent", "Unable to find mPackageName, returning 0");
             return 0;
         }
     }
