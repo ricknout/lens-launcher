@@ -5,6 +5,7 @@
     <dimen name="radius_touch_selection">50dp</dimen>
     <dimen name="stroke_width_touch_selection">3dp</dimen>
     <dimen name="text_size_lens">14sp</dimen>
+    <dimen name="text_size_lens_new_app_tag">10sp</dimen>
     <dimen name="text_stroke_lens">1dp</dimen>
     <dimen name="margin_lens_text">8dp</dimen>
     <dimen name="shadow_text">1dp</dimen>

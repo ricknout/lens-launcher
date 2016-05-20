@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -194,9 +193,6 @@ public class SettingsActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Settings settings = new Settings(getBaseContext());
                 settings.save(Settings.KEY_SHOW_TOUCH_SELECTION, isChecked);
-                if (mShowTouchSelection.isChecked())
-                    mTouchSelectionColorLayout.setVisibility(View.VISIBLE);
-                else mTouchSelectionColorLayout.setVisibility(View.INVISIBLE);
             }
         });
         mShowNewAppTag = (SwitchCompat) findViewById(R.id.switch_show_new_app_tag);
@@ -241,10 +237,6 @@ public class SettingsActivity extends BaseActivity {
 
         mTouchSelectionColor.setImageDrawable(new ColorDrawable(Color.parseColor(settings.getString(Settings.KEY_TOUCH_SELECTION_COLOR))));
 
-        if (mShowTouchSelection.isChecked())
-            mTouchSelectionColorLayout.setVisibility(View.VISIBLE);
-        else mTouchSelectionColorLayout.setVisibility(View.INVISIBLE);
-
     }
 
     @Override
@@ -280,10 +272,8 @@ public class SettingsActivity extends BaseActivity {
                     @Override
                     public void onColorSelected(@ColorInt int color) {
                         String hexColor = String.format("#%06X", (0xFFFFFFFF & color));
-                        Log.d(TAG, "Color set to " + hexColor);
                         settings.save(Settings.KEY_TOUCH_SELECTION_COLOR, hexColor);
                         mTouchSelectionColor.setImageDrawable(new ColorDrawable(Color.parseColor(settings.getString(Settings.KEY_TOUCH_SELECTION_COLOR))));
-                        mLensView.invalidate();
                         chromaDialog.dismiss();
                     }
                 })

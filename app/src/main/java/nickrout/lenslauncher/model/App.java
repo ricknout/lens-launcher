@@ -17,12 +17,6 @@ public class App {
     public App() {
     }
 
-    public App(CharSequence mPackageName, CharSequence mLabel, long installDate) {
-        this.mPackageName = mPackageName;
-        this.mLabel = mLabel;
-        this.installDate = installDate;
-    }
-
     public long getInstallDate() {
         return installDate;
     }

@@ -31,6 +31,8 @@ public class HomeActivity extends BaseActivity implements Observer {
     private ArrayList<App> mApps;
     private ArrayList<Bitmap> mAppIcons;
 
+    private static String TAG = HomeActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

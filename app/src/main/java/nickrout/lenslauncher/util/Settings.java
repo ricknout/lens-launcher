@@ -18,13 +18,13 @@ public class Settings {
     private static final boolean DEFAULT_SHOW_NAME_APP_HOVER = true;
     private static final boolean DEFAULT_SHOW_TOUCH_SELECTION = false;
     private static final boolean DEFAULT_SHOW_NEW_APP_TAG = true;
-    private static final String DEFAULT_TOUCH_SELECTION_COLOR = "#000000";
+    private static final String DEFAULT_TOUCH_SELECTION_COLOR = "#FF4081";
 
     public static final int MAX_LENS_DIAMETER = 1500;
     public static final int MAX_MIN_ICON_SIZE = 20;
     public static final int MAX_DISTORTION_FACTOR = 10;
     public static final int MAX_SCALE_FACTOR = 10;
-    public static final int SHOW_NEW_APP_TAG_DURATION = 4 * 24 * 60 * 60 * 1000; /* An app has the new tag for four hours */
+    public static final int SHOW_NEW_APP_TAG_DURATION = 1 * 60 * 60 * 1000; /* An app has the new tag for one hour. TODO: This should later be changed by keeping a track if it has been opened, and removing the new_tag when openCount is more than 1.*/
 
     public static final int MIN_LENS_DIAMETER = 100;
     public static final int MIN_MIN_ICON_SIZE = 10;

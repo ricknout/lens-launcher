@@ -144,7 +144,7 @@ public class LensView extends View {
                 getResources().getDimension(R.dimen.shadow_text),
                 getResources().getDimension(R.dimen.shadow_text),
                 ContextCompat.getColor(getContext(), R.color.colorShadow));
-        mPaintTag.setTextSize(getResources().getDimension(R.dimen.text_size_lens));
+        mPaintTag.setTextSize(getResources().getDimension(R.dimen.text_size_lens_new_app_tag));
         mPaintTag.setTextAlign(Paint.Align.CENTER);
     }
 
@@ -156,6 +156,7 @@ public class LensView extends View {
                 drawGrid(canvas, mApps.size());
             }
             if (mSettings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION)) {
+                mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
                 drawTouchPoint(canvas);
             }
         } else if (mDrawType == DrawType.CIRCLES) {
@@ -329,7 +330,7 @@ public class LensView extends View {
 
     private void drawAppTag(Canvas canvas, RectF rect) {
         if (mSettings.getBoolean(Settings.KEY_SHOW_NEW_APP_TAG)) {
-            canvas.drawText("NEW!", rect.right - rect.width() / 2, rect.centerY(), mPaintText);
+            canvas.drawText("NEW", rect.right - rect.width() / 2, rect.centerY(), mPaintTag);
         }
     }
 
