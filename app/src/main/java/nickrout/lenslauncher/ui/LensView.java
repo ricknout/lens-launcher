@@ -322,7 +322,7 @@ public class LensView extends View {
         if (mSettings.getBoolean(Settings.KEY_SHOW_NAME_APP_HOVER)) {
             canvas.drawText((String) mApps.get(mSelectIndex).getLabel(),
                     rect.centerX(),
-                    rect.bottom + getResources().getDimension(R.dimen.margin_lens_text),
+                    rect.top - getResources().getDimension(R.dimen.margin_lens_text),
                     mPaintText);
         }
     }
