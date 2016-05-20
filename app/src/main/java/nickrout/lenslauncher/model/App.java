@@ -17,19 +17,6 @@ public class App {
     public App() {
     }
 
-    public long getInstallDate() {
-        return installDate;
-    }
-
-    public void setInstallDate(long installDate) {
-        this.installDate = installDate;
-    }
-
-    public App(String label, String name) {
-        mLabel = label;
-        mName = name;
-    }
-
     public CharSequence getLabel() {
         return mLabel;
     }
@@ -66,6 +53,18 @@ public class App {
         return mIcon;
     }
 
+    public long getInstallDate() {
+        return installDate;
+    }
+
+    public void setInstallDate(long installDate) {
+        this.installDate = installDate;
+    }
+
+    public void setIcon(Bitmap icon) {
+        mIcon = icon;
+    }
+
     @Override
     public String toString() {
         return "App{" +
@@ -76,10 +75,6 @@ public class App {
                 ", mIcon=" + mIcon +
                 ", installDate=" + installDate +
                 '}';
-    }
-
-    public void setIcon(Bitmap icon) {
-        mIcon = icon;
     }
 
 }

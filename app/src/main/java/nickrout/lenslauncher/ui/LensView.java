@@ -11,6 +11,7 @@ import android.graphics.RectF;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
+import nickrout.lenslauncher.model.AppPersistent;
 import nickrout.lenslauncher.model.Grid;
 import nickrout.lenslauncher.util.AppUtil;
 import nickrout.lenslauncher.util.LensCalculator;
@@ -360,6 +362,10 @@ public class LensView extends View {
             AppUtil.launchComponent((String) mApps.get(mSelectIndex).getPackageName(),
                     (String) mApps.get(mSelectIndex).getName(),
                     getContext());
+            AppPersistent.incrementAppCount((String) mApps.get(mSelectIndex).getPackageName());
+            for (AppPersistent appPersistent : AppPersistent.listAll(AppPersistent.class)) {
+                Log.d(TAG, appPersistent.toString());
+            }
         }
     }
 
