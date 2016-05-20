@@ -139,7 +139,8 @@ public class LensView extends View {
         mPaintTag = new Paint();
         mPaintTag.setAntiAlias(true);
         mPaintTag.setStyle(Paint.Style.FILL);
-        mPaintTag.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+        mPaintTag.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR))); /* color of dot is same as touch selector color*/
+        // mPaintTag.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
         mPaintTag.setDither(true);
         mPaintTag.setShadowLayer(getResources().getDimension(R.dimen.shadow_text),
                 getResources().getDimension(R.dimen.shadow_text),
