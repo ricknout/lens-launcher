@@ -10,6 +10,7 @@
     <dimen name="shadow_text">1dp</dimen>
     <dimen name="margin_system">40dp</dimen>
     <dimen name="radius_new_app_tag">3dp</dimen>
+    <dimen name="margin_new_app_tag">6dp</dimen>
 
     <!-- Settings Dimensions -->
     <dimen name="diameter_highlight_color_switch">32dp</dimen>

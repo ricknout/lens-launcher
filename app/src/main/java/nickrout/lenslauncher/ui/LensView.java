@@ -334,10 +334,9 @@ public class LensView extends View {
 
     private void drawNewAppTag(Canvas canvas, RectF rect) {
         if (mSettings.getBoolean(Settings.KEY_SHOW_NEW_APP_TAG)) {
-            float radius = getResources().getDimension(R.dimen.radius_new_app_tag);
             canvas.drawCircle(rect.centerX(),
-                    rect.bottom + radius / 2.0f,
-                    radius,
+                    rect.bottom + getResources().getDimension(R.dimen.margin_new_app_tag),
+                    getResources().getDimension(R.dimen.radius_new_app_tag),
                     mPaintNewAppTag);
         }
     }
