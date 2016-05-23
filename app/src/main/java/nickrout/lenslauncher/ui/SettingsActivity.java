@@ -1,15 +1,26 @@
 package nickrout.lenslauncher.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.pavelsikun.vintagechroma.ChromaDialog;
+import com.pavelsikun.vintagechroma.IndicatorMode;
+import com.pavelsikun.vintagechroma.OnColorSelectedListener;
+import com.pavelsikun.vintagechroma.colormode.ColorMode;
 
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.util.Settings;
@@ -18,6 +29,8 @@ import nickrout.lenslauncher.util.Settings;
  * Created by nickrout on 2016/04/02.
  */
 public class SettingsActivity extends BaseActivity {
+
+    private static final String TAG = SettingsActivity.class.getSimpleName();
 
     private LensView mLensView;
 
@@ -29,11 +42,15 @@ public class SettingsActivity extends BaseActivity {
     private TextView mValueDistortionFactor;
     private AppCompatSeekBar mScaleFactor;
     private TextView mValueScaleFactor;
+    private ImageView mHighlightColor;
 
     private SwitchCompat mVibrateAppHover;
     private SwitchCompat mVibrateAppLaunch;
     private SwitchCompat mShowNameAppHover;
     private SwitchCompat mShowTouchSelection;
+    private SwitchCompat mShowNewAppTag;
+
+    private ChromaDialog mChromaDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +194,21 @@ public class SettingsActivity extends BaseActivity {
                 settings.save(Settings.KEY_SHOW_TOUCH_SELECTION, isChecked);
             }
         });
+        mShowNewAppTag = (SwitchCompat) findViewById(R.id.switch_show_new_app_tag);
+        mShowNewAppTag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Settings settings = new Settings(getBaseContext());
+                settings.save(Settings.KEY_SHOW_NEW_APP_TAG, isChecked);
+            }
+        });
+        mHighlightColor = (ImageView) findViewById(R.id.selector_highlight_color);
+        mHighlightColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showColorPickerDialog();
+            }
+        });
     }
 
     private void assignValues() {
@@ -199,11 +231,21 @@ public class SettingsActivity extends BaseActivity {
         mVibrateAppLaunch.setChecked(settings.getBoolean(Settings.KEY_VIBRATE_APP_LAUNCH));
         mShowNameAppHover.setChecked(settings.getBoolean(Settings.KEY_SHOW_NAME_APP_HOVER));
         mShowTouchSelection.setChecked(settings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION));
+        mShowNewAppTag.setChecked(settings.getBoolean(Settings.KEY_SHOW_NEW_APP_TAG));
+
+        setHighlightColorDrawable(settings);
+    }
+
+    private void setHighlightColorDrawable(Settings settings) {
+        GradientDrawable colorDrawable = new GradientDrawable();
+        colorDrawable.setColor(Color.parseColor(settings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
+        colorDrawable.setCornerRadius(getResources().getDimension(R.dimen.radius_highlight_color_switch));
+        mHighlightColor.setImageDrawable(colorDrawable);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_settings, menu);
         return true;
     }
@@ -222,5 +264,24 @@ public class SettingsActivity extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showColorPickerDialog() {
+        final Settings settings = new Settings(getBaseContext());
+        mChromaDialog = new ChromaDialog.Builder()
+                .initialColor(Color.parseColor(settings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)))
+                .colorMode(ColorMode.ARGB)
+                .indicatorMode(IndicatorMode.HEX)
+                .onColorSelected(new OnColorSelectedListener() {
+                    @Override
+                    public void onColorSelected(@ColorInt int color) {
+                        String hexColor = String.format("#%06X", (0xFFFFFFFF & color));
+                        settings.save(Settings.KEY_TOUCH_SELECTION_COLOR, hexColor);
+                        setHighlightColorDrawable(settings);
+                        mChromaDialog.dismiss();
+                    }
+                })
+                .create();
+        mChromaDialog.show(getSupportFragmentManager(), "ChromaDialog");
     }
 }

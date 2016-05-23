@@ -9,6 +9,11 @@
     <dimen name="margin_lens_text">8dp</dimen>
     <dimen name="shadow_text">1dp</dimen>
     <dimen name="margin_system">40dp</dimen>
+    <dimen name="radius_new_app_tag">3dp</dimen>
+
+    <!-- Settings Dimensions -->
+    <dimen name="diameter_highlight_color_switch">32dp</dimen>
+    <dimen name="radius_highlight_color_switch">16dp</dimen>
 
     <!-- About Dimensions -->
     <dimen name="text_size_about">32sp</dimen>

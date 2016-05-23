@@ -12,12 +12,9 @@ public class App {
     private CharSequence mName;
     private int mIconResId;
     private Bitmap mIcon;
+    private long mInstallDate;
 
-    public App() {}
-
-    public App(String label, String name) {
-        mLabel = label;
-        mName = name;
+    public App() {
     }
 
     public CharSequence getLabel() {
@@ -56,6 +53,14 @@ public class App {
         return mIcon;
     }
 
+    public long getInstallDate() {
+        return mInstallDate;
+    }
+
+    public void setInstallDate(long mInstallDate) {
+        this.mInstallDate = mInstallDate;
+    }
+
     public void setIcon(Bitmap icon) {
         mIcon = icon;
     }
@@ -68,6 +73,7 @@ public class App {
                 ", mName=" + mName +
                 ", mIconResId=" + mIconResId +
                 ", mIcon=" + mIcon +
+                ", mInstallDate=" + mInstallDate +
                 '}';
     }
 }

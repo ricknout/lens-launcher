@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.RectF;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import nickrout.lenslauncher.model.Grid;
 
@@ -40,15 +39,15 @@ public class LensCalculator {
 
     // Algorithm for circular distance
     public static double calculateDistance(float x1, float x2, float y1, float y2) {
-        return Math.sqrt(Math.pow((double)(x2 - x1), 2) + Math.pow((double)(y2 - y1), 2));
+        return Math.sqrt(Math.pow((double) (x2 - x1), 2) + Math.pow((double) (y2 - y1), 2));
     }
 
     // Algorithm for determining whether a rect is within a given lens (centered at touchX, touchY)
     public static boolean isRectWithinLens(RectF rect, float touchX, float touchY, float lensDiameter) {
         if (rect.left >= touchX - lensDiameter / 2.0f &&
-            rect.right <= touchX + lensDiameter / 2.0f &&
-            rect.top >= touchY - lensDiameter / 2.0f &&
-            rect.bottom <= touchY + lensDiameter / 2.0f) {
+                rect.right <= touchX + lensDiameter / 2.0f &&
+                rect.top >= touchY - lensDiameter / 2.0f &&
+                rect.bottom <= touchY + lensDiameter / 2.0f) {
             return true;
         } else {
             return false;
@@ -57,10 +56,10 @@ public class LensCalculator {
 
     // Graphical Fisheye Lens algorithm for shifting
     public static float shiftPoint(Context context, float lensPosition, float itemPosition, float boundary) {
-        if(lensPosition < 0) {
+        if (lensPosition < 0) {
             return itemPosition;
         }
-        Settings settings =  new Settings(context);
+        Settings settings = new Settings(context);
         float shiftedPosition = itemPosition;
         float a = Math.abs(lensPosition - itemPosition);
         float x = a / (boundary / 2.0f);
@@ -68,21 +67,21 @@ public class LensCalculator {
         float newDistanceFromCenter = (boundary / 2.0f) * y;
         // Removed - handled in LensView and causes weird edge 'ballooning'
         //if ((lensPosition + boundary / 2.0f) >= itemPosition && (lensPosition - boundary / 2) <= itemPosition) {
-            if (lensPosition > itemPosition) {
-                shiftedPosition = lensPosition - newDistanceFromCenter;
-            } else if (lensPosition < itemPosition) {
-                shiftedPosition = lensPosition + newDistanceFromCenter;
-            }
+        if (lensPosition > itemPosition) {
+            shiftedPosition = lensPosition - newDistanceFromCenter;
+        } else if (lensPosition < itemPosition) {
+            shiftedPosition = lensPosition + newDistanceFromCenter;
+        }
         //}
         return shiftedPosition;
     }
 
     // Graphical Fisheye Lens algorithm for scaling
     public static float scalePoint(Context context, float lensPosition, float itemPosition, float itemSize, float boundary) {
-        if(lensPosition < 0) {
+        if (lensPosition < 0) {
             return itemSize;
         }
-        Settings settings =  new Settings(context);
+        Settings settings = new Settings(context);
         float scaledPosition = itemPosition;
         if (lensPosition > itemPosition) {
             itemPosition = itemPosition - settings.getFloat(Settings.KEY_SCALE_FACTOR) * (itemSize / 2.0f);
@@ -95,11 +94,11 @@ public class LensCalculator {
         float scaledDistanceFromCenter = (boundary / 2.0f) * y;
         // Removed - handled in LensView and causes weird edge 'ballooning'
         //if ((lensPosition + boundary / 2.0f) >= itemPosition && (lensPosition - boundary / 2) <= itemPosition) {
-            if (lensPosition > itemPosition) {
-                scaledPosition = lensPosition - scaledDistanceFromCenter;
-            } else if (lensPosition < itemPosition) {
-                scaledPosition = lensPosition + scaledDistanceFromCenter;
-            }
+        if (lensPosition > itemPosition) {
+            scaledPosition = lensPosition - scaledDistanceFromCenter;
+        } else if (lensPosition < itemPosition) {
+            scaledPosition = lensPosition + scaledDistanceFromCenter;
+        }
         //}
         return scaledPosition;
     }
@@ -140,18 +139,18 @@ public class LensCalculator {
     }
 
     // Algorithm for converting dp measurements to pixels
-    public static float convertDpToPixel(float dp, Context context){
+    public static float convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return px;
     }
 
     // Algorithm for converting pixels to dp measurements
-    public static float convertPixelsToDp(float px, Context context){
+    public static float convertPixelsToDp(float px, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float dp = px / ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        float dp = px / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
         return dp;
     }
 }
