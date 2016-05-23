@@ -294,15 +294,17 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:text="@string/setting_show_touch_selection_color" />
+                android:text="@string/setting_highlight_color" />
 
             <ImageView
-                android:id="@+id/switch_show_touch_selection_color"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:id="@+id/selector_highlight_color"
+                android:layout_width="@dimen/diameter_highlight_color_switch"
+                android:layout_height="@dimen/diameter_highlight_color_switch"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"/>
 
         </RelativeLayout>
+
     </LinearLayout>
+
 </ScrollView>

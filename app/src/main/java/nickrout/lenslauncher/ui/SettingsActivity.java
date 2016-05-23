@@ -3,6 +3,7 @@ package nickrout.lenslauncher.ui;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -13,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -42,8 +42,7 @@ public class SettingsActivity extends BaseActivity {
     private TextView mValueDistortionFactor;
     private AppCompatSeekBar mScaleFactor;
     private TextView mValueScaleFactor;
-    private ImageView mTouchSelectionColor;
-    private RelativeLayout mTouchSelectionColorLayout;
+    private ImageView mHighlightColor;
 
     private SwitchCompat mVibrateAppHover;
     private SwitchCompat mVibrateAppLaunch;
@@ -51,7 +50,7 @@ public class SettingsActivity extends BaseActivity {
     private SwitchCompat mShowTouchSelection;
     private SwitchCompat mShowNewAppTag;
 
-    private ChromaDialog chromaDialog;
+    private ChromaDialog mChromaDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,14 +202,13 @@ public class SettingsActivity extends BaseActivity {
                 settings.save(Settings.KEY_SHOW_NEW_APP_TAG, isChecked);
             }
         });
-        mTouchSelectionColor = (ImageView) findViewById(R.id.switch_show_touch_selection_color);
-        mTouchSelectionColor.setOnClickListener(new View.OnClickListener() {
+        mHighlightColor = (ImageView) findViewById(R.id.selector_highlight_color);
+        mHighlightColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showColorPickerDialog();
             }
         });
-        mTouchSelectionColorLayout = (RelativeLayout) findViewById(R.id.setting_show_touch_selection_color_layout);
     }
 
     private void assignValues() {
@@ -235,8 +233,14 @@ public class SettingsActivity extends BaseActivity {
         mShowTouchSelection.setChecked(settings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION));
         mShowNewAppTag.setChecked(settings.getBoolean(Settings.KEY_SHOW_NEW_APP_TAG));
 
-        mTouchSelectionColor.setImageDrawable(new ColorDrawable(Color.parseColor(settings.getString(Settings.KEY_TOUCH_SELECTION_COLOR))));
+        setHighlightColorDrawable(settings);
+    }
 
+    private void setHighlightColorDrawable(Settings settings) {
+        GradientDrawable colorDrawable = new GradientDrawable();
+        colorDrawable.setColor(Color.parseColor(settings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
+        colorDrawable.setCornerRadius(getResources().getDimension(R.dimen.radius_highlight_color_switch));
+        mHighlightColor.setImageDrawable(colorDrawable);
     }
 
     @Override
@@ -264,7 +268,7 @@ public class SettingsActivity extends BaseActivity {
 
     private void showColorPickerDialog() {
         final Settings settings = new Settings(getBaseContext());
-        chromaDialog = new ChromaDialog.Builder()
+        mChromaDialog = new ChromaDialog.Builder()
                 .initialColor(Color.parseColor(settings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)))
                 .colorMode(ColorMode.ARGB)
                 .indicatorMode(IndicatorMode.HEX)
@@ -273,11 +277,11 @@ public class SettingsActivity extends BaseActivity {
                     public void onColorSelected(@ColorInt int color) {
                         String hexColor = String.format("#%06X", (0xFFFFFFFF & color));
                         settings.save(Settings.KEY_TOUCH_SELECTION_COLOR, hexColor);
-                        mTouchSelectionColor.setImageDrawable(new ColorDrawable(Color.parseColor(settings.getString(Settings.KEY_TOUCH_SELECTION_COLOR))));
-                        chromaDialog.dismiss();
+                        setHighlightColorDrawable(settings);
+                        mChromaDialog.dismiss();
                     }
                 })
                 .create();
-        chromaDialog.show(getSupportFragmentManager(), "ChromaDialog");
+        mChromaDialog.show(getSupportFragmentManager(), "ChromaDialog");
     }
 }
