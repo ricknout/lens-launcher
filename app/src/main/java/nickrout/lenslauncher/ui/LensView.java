@@ -136,7 +136,7 @@ public class LensView extends View {
         mPaintText.setTextSize(getResources().getDimension(R.dimen.text_size_lens));
         mPaintText.setTextAlign(Paint.Align.CENTER);
 
-mPaintNewAppTag = new Paint();
+        mPaintNewAppTag = new Paint();
         mPaintNewAppTag.setAntiAlias(true);
         mPaintNewAppTag.setStyle(Paint.Style.FILL);
         mPaintNewAppTag.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
