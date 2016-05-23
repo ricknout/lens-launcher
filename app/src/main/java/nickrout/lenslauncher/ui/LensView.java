@@ -33,13 +33,13 @@ import nickrout.lenslauncher.util.Settings;
  */
 public class LensView extends View {
 
-    private static String TAG = LensView.class.getSimpleName();
+    private static final String TAG = "LensView";
 
     private Paint mPaintIcons;
     private Paint mPaintCircles;
     private Paint mPaintTouchSelection;
     private Paint mPaintText;
-    private Paint mPaintTag;
+    private Paint mPaintNewAppTag;
 
     private float mTouchX = -Float.MAX_VALUE;
     private float mTouchY = -Float.MAX_VALUE;
@@ -136,13 +136,12 @@ public class LensView extends View {
         mPaintText.setTextSize(getResources().getDimension(R.dimen.text_size_lens));
         mPaintText.setTextAlign(Paint.Align.CENTER);
 
-        mPaintTag = new Paint();
-        mPaintTag.setAntiAlias(true);
-        mPaintTag.setStyle(Paint.Style.FILL);
-        mPaintTag.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR))); /* color of dot is same as touch selector color*/
-        // mPaintTag.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        mPaintTag.setDither(true);
-        mPaintTag.setShadowLayer(getResources().getDimension(R.dimen.shadow_text),
+mPaintNewAppTag = new Paint();
+        mPaintNewAppTag.setAntiAlias(true);
+        mPaintNewAppTag.setStyle(Paint.Style.FILL);
+        mPaintNewAppTag.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
+        mPaintNewAppTag.setDither(true);
+        mPaintNewAppTag.setShadowLayer(getResources().getDimension(R.dimen.shadow_text),
                 getResources().getDimension(R.dimen.shadow_text),
                 getResources().getDimension(R.dimen.shadow_text),
                 ContextCompat.getColor(getContext(), R.color.colorShadow));
@@ -152,12 +151,12 @@ public class LensView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (mDrawType == DrawType.APPS) {
+            mPaintNewAppTag.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
             if (mApps != null) {
                 drawGrid(canvas, mApps.size());
             }
             if (mSettings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION)) {
-                mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
-                drawTouchPoint(canvas);
+                drawTouchSelection(canvas);
             }
         } else if (mDrawType == DrawType.CIRCLES) {
             mTouchX = getWidth() / 2;
@@ -214,7 +213,7 @@ public class LensView extends View {
         return super.onTouchEvent(event);
     }
 
-    private void drawTouchPoint(Canvas canvas) {
+    private void drawTouchSelection(Canvas canvas) {
         canvas.drawCircle(mTouchX, mTouchY, getResources().getDimension(R.dimen.radius_touch_selection), mPaintTouchSelection);
     }
 
@@ -311,11 +310,11 @@ public class LensView extends View {
 
             /**
              * Check if the app was installed Settings.SHOW_NEW_APP_TAG_DURATION ago, and if it has been opened since.
-             * If not, drawAppTag()
+             * If not, drawNewAppTag()
              */
             if ((mApps.get(index).getInstallDate() >= (System.currentTimeMillis() - Settings.SHOW_NEW_APP_TAG_DURATION)
                     && (AppPersistent.getOpenCountByPackageName(mApps.get(index).getPackageName().toString()) == 0))) {
-                drawAppTag(canvas, rect);
+                drawNewAppTag(canvas, rect);
             }
         }
     }
@@ -333,10 +332,12 @@ public class LensView extends View {
         }
     }
 
-    private void drawAppTag(Canvas canvas, RectF rect) {
+    private void drawNewAppTag(Canvas canvas, RectF rect) {
         if (mSettings.getBoolean(Settings.KEY_SHOW_NEW_APP_TAG)) {
-            float radius = getResources().getDimension(R.dimen.radius_new_app_tag);
-            canvas.drawCircle(rect.left - (radius / 2), rect.bottom, radius, mPaintTag);
+            canvas.drawCircle(rect.centerX(),
+                    rect.bottom + getResources().getDimension(R.dimen.margin_new_app_tag),
+                    getResources().getDimension(R.dimen.radius_new_app_tag),
+                    mPaintNewAppTag);
         }
     }
 
@@ -415,9 +416,11 @@ public class LensView extends View {
             super.applyTransformation(interpolatedTime, t);
             if (mShow) {
                 mLensDiameter = mStart + interpolatedTime * mEnd;
+                mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
                 mPaintTouchSelection.setAlpha((int) (255.0f * interpolatedTime));
             } else {
                 mLensDiameter = mStart + (1.0f - interpolatedTime) * mEnd;
+                mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
                 mPaintTouchSelection.setAlpha((int) (255.0f * (1.0f - interpolatedTime)));
             }
             postInvalidate();

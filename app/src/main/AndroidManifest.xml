@@ -14,7 +14,7 @@
             android:value="app_persistent.db" />
         <meta-data
             android:name="VERSION"
-            android:value="1" />
+            android:value="3" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="false" />
@@ -61,7 +61,8 @@
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/activity_title_about"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
 
     </application>
 
