@@ -26,13 +26,13 @@ import nickrout.lenslauncher.util.ObservableObject;
  */
 public class HomeActivity extends BaseActivity implements Observer {
 
+    private final static String TAG = "HomeActivity";
+
     private LensView mLensView;
     private PackageManager mPackageManager;
     private ArrayList<App> mApps;
     private ArrayList<Bitmap> mAppIcons;
     private ProgressDialog mProgressDialog;
-
-    private static String TAG = HomeActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

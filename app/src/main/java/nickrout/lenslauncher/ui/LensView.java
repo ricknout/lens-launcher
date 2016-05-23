@@ -33,7 +33,7 @@ import nickrout.lenslauncher.util.Settings;
  */
 public class LensView extends View {
 
-    private static String TAG = LensView.class.getSimpleName();
+    private static final String TAG = "LensView";
 
     private Paint mPaintIcons;
     private Paint mPaintCircles;

@@ -19,6 +19,8 @@ import nickrout.lenslauncher.R;
  */
 public class AboutActivity extends BaseActivity {
 
+    private static final String TAG = "AboutActivity";
+
     private TextView mTextViewAbout;
     private ImageView mImageAbout;
 

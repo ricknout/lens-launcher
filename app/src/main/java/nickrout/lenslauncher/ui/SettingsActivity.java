@@ -30,7 +30,7 @@ import nickrout.lenslauncher.util.Settings;
  */
 public class SettingsActivity extends BaseActivity {
 
-    private static final String TAG = SettingsActivity.class.getSimpleName();
+    private static final String TAG = "SettingsActivity";
 
     private LensView mLensView;
 
