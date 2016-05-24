@@ -18,7 +18,8 @@ public class Settings {
     private static final boolean DEFAULT_SHOW_NAME_APP_HOVER = true;
     private static final boolean DEFAULT_SHOW_TOUCH_SELECTION = false;
     private static final boolean DEFAULT_SHOW_NEW_APP_TAG = true;
-    private static final String DEFAULT_TOUCH_SELECTION_COLOR = "#FF4081";
+    private static final String DEFAULT_TOUCH_SELECTION_COLOR = "#F50057"; /* Unable to access strings.xml from here */
+    private static final String DEFAULT_ICON_PACK_LABEL_NAME = "Default Icon Pack"; /* Unable to access strings.xml from here */
 
     public static final int MAX_LENS_DIAMETER = 1500;
     public static final int MAX_MIN_ICON_SIZE = 20;
@@ -87,7 +88,7 @@ public class Settings {
         } else if (name.equals(KEY_ICON_PACK_LABEL_NAME)) {
             return sharedPreferences().getString(name, null);
         } else {
-            return sharedPreferences().getString(name, DEFAULT_STRING);
+            return sharedPreferences().getString(name, DEFAULT_ICON_PACK_LABEL_NAME);
         }
     }
 

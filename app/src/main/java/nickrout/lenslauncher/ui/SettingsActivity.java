@@ -2,7 +2,7 @@ package nickrout.lenslauncher.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -34,7 +34,7 @@ import nickrout.lenslauncher.util.Settings;
  */
 public class SettingsActivity extends BaseActivity {
 
-    private static final String TAG = SettingsActivity.class.getSimpleName();
+    private static final String TAG = "SettingsActivity";
 
     private LensView mLensView;
 
@@ -46,7 +46,7 @@ public class SettingsActivity extends BaseActivity {
     private TextView mValueDistortionFactor;
     private AppCompatSeekBar mScaleFactor;
     private TextView mValueScaleFactor;
-    private ImageView mTouchSelectionColor;
+    private ImageView mHighlightColor;
     private LinearLayout mIconPackLayout;
     private TextView mSelectedIconPack;
 
@@ -76,6 +76,7 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void setupViews() {
+
         mLensView = (LensView) findViewById(R.id.lens_view_settings);
         mLensView.setDrawType(LensView.DrawType.CIRCLES);
 
@@ -201,8 +202,8 @@ public class SettingsActivity extends BaseActivity {
                 mSettings.save(Settings.KEY_SHOW_NEW_APP_TAG, isChecked);
             }
         });
-        mTouchSelectionColor = (ImageView) findViewById(R.id.switch_show_touch_selection_color);
-        mTouchSelectionColor.setOnClickListener(new View.OnClickListener() {
+        mHighlightColor = (ImageView) findViewById(R.id.selector_highlight_color);
+        mHighlightColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showColorPickerDialog();
@@ -240,8 +241,18 @@ public class SettingsActivity extends BaseActivity {
         mShowTouchSelection.setChecked(mSettings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION));
         mShowNewAppTag.setChecked(mSettings.getBoolean(Settings.KEY_SHOW_NEW_APP_TAG));
 
-        mTouchSelectionColor.setImageDrawable(new ColorDrawable(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR))));
+        setHighlightColorDrawable();
+        setSelectedIconPackText();
+    }
 
+    private void setHighlightColorDrawable() {
+        GradientDrawable colorDrawable = new GradientDrawable();
+        colorDrawable.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
+        colorDrawable.setCornerRadius(getResources().getDimension(R.dimen.radius_highlight_color_switch));
+        mHighlightColor.setImageDrawable(colorDrawable);
+    }
+
+    private void setSelectedIconPackText() {
         mSelectedIconPack.setText(mSettings.getString(Settings.KEY_ICON_PACK_LABEL_NAME));
     }
 
@@ -278,7 +289,7 @@ public class SettingsActivity extends BaseActivity {
                     public void onColorSelected(@ColorInt int color) {
                         String hexColor = String.format("#%06X", (0xFFFFFFFF & color));
                         mSettings.save(Settings.KEY_TOUCH_SELECTION_COLOR, hexColor);
-                        mTouchSelectionColor.setImageDrawable(new ColorDrawable(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR))));
+                        setHighlightColorDrawable();
                         mChromaDialog.dismiss();
                     }
                 })
@@ -305,7 +316,7 @@ public class SettingsActivity extends BaseActivity {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         mSettings.save(Settings.KEY_ICON_PACK_LABEL_NAME, iconPackNames.get(which));
-                        mSelectedIconPack.setText(iconPackNames.get(which));
+                        setSelectedIconPackText();
                         mIconPackChooserDialog.dismiss();
 
                         /* Send broadcast to refresh the app drawer in background. */

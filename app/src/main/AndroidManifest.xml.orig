@@ -14,7 +14,11 @@
             android:value="app_persistent.db" />
         <meta-data
             android:name="VERSION"
+<<<<<<< HEAD
+            android:value="2" />
+=======
             android:value="3" />
+>>>>>>> 0c9969d213bbd5efac04492932bd13b6d97bacc0
         <meta-data
             android:name="QUERY_LOG"
             android:value="false" />

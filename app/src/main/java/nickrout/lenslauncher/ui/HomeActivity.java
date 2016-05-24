@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -28,13 +27,15 @@ import nickrout.lenslauncher.util.Settings;
  */
 public class HomeActivity extends BaseActivity implements Observer {
 
+    private final static String TAG = "HomeActivity";
+
     private LensView mLensView;
     private PackageManager mPackageManager;
     private ArrayList<App> mApps;
     private ArrayList<Bitmap> mAppIcons;
     private Settings mSettings;
 
-    private static String TAG = HomeActivity.class.getSimpleName();
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,28 @@ public class HomeActivity extends BaseActivity implements Observer {
         }
     }
 
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(HomeActivity.this);
+            mProgressDialog.setMessage(getResources().getString(R.string.progress_loading_apps));
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setCanceledOnTouchOutside(false);
+        }
+        mProgressDialog.show();
+    }
+
+    private void dismissProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        dismissProgressDialog();
+        super.onDestroy();
+    }
+
     @Override
     public void update(Observable observable, Object data) {
         loadApps(false);
@@ -74,20 +97,16 @@ public class HomeActivity extends BaseActivity implements Observer {
 
     private class UpdateAppsTask extends AsyncTask<Void, Void, Void> {
 
-        final ProgressDialog mProgressDialog = new ProgressDialog(HomeActivity.this);
-
         boolean mIsLoad;
 
         public UpdateAppsTask(boolean isLoad) {
-            mProgressDialog.setCanceledOnTouchOutside(false);
             mIsLoad = isLoad;
         }
 
         @Override
         protected void onPreExecute() {
             if (mIsLoad) {
-                mProgressDialog.setMessage(getString(R.string.progress_loading_apps));
-                mProgressDialog.show();
+                showProgressDialog();
             }
             super.onPreExecute();
         }
@@ -111,11 +130,19 @@ public class HomeActivity extends BaseActivity implements Observer {
 
         @Override
         protected void onPostExecute(Void result) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                if (HomeActivity.this.isDestroyed()) {
+                    return;
+                }
+            } else {
+                if (HomeActivity.this.isFinishing()) {
+                    return;
+                }
+            }
+            dismissProgressDialog();
             mLensView.setPackageManager(mPackageManager);
             mLensView.setApps(mApps, mAppIcons);
-            if ((mProgressDialog != null) && mProgressDialog.isShowing() && mIsLoad) {
-                mProgressDialog.dismiss();
-            }
+
             super.onPostExecute(result);
         }
     }
