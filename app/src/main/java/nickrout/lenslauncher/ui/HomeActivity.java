@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -20,6 +21,7 @@ import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.util.AppUtil;
 import nickrout.lenslauncher.util.ObservableObject;
+import nickrout.lenslauncher.util.Settings;
 
 /**
  * Created by nickrout on 2016/04/02.
@@ -30,6 +32,7 @@ public class HomeActivity extends BaseActivity implements Observer {
     private PackageManager mPackageManager;
     private ArrayList<App> mApps;
     private ArrayList<Bitmap> mAppIcons;
+    private Settings mSettings;
 
     private static String TAG = HomeActivity.class.getSimpleName();
 
@@ -43,7 +46,9 @@ public class HomeActivity extends BaseActivity implements Observer {
         setContentView(R.layout.activity_home);
         ObservableObject.getInstance().addObserver(this);
         mLensView = (LensView) findViewById(R.id.lens_view_apps);
+        mSettings = new Settings(getApplication());
         loadApps(true);
+
     }
 
     private void loadApps(boolean isLoad) {
@@ -70,7 +75,7 @@ public class HomeActivity extends BaseActivity implements Observer {
     private class UpdateAppsTask extends AsyncTask<Void, Void, Void> {
 
         final ProgressDialog mProgressDialog = new ProgressDialog(HomeActivity.this);
-        
+
         boolean mIsLoad;
 
         public UpdateAppsTask(boolean isLoad) {
@@ -90,7 +95,7 @@ public class HomeActivity extends BaseActivity implements Observer {
         @Override
         protected Void doInBackground(Void... arg0) {
             mPackageManager = getPackageManager();
-            ArrayList<App> apps = AppUtil.getApps(mPackageManager, HomeActivity.this);
+            ArrayList<App> apps = AppUtil.getApps(mPackageManager, HomeActivity.this, getApplication(), mSettings.getString(Settings.KEY_ICON_PACK_LABEL_NAME));
             mApps = new ArrayList<>();
             mAppIcons = new ArrayList<>();
             for (int i = 0; i < apps.size(); i++) {

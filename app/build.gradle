@@ -8,8 +8,8 @@ android {
         applicationId "nickrout.lenslauncher"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 12
-        versionName "1.1.1"
+        versionCode 20
+        versionName "1.2"
     }
     buildTypes {
         release {
@@ -25,4 +25,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.pavelsikun:vintage-chroma:1.4'
     compile 'com.github.satyan:sugar:1.5'
+    compile 'com.afollestad.material-dialogs:core:0.8.5.9'
 }

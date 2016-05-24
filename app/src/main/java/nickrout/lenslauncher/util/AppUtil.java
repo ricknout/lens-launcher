@@ -1,11 +1,13 @@
 package nickrout.lenslauncher.util;
 
+import android.app.Application;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class AppUtil {
     private static final String TAG = AppUtil.class.getSimpleName();
 
     // Get all available apps for launcher
-    public static ArrayList<App> getApps(PackageManager packageManager, Context context) {
+    public static ArrayList<App> getApps(PackageManager packageManager, Context context, Application application, String iconPackLabelName) {
         ArrayList<App> apps = new ArrayList<>();
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -36,6 +38,15 @@ public class AppUtil {
         }
         if (availableActivities != null) {
             Collections.sort(availableActivities, new ResolveInfo.DisplayNameComparator(packageManager));
+
+            IconPackManager.IconPack selectedIconPack = null;
+            ArrayList<IconPackManager.IconPack> iconPacks = new IconPackManager().getAvailableIconPacksWithIcons(true, application);
+
+            for (IconPackManager.IconPack iconPack : iconPacks) {
+                if (iconPack.name.equals(iconPackLabelName))
+                    selectedIconPack = iconPack;
+            }
+
             for (ResolveInfo resolveInfo : availableActivities) {
                 App app = new App();
                 try {
@@ -47,7 +58,11 @@ public class AppUtil {
                 app.setPackageName(resolveInfo.activityInfo.packageName);
                 app.setName(resolveInfo.activityInfo.name);
                 app.setIconResId(resolveInfo.activityInfo.getIconResource());
-                app.setIcon(BitmapUtil.packageNameToBitmap(packageManager, resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.getIconResource()));
+                Bitmap defaultBitmap = BitmapUtil.packageNameToBitmap(packageManager, resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.getIconResource());
+                if (selectedIconPack != null)
+                    app.setIcon(selectedIconPack.getIconForPackage(app.getPackageName().toString(), defaultBitmap));
+                else
+                    app.setIcon(defaultBitmap);
                 apps.add(app);
             }
         }

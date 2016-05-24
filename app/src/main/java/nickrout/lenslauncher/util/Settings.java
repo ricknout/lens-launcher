@@ -43,6 +43,7 @@ public class Settings {
     public static final String KEY_SHOW_TOUCH_SELECTION = "show_touch_selection";
     public static final String KEY_SHOW_NEW_APP_TAG = "show_new_tag_app";
     public static final String KEY_TOUCH_SELECTION_COLOR = "show_touch_selection_color";
+    public static final String KEY_ICON_PACK_LABEL_NAME = "icon_pack_label_name";
 
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -83,6 +84,8 @@ public class Settings {
     public String getString(String name) {
         if (name.equals(KEY_TOUCH_SELECTION_COLOR)) {
             return sharedPreferences().getString(name, DEFAULT_TOUCH_SELECTION_COLOR);
+        } else if (name.equals(KEY_ICON_PACK_LABEL_NAME)) {
+            return sharedPreferences().getString(name, null);
         } else {
             return sharedPreferences().getString(name, DEFAULT_STRING);
         }

@@ -15,6 +15,8 @@
     <string name="setting_show_touch_selection">Show Touch Selection</string>
     <string name="setting_show_touch_selection_color">Show Touch Selection Color</string>
     <string name="setting_show_new_app_tag">Show New App Tag</string>
+    <string name="setting_icon_pack">Icon Pack</string>
+    <string name="setting_default_icon_pack">Default Icon Pack</string>
 
     <!-- Menu Strings -->
     <string name="menu_title_about">About</string>
@@ -30,5 +32,9 @@
 
     <!-- About Strings -->
     <string name="about"><![CDATA[Lens Launcher is a unique, efficient way to browse and launch your apps.<br><br>Instead of scrolling long lists or swiping through multiple pages, Lens Launcher implements two unique features:<br><br><b>• An Equispaced Grid that displays all of your apps, regardless of screen size or app count.<br><br>• A Graphical Fisheye Lens to quickly zoom, pan and launch apps using touch gestures.</b><br><br>Lens Launcher also includes a full Settings menu to tweak all aspects of the Lens; Distortion, Scaling, Icon Size, Haptic Feedback, etc.<br><br>The Graphical Fisheye Lens algorithm is derived from methods proposed by Manojit Sarkar and Marc H. Brown. Their original 1993 paper, titled <i>Graphical Fisheye Views</i>, can be found <a href="https://drive.google.com/file/d/0B6Nqy9y098RLa2pqNVFUcUhIZXM/view?usp=sharing">here</a>.<br><br>Lens Launcher is written by Nick Rout<br><a href="https://twitter.com/ricknout">Twitter</a> | <a href="https://plus.google.com/+NicholasRout">Google+</a><br><br>The source code and resources are available on <a href="https://github.com/nicholasrout/lens-launcher">Github</a>]]></string>
+
+    <!-- Dialog Strings -->
+    <string name="dialog_select_icon_pack">Select An Icon Pack</string>
+    <string name="dialog_confirm">Select</string>
 
 </resources>
