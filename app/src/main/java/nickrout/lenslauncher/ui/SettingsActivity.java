@@ -269,7 +269,7 @@ public class SettingsActivity extends BaseActivity {
         final Settings settings = new Settings(getBaseContext());
         mChromaDialog = new ChromaDialog.Builder()
                 .initialColor(Color.parseColor(settings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)))
-                .colorMode(ColorMode.ARGB)
+                .colorMode(ColorMode.RGB)
                 .indicatorMode(IndicatorMode.HEX)
                 .onColorSelected(new OnColorSelectedListener() {
                     @Override
