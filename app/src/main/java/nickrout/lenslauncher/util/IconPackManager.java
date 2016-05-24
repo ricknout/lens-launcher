@@ -31,8 +31,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import nickrout.lenslauncher.R;
+
 public class IconPackManager {
-    private static final String TAG = IconPackManager.class.getSimpleName();
+    private static final String TAG = "IconPackManager";
     private Application mApplication;
 
     public class IconPack {
@@ -207,9 +209,9 @@ public class IconPackManager {
             String key = packageName + ":" + appPackageName;
 
             // if generated bitmaps cache already contains the package name return it
-//            Bitmap cachedBitmap = BitmapCache.getInstance(mApplication).getBitmap(key);
-//            if (cachedBitmap != null)
-//                return cachedBitmap;
+            //      Bitmap cachedBitmap = BitmapCache.getInstance(mApplication).getBitmap(key);
+            // if (cachedBitmap != null)
+            //      return cachedBitmap;
 
             // if no support images in the icon pack return the bitmap itself
             if (mBackImages.size() == 0)
@@ -271,15 +273,17 @@ public class IconPackManager {
         if (iconPacksList == null || forceReload) {
             iconPacksList = new ArrayList<>();
 
-            // find apps with intent-filter "com.gau.go.launcherex.theme" and return build the HashMap
             PackageManager pm = mApplication.getPackageManager();
 
-            //  List<ResolveInfo> adwlauncherthemes = pm.queryIntentActivities(new Intent("org.adw.launcher.THEMES"), PackageManager.GET_META_DATA);
-            List<ResolveInfo> golauncherthemes = pm.queryIntentActivities(new Intent("com.gau.go.launcherex.theme"), PackageManager.GET_META_DATA);
-
-            // merge those lists
-            List<ResolveInfo> rinfo = new ArrayList<ResolveInfo>(golauncherthemes);
-            // rinfo.addAll(golauncherthemes);
+            /**
+             * TODO: Add more Launchers (package names) here, if required.
+             * Currently Lens Launcher supports all icon packs supported by GoLauncher.
+             * Create a set by filter the list to contain unique icon packs only.
+             */
+            List<ResolveInfo> rinfo = new ArrayList<>();
+            for (String launcher : mApplication.getResources().getStringArray(R.array.icon_pack_launchers)) {
+                rinfo.addAll(pm.queryIntentActivities(new Intent(launcher), PackageManager.GET_META_DATA));
+            }
 
             for (ResolveInfo ri : rinfo) {
                 IconPack ip = new IconPack();
@@ -291,7 +295,6 @@ public class IconPackManager {
                     ip.name = mApplication.getPackageManager().getApplicationLabel(ai).toString();
                     iconPacksList.add(ip);
                 } catch (PackageManager.NameNotFoundException e) {
-                    // shouldn't happen
                     e.printStackTrace();
                 }
             }

@@ -86,9 +86,9 @@ public class Settings {
         if (name.equals(KEY_TOUCH_SELECTION_COLOR)) {
             return sharedPreferences().getString(name, DEFAULT_TOUCH_SELECTION_COLOR);
         } else if (name.equals(KEY_ICON_PACK_LABEL_NAME)) {
-            return sharedPreferences().getString(name, null);
-        } else {
             return sharedPreferences().getString(name, DEFAULT_ICON_PACK_LABEL_NAME);
+        } else {
+            return sharedPreferences().getString(name, DEFAULT_STRING);
         }
     }
 

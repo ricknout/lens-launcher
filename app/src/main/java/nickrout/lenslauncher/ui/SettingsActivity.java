@@ -221,7 +221,6 @@ public class SettingsActivity extends BaseActivity {
 
     private void assignValues() {
 
-
         mLensDiameter.setProgress((int) mSettings.getFloat(Settings.KEY_LENS_DIAMETER) - Settings.MIN_LENS_DIAMETER);
         String lensDiameter = (int) mSettings.getFloat(Settings.KEY_LENS_DIAMETER) + "dp";
         mValueLensDiameter.setText(lensDiameter);
