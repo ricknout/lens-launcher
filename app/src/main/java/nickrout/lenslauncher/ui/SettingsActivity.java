@@ -308,7 +308,7 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
         int selectedIndex = iconPackNames.indexOf(selectedPackageName);
 
         mIconPackChooserDialog = new MaterialDialog.Builder(SettingsActivity.this)
-                .title(R.string.dialog_select_icon_pack)
+                .title(R.string.setting_icon_pack)
                 .items(iconPackNames)
                 .alwaysCallSingleChoiceCallback()
                 .itemsCallbackSingleChoice(selectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
