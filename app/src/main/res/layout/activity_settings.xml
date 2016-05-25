@@ -139,11 +139,12 @@
             android:id="@+id/layout_icon_pack_chooser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical">
+            android:paddingBottom="16dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="16dp"
+            android:orientation="vertical"
+            android:background="?android:attr/selectableItemBackground">
 
             <TextView
                 android:layout_width="match_parent"

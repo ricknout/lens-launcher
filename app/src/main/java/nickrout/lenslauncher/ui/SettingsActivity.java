@@ -316,7 +316,7 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         mSettings.save(Settings.KEY_ICON_PACK_LABEL_NAME, iconPackNames.get(which));
                         setSelectedIconPackText();
-                        mIconPackChooserDialog.dismiss();
+                        dismissIconPackChooserDialog();
 
                         /* Send broadcast to refresh the app drawer in background. */
                         Intent refreshHomeIntent = new Intent(SettingsActivity.this, HomeActivity.AppsUpdatedReceiver.class);
@@ -325,7 +325,18 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
                         return true;
                     }
                 })
-                .build();
-        mIconPackChooserDialog.show();
+                .show();
+    }
+
+    private void dismissIconPackChooserDialog() {
+        if (mIconPackChooserDialog != null && mIconPackChooserDialog.isShowing()) {
+            mIconPackChooserDialog.dismiss();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        dismissIconPackChooserDialog();
+        super.onDestroy();
     }
 }
