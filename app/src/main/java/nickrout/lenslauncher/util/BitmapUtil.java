@@ -48,8 +48,12 @@ public class BitmapUtil {
         options.inDither = false;
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         options.inPreferQualityOverSpeed = true;
-        Bitmap bitmap = BitmapFactory.decodeResource(res, resId, options);
-        return bitmap;
+        try {
+            return BitmapFactory.decodeResource(res, resId, options);
+        } catch (OutOfMemoryError e1) {
+            e1.printStackTrace();
+            return null;
+        }
     }
 
     // Get res id from app package name
