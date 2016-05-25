@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
@@ -18,10 +19,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.pavelsikun.vintagechroma.ChromaDialog;
-import com.pavelsikun.vintagechroma.IndicatorMode;
-import com.pavelsikun.vintagechroma.OnColorSelectedListener;
-import com.pavelsikun.vintagechroma.colormode.ColorMode;
+import com.afollestad.materialdialogs.color.ColorChooserDialog;
 
 import java.util.ArrayList;
 
@@ -32,7 +30,7 @@ import nickrout.lenslauncher.util.Settings;
 /**
  * Created by nickrout on 2016/04/02.
  */
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends BaseActivity implements ColorChooserDialog.ColorCallback {
 
     private static final String TAG = "SettingsActivity";
 
@@ -56,7 +54,7 @@ public class SettingsActivity extends BaseActivity {
     private SwitchCompat mShowTouchSelection;
     private SwitchCompat mShowNewAppTag;
 
-    private ChromaDialog mChromaDialog;
+    private ColorChooserDialog mHighlightColorDialog;
     private MaterialDialog mIconPackChooserDialog;
 
     private Settings mSettings;
@@ -279,22 +277,23 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void showColorPickerDialog() {
-        mChromaDialog = new ChromaDialog.Builder()
-                .initialColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)))
-                .colorMode(ColorMode.RGB)
-                .indicatorMode(IndicatorMode.HEX)
-                .onColorSelected(new OnColorSelectedListener() {
-                    @Override
-                    public void onColorSelected(@ColorInt int color) {
-                        String hexColor = String.format("#%06X", (0xFFFFFFFF & color));
-                        mSettings.save(Settings.KEY_TOUCH_SELECTION_COLOR, hexColor);
-                        setHighlightColorDrawable();
-                        mChromaDialog.dismiss();
-                    }
-                })
-                .create();
-     
-        mChromaDialog.show(getSupportFragmentManager(), "ChromaDialog");
+        mHighlightColorDialog = new ColorChooserDialog.Builder(this, R.string.setting_highlight_color)
+                .titleSub(R.string.setting_highlight_color)
+                .accentMode(true)
+                .doneButton(R.string.md_done_label)
+                .cancelButton(R.string.md_cancel_label)
+                .backButton(R.string.md_back_label)
+                .preselect(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)))
+                .dynamicButtonColor(false)
+                .allowUserColorInputAlpha(false)
+                .show();
+    }
+
+    @Override
+    public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
+        String hexColor = String.format("#%06X", (0xFFFFFFFF & selectedColor));
+        mSettings.save(Settings.KEY_TOUCH_SELECTION_COLOR, hexColor);
+        setHighlightColorDrawable();
     }
 
     private void showIconPackChooserDialog() {

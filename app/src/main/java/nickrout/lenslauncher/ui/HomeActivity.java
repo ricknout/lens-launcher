@@ -1,6 +1,5 @@
 package nickrout.lenslauncher.ui;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +10,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -35,7 +36,7 @@ public class HomeActivity extends BaseActivity implements Observer {
     private ArrayList<Bitmap> mAppIcons;
     private Settings mSettings;
 
-    private ProgressDialog mProgressDialog;
+    private MaterialDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +71,13 @@ public class HomeActivity extends BaseActivity implements Observer {
 
     private void showProgressDialog() {
         if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(HomeActivity.this);
-            mProgressDialog.setMessage(getResources().getString(R.string.progress_loading_apps));
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog = new MaterialDialog.Builder(this)
+                    .content(R.string.progress_loading_apps)
+                    .progress(true, 0)
+                    .cancelable(false)
+                    .canceledOnTouchOutside(false)
+                    .show();
         }
-        mProgressDialog.show();
     }
 
     private void dismissProgressDialog() {
