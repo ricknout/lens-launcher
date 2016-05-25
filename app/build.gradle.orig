@@ -8,8 +8,13 @@ android {
         applicationId "nickrout.lenslauncher"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 15
-        versionName "1.2.1"
+<<<<<<< HEAD
+        versionCode 20
+        versionName "1.2"
+=======
+        versionCode 14
+        versionName "1.2.0"
+>>>>>>> 0c9969d213bbd5efac04492932bd13b6d97bacc0
     }
     buildTypes {
         release {
@@ -23,7 +28,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.pavelsikun:vintage-chroma:1.4.1'
+    compile 'com.pavelsikun:vintage-chroma:1.4'
     compile 'com.github.satyan:sugar:1.5'
     compile 'com.afollestad.material-dialogs:core:0.8.5.9'
 }
