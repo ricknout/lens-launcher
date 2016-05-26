@@ -47,6 +47,7 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
     private ImageView mHighlightColor;
     private LinearLayout mIconPackLayout;
     private TextView mSelectedIconPack;
+    private LinearLayout mAppArrangerLayout;
 
     private SwitchCompat mVibrateAppHover;
     private SwitchCompat mVibrateAppLaunch;
@@ -213,6 +214,13 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
             @Override
             public void onClick(View v) {
                 showIconPackChooserDialog();
+            }
+        });
+        mAppArrangerLayout = (LinearLayout) findViewById(R.id.layout_app_arranger);
+        mAppArrangerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingsActivity.this, AppArrangerActivity.class));
             }
         });
     }
