@@ -25,7 +25,6 @@ public class AppUtil {
     private static final String TAG = AppUtil.class.getSimpleName();
     private static ArrayList<App> appsList;
 
-
     public static ArrayList<App> getApps() {
         if (appsList == null)
             return null;

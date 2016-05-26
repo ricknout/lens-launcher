@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Window;
@@ -19,23 +18,18 @@ import java.util.Observer;
 
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
-import nickrout.lenslauncher.util.AppUtil;
 import nickrout.lenslauncher.util.ObservableObject;
-import nickrout.lenslauncher.util.Settings;
+import nickrout.lenslauncher.util.UpdateAppsTask;
 
 /**
  * Created by nickrout on 2016/04/02.
  */
-public class HomeActivity extends BaseActivity implements Observer {
+public class HomeActivity extends BaseActivity implements Observer, UpdateAppsTask.UpdateAppsTaskListener {
 
     private final static String TAG = "HomeActivity";
 
     private LensView mLensView;
     private PackageManager mPackageManager;
-    private ArrayList<App> mApps;
-    private ArrayList<Bitmap> mAppIcons;
-    private Settings mSettings;
-
     private MaterialDialog mProgressDialog;
 
     @Override
@@ -48,13 +42,13 @@ public class HomeActivity extends BaseActivity implements Observer {
         setContentView(R.layout.activity_home);
         ObservableObject.getInstance().addObserver(this);
         mLensView = (LensView) findViewById(R.id.lens_view_apps);
-        mSettings = new Settings(getApplication());
+        mPackageManager = getPackageManager();
         loadApps(true);
 
     }
 
     private void loadApps(boolean isLoad) {
-        new UpdateAppsTask(isLoad).execute();
+        new UpdateAppsTask(mPackageManager, getApplicationContext(), getApplication(), isLoad, HomeActivity.this).execute();
     }
 
     @Override
@@ -97,55 +91,26 @@ public class HomeActivity extends BaseActivity implements Observer {
         loadApps(false);
     }
 
-    private class UpdateAppsTask extends AsyncTask<Void, Void, Void> {
-
-        boolean mIsLoad;
-
-        public UpdateAppsTask(boolean isLoad) {
-            mIsLoad = isLoad;
+    @Override
+    public void onUpdateAppsTaskPreExecute(boolean mIsLoad) {
+        if (mIsLoad) {
+            showProgressDialog();
         }
+    }
 
-        @Override
-        protected void onPreExecute() {
-            if (mIsLoad) {
-                showProgressDialog();
+    @Override
+    public void onUpdateAppsTaskPostExecute(ArrayList<App> mApps, ArrayList<Bitmap> mAppIcons) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            if (HomeActivity.this.isDestroyed()) {
+                return;
             }
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            mPackageManager = getPackageManager();
-            ArrayList<App> apps = AppUtil.getApps(mPackageManager, HomeActivity.this, getApplication(), mSettings.getString(Settings.KEY_ICON_PACK_LABEL_NAME));
-            mApps = new ArrayList<>();
-            mAppIcons = new ArrayList<>();
-            for (int i = 0; i < apps.size(); i++) {
-                App app = apps.get(i);
-                Bitmap appIcon = app.getIcon();
-                if (appIcon != null) {
-                    mApps.add(app);
-                    mAppIcons.add(appIcon);
-                }
+        } else {
+            if (HomeActivity.this.isFinishing()) {
+                return;
             }
-            return null;
         }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                if (HomeActivity.this.isDestroyed()) {
-                    return;
-                }
-            } else {
-                if (HomeActivity.this.isFinishing()) {
-                    return;
-                }
-            }
-            dismissProgressDialog();
-            mLensView.setPackageManager(mPackageManager);
-            mLensView.setApps(mApps, mAppIcons);
-
-            super.onPostExecute(result);
-        }
+        dismissProgressDialog();
+        mLensView.setPackageManager(mPackageManager);
+        mLensView.setApps(mApps, mAppIcons);
     }
 }
