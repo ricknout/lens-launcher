@@ -92,8 +92,6 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
 
     @Override
     public long getDraggingId() {
-        if (super.getDraggingId() != -1)
-            Log.d(TAG, "getDraggingId() called with: " + " " + super.getDraggingId());
         return super.getDraggingId();
     }
 
@@ -157,7 +155,6 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
                 mToggleAppVisibility.setImageResource(R.drawable.ic_visible);
             } else {
                 mToggleAppVisibility.setImageResource(R.drawable.ic_invisible);
-                Log.d(TAG, "setAppElement() called with: " + "app = [" + app.toString() + "]");
             }
             mContainer.postInvalidate();
         }

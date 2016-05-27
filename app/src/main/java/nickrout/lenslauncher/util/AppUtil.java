@@ -25,14 +25,9 @@ public class AppUtil {
     private static final String TAG = AppUtil.class.getSimpleName();
     private static ArrayList<App> appsList;
 
-    public static ArrayList<App> getApps() {
-        if (appsList == null)
-            return null;
-        else
-            return appsList;
-    }
-
-    // Get all available apps for launcher
+    /**
+     * This returns all available apps for launcher - this does not disclude hidden apps.
+     */
     public static ArrayList<App> getApps(PackageManager packageManager, Context context, Application application, String iconPackLabelName) {
         appsList = new ArrayList<>();
         Intent intent = new Intent(Intent.ACTION_MAIN, null);

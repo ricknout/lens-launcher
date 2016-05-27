@@ -1,11 +1,11 @@
 package nickrout.lenslauncher.ui;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -88,12 +88,13 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                long start = System.currentTimeMillis();
                 for (int i = 0; i < appData.size(); i++)
                     AppPersistent.setOrderNumberForPackage(appData.get(i).getPackageName().toString(), i);
-                Log.d(TAG, "Saved To Persistence " + (System.currentTimeMillis() - start));
             }
         });
         thread.start();
+        /* Send broadcast to refresh the app drawer in background. */
+        Intent refreshHomeIntent = new Intent(AppArrangerActivity.this, HomeActivity.AppsUpdatedReceiver.class);
+        sendBroadcast(refreshHomeIntent);
     }
 }

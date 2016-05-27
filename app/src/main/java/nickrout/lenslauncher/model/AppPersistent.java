@@ -1,7 +1,5 @@
 package nickrout.lenslauncher.model;
 
-import android.util.Log;
-
 import com.orm.SugarRecord;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -100,10 +98,8 @@ public class AppPersistent extends SugarRecord {
     public static boolean getAppVisibilityForPackage(String mPackageName) {
         AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mPackageName")).eq(mPackageName)).first();
         if (appPersistent != null) {
-            Log.d(TAG, mPackageName + " Returning " + appPersistent.isAppVisible());
             return appPersistent.isAppVisible();
         } else {
-            Log.d(TAG, mPackageName + " Not found, returning true");
             return true;
         }
     }
@@ -113,11 +109,9 @@ public class AppPersistent extends SugarRecord {
         if (appPersistent != null) {
             appPersistent.setAppVisible(mHideApp);
             appPersistent.save();
-            Log.d(TAG, "Saved " + mPackageName + " visibility to " + mHideApp);
         } else {
             AppPersistent newAppPersistent = new AppPersistent(mPackageName, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, DEFAULT_APP_VISIBILITY);
             newAppPersistent.save();
-            Log.d(TAG, "Created newAppPersistent");
         }
     }
 

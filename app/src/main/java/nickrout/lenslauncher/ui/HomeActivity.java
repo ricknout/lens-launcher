@@ -18,6 +18,7 @@ import java.util.Observer;
 
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
+import nickrout.lenslauncher.model.AppPersistent;
 import nickrout.lenslauncher.util.ObservableObject;
 import nickrout.lenslauncher.util.UpdateAppsTask;
 
@@ -100,6 +101,12 @@ public class HomeActivity extends BaseActivity implements Observer, UpdateAppsTa
 
     @Override
     public void onUpdateAppsTaskPostExecute(ArrayList<App> mApps, ArrayList<Bitmap> mAppIcons) {
+        for (int i = 0; i < mApps.size(); i++) {
+            if (!AppPersistent.getAppVisibilityForPackage(mApps.get(i).getPackageName().toString())) {
+                mApps.remove(i);
+                mAppIcons.remove(i);
+            }
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             if (HomeActivity.this.isDestroyed()) {
                 return;
