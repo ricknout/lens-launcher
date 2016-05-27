@@ -32,11 +32,17 @@
             android:id="@+id/element_app_hide"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/element_app_menu"
             android:padding="6dp"
             android:src="@drawable/ic_visible" />
+
+        <ImageView
+            android:id="@+id/element_app_menu"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:padding="12dp"
+            android:src="@drawable/ic_menu" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

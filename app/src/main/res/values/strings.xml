@@ -22,6 +22,7 @@
     <!-- Menu Strings -->
     <string name="menu_title_about">About</string>
     <string name="menu_title_show_apps">Show Apps</string>
+    <string name="menu_app_uninstall">Uninstall</string>
 
     <!-- Error Strings -->
     <string name="error_app_not_found">App Not Found</string>

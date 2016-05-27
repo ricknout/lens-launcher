@@ -52,7 +52,7 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
     @Override
     public void onUpdateAppsTaskPostExecute(ArrayList<App> mApps, ArrayList<Bitmap> mAppIcons) {
         dismissProgressDialog();
-        arrangerDragDropAdapter = new ArrangerDragDropAdapter(mRecyclerView, mApps);
+        arrangerDragDropAdapter = new ArrangerDragDropAdapter(AppArrangerActivity.this, mRecyclerView, mApps);
 
         mRecyclerView.setAdapter(arrangerDragDropAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
