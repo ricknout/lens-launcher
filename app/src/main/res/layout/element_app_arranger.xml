@@ -15,14 +15,15 @@
         <ImageView
             android:id="@+id/element_app_icon"
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@color/colorAccent" />
+            android:layout_height="48dp" />
 
         <TextView
             android:id="@+id/element_app_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/element_app_icon"
             android:layout_toRightOf="@+id/element_app_icon"
             android:text="AppName"
             android:textStyle="bold" />

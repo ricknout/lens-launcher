@@ -1,5 +1,7 @@
 package nickrout.lenslauncher.model;
 
+import android.util.Log;
+
 import com.orm.SugarRecord;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -17,13 +19,18 @@ public class AppPersistent extends SugarRecord {
     private String mPackageName;
     private long mOpenCount;
     private int mOrderNumber;
-    private boolean mHideApp;
+    private boolean mAppVisible;
 
-    public AppPersistent(String mPackageName, long mOpenCount, int mOrderNumber, boolean mHideApp) {
+    private static boolean DEFAULT_APP_VISIBILITY = true;
+    private static int DEFAULT_ORDER_NUMBER = -1;
+    private static long DEFAULT_OPEN_COUNT = 1;
+    private static final String TAG = "AppPersistent";
+
+    public AppPersistent(String mPackageName, long mOpenCount, int mOrderNumber, boolean mAppVisible) {
         this.mPackageName = mPackageName;
         this.mOpenCount = mOpenCount;
         this.mOrderNumber = mOrderNumber;
-        this.mHideApp = mHideApp;
+        this.mAppVisible = mAppVisible;
     }
 
     public String getPackageName() {
@@ -50,12 +57,12 @@ public class AppPersistent extends SugarRecord {
         this.mOrderNumber = mOrderNumber;
     }
 
-    public boolean isHideApp() {
-        return mHideApp;
+    public boolean isAppVisible() {
+        return mAppVisible;
     }
 
-    public void setHideApp(boolean mHideApp) {
-        this.mHideApp = mHideApp;
+    public void setAppVisible(boolean mAppVisible) {
+        this.mAppVisible = mAppVisible;
     }
 
     @Override
@@ -64,6 +71,7 @@ public class AppPersistent extends SugarRecord {
                 "mPackageName='" + mPackageName + '\'' +
                 ", mOpenCount=" + mOpenCount +
                 ", mOrderNumber=" + mOrderNumber +
+                ", mAppVisible=" + mAppVisible +
                 '}';
     }
 
@@ -73,7 +81,7 @@ public class AppPersistent extends SugarRecord {
             appPersistent.setOpenCount(appPersistent.getOpenCount() + 1);
             appPersistent.save();
         } else {
-            AppPersistent newAppPersistent = new AppPersistent(mPackageName, 1, -1, false); /* Set default incremented count to 1*/
+            AppPersistent newAppPersistent = new AppPersistent(mPackageName, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, DEFAULT_APP_VISIBILITY);
             newAppPersistent.save();
         }
     }
@@ -84,28 +92,32 @@ public class AppPersistent extends SugarRecord {
             appPersistent.setOrderNumber(mOrderNumber);
             appPersistent.save();
         } else {
-            AppPersistent newAppPersistent = new AppPersistent(mPackageName, 1, -1, false); /* Set default incremented count to 1*/
+            AppPersistent newAppPersistent = new AppPersistent(mPackageName, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, DEFAULT_APP_VISIBILITY);
             newAppPersistent.save();
         }
     }
 
-    public static boolean getHideAppForPackage(String mPackageName) {
+    public static boolean getAppVisibilityForPackage(String mPackageName) {
         AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mPackageName")).eq(mPackageName)).first();
         if (appPersistent != null) {
-            return appPersistent.isHideApp();
+            Log.d(TAG, mPackageName + " Returning " + appPersistent.isAppVisible());
+            return appPersistent.isAppVisible();
         } else {
-            return false;
+            Log.d(TAG, mPackageName + " Not found, returning true");
+            return true;
         }
     }
 
-    public static void setHideAppForPackage(String mPackageName, boolean mHideApp) {
+    public static void setAppVisibilityForPackage(String mPackageName, boolean mHideApp) {
         AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mPackageName")).eq(mPackageName)).first();
         if (appPersistent != null) {
-            appPersistent.setHideApp(mHideApp);
+            appPersistent.setAppVisible(mHideApp);
             appPersistent.save();
+            Log.d(TAG, "Saved " + mPackageName + " visibility to " + mHideApp);
         } else {
-            AppPersistent newAppPersistent = new AppPersistent(mPackageName, 1, -1, false); /* Set default incremented count to 1*/
+            AppPersistent newAppPersistent = new AppPersistent(mPackageName, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, DEFAULT_APP_VISIBILITY);
             newAppPersistent.save();
+            Log.d(TAG, "Created newAppPersistent");
         }
     }
 

@@ -65,36 +65,27 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
     public MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.element_app_arranger, parent, false);
-        MainViewHolder holder = new MainViewHolder(ArrangerDragDropAdapter.this, view);
+        final MainViewHolder holder = new MainViewHolder(ArrangerDragDropAdapter.this, view);
         view.setOnLongClickListener(holder);
+        holder.setOnClickListeners();
         return holder;
     }
 
     @Override
     public void onBindViewHolder(final MainViewHolder holder, final int position) {
-        final App app = appData.get(position);
-        holder.mLabel.setText(app.getLabel());
-        Log.d(TAG, "Setting Name = " + app.getLabel());
+        App app = getItemForPosition(position);
 
         // NOTE: check for getDraggingId() match to set an "invisible space" while dragging
-
-        if (getDraggingId() == getPositionForId(position))
-            Log.d(TAG, "shouldSetInvisibleSpace? " + getDraggingId() + " == " + getPositionForId(position));
-
         holder.mContainer.setVisibility(getDraggingId() == getPositionForId(position) ? View.INVISIBLE : View.VISIBLE);
         holder.mContainer.postInvalidate();
 
-        holder.mHideApp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleAppVisibility(app, holder);
-            }
-        });
+        holder.setAppElement(app);
     }
 
     @Override
     public long getDraggingId() {
-        Log.d(TAG, "getDraggingId() called with: " + " " + super.getDraggingId());
+        if (super.getDraggingId() != -1)
+            Log.d(TAG, "getDraggingId() called with: " + " " + super.getDraggingId());
         return super.getDraggingId();
     }
 
@@ -112,19 +103,7 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
         return appData;
     }
 
-    private void toggleAppVisibility(App app, MainViewHolder holder) {
-        boolean isAppVisible = AppPersistent.getHideAppForPackage(app.getPackageName().toString());
-        AppPersistent.setHideAppForPackage(app.getPackageName().toString(), !isAppVisible);
-        if (!isAppVisible) {
-            Snackbar.make(holder.mContainer, app.getLabel() + " is now hidden", Snackbar.LENGTH_LONG).show();
-            holder.mHideApp.setImageResource(R.drawable.ic_invisible);
-        } else {
-            Snackbar.make(holder.mContainer, app.getLabel() + " is now visible", Snackbar.LENGTH_LONG).show();
-            holder.mHideApp.setImageResource(R.drawable.ic_visible);
-        }
-    }
-
-    static class MainViewHolder extends DragSortAdapter.ViewHolder implements View.OnLongClickListener {
+    public static class MainViewHolder extends DragSortAdapter.ViewHolder implements View.OnLongClickListener {
 
         @Bind(R.id.element_app_container)
         CardView mContainer;
@@ -138,12 +117,11 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
         @Bind(R.id.element_app_hide)
         ImageView mHideApp;
 
-        private ArrangerDragDropAdapter arrangerDragDropAdapter;
+        private App mApp;
 
         public MainViewHolder(final ArrangerDragDropAdapter adapter, View itemView) {
             super(adapter, itemView);
             ButterKnife.bind(this, itemView);
-            this.arrangerDragDropAdapter = adapter;
         }
 
         @Override
@@ -157,5 +135,50 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
             return new NoForegroundShadowBuilder(itemView, touchPoint);
         }
 
+        public void setAppElement(App app) {
+            this.mApp = app;
+            mLabel.setText(mApp.getLabel());
+            mIcon.setImageBitmap(mApp.getIcon());
+            boolean isAppVisible = AppPersistent.getAppVisibilityForPackage(mApp.getPackageName().toString());
+            if (isAppVisible) {
+                mHideApp.setImageResource(R.drawable.ic_visible);
+            } else {
+                mHideApp.setImageResource(R.drawable.ic_invisible);
+                Log.d(TAG, "setAppElement() called with: " + "app = [" + app.toString() + "]");
+            }
+            mContainer.postInvalidate();
+        }
+
+        public void toggleAppVisibility(App app) {
+            boolean isAppVisible = AppPersistent.getAppVisibilityForPackage(app.getPackageName().toString());
+            AppPersistent.setAppVisibilityForPackage(app.getPackageName().toString(), !isAppVisible);
+            if (isAppVisible) {
+                Snackbar.make(mContainer, app.getLabel() + " is now hidden", Snackbar.LENGTH_LONG).show();
+                mHideApp.setImageResource(R.drawable.ic_invisible);
+            } else {
+                Snackbar.make(mContainer, app.getLabel() + " is now visible", Snackbar.LENGTH_LONG).show();
+                mHideApp.setImageResource(R.drawable.ic_visible);
+            }
+        }
+
+        public void setOnClickListeners() {
+            mHideApp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    printAllPersistent();
+                    if (mApp != null)
+                        toggleAppVisibility(mApp);
+                    else
+                        Snackbar.make(mContainer, "Error in Opening App", Snackbar.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        public void printAllPersistent() {
+            for (AppPersistent appPersistent : AppPersistent.listAll(AppPersistent.class)) {
+                if (!appPersistent.isAppVisible())
+                    Log.d(TAG, appPersistent.toString());
+            }
+        }
     }
 }
