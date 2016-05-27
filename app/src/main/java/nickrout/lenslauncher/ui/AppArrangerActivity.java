@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -16,7 +17,7 @@ import butterknife.ButterKnife;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.adapter.ArrangerDragDropAdapter;
 import nickrout.lenslauncher.model.App;
-import nickrout.lenslauncher.util.AppUtil;
+import nickrout.lenslauncher.model.AppPersistent;
 import nickrout.lenslauncher.util.UpdateAppsTask;
 
 public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.UpdateAppsTaskListener {
@@ -27,6 +28,7 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
     RecyclerView mRecyclerView;
 
     private MaterialDialog mProgressDialog;
+    private ArrangerDragDropAdapter arrangerDragDropAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +52,8 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
     @Override
     public void onUpdateAppsTaskPostExecute(ArrayList<App> mApps, ArrayList<Bitmap> mAppIcons) {
         dismissProgressDialog();
-        List<App> appsList = AppUtil.getApps();
-        ArrangerDragDropAdapter arrangerDragDropAdapter = new ArrangerDragDropAdapter(mRecyclerView, appsList);
-        // arrangerDragDropAdapter.setHasStableIds(false);
+        arrangerDragDropAdapter = new ArrangerDragDropAdapter(mRecyclerView, mApps);
+
         mRecyclerView.setAdapter(arrangerDragDropAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -78,6 +79,21 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
     @Override
     protected void onDestroy() {
         dismissProgressDialog();
+        saveToPersistence();
         super.onDestroy();
+    }
+
+    private void saveToPersistence() {
+        final List<App> appData = arrangerDragDropAdapter.getAppData();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long start = System.currentTimeMillis();
+                for (int i = 0; i < appData.size(); i++)
+                    AppPersistent.setOrderNumberForPackage(appData.get(i).getPackageName().toString(), i);
+                Log.d(TAG, "Saved To Persistence " + (System.currentTimeMillis() - start));
+            }
+        });
+        thread.start();
     }
 }
