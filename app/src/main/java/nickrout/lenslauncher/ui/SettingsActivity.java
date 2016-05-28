@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
@@ -279,6 +280,11 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
                 Intent aboutIntent = new Intent(SettingsActivity.this, AboutActivity.class);
                 startActivity(aboutIntent);
                 return true;
+            case R.id.menu_item_reset_default:
+                resetToDefault();
+                assignValues();
+                Snackbar.make(mLensView, getString(R.string.snackbar_reset_successful), Snackbar.LENGTH_LONG).show();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -340,6 +346,21 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
         if (mIconPackChooserDialog != null && mIconPackChooserDialog.isShowing()) {
             mIconPackChooserDialog.dismiss();
         }
+    }
+
+    private void resetToDefault() {
+        mSettings.save(Settings.KEY_LENS_DIAMETER, Settings.DEFAULT_LENS_DIAMETER);
+        mSettings.save(Settings.KEY_MIN_ICON_SIZE, Settings.DEFAULT_MIN_ICON_SIZE);
+        mSettings.save(Settings.KEY_DISTORTION_FACTOR, Settings.DEFAULT_DISTORTION_FACTOR);
+        mSettings.save(Settings.KEY_SCALE_FACTOR, Settings.DEFAULT_SCALE_FACTOR);
+        mSettings.save(Settings.KEY_VIBRATE_APP_HOVER, Settings.DEFAULT_VIBRATE_APP_HOVER);
+        mSettings.save(Settings.KEY_VIBRATE_APP_LAUNCH, Settings.DEFAULT_VIBRATE_APP_LAUNCH);
+        mSettings.save(Settings.KEY_SHOW_NAME_APP_HOVER, Settings.DEFAULT_SHOW_NAME_APP_HOVER);
+        mSettings.save(Settings.KEY_SHOW_TOUCH_SELECTION, Settings.DEFAULT_SHOW_TOUCH_SELECTION);
+        mSettings.save(Settings.KEY_SHOW_NEW_APP_TAG, Settings.DEFAULT_SHOW_NEW_APP_TAG);
+        mSettings.save(Settings.KEY_TOUCH_SELECTION_COLOR, Settings.DEFAULT_TOUCH_SELECTION_COLOR);
+        mSettings.save(Settings.KEY_ICON_PACK_LABEL_NAME, Settings.DEFAULT_ICON_PACK_LABEL_NAME);
+        mSettings.save(Settings.KEY_SORT_TYPE, Settings.DEFAULT_SORT_TYPE);
     }
 
     @Override
