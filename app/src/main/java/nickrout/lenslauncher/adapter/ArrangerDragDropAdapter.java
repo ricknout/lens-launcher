@@ -177,9 +177,12 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
                 public void onClick(View v) {
                     printAllPersistent();
                     if (mApp != null)
-                        toggleAppVisibility(mApp);
+                        if (mApp.getPackageName().toString().equals(mContext.getPackageName()))
+                            Snackbar.make(mContainer, mContext.getString(R.string.error_hide_lens_launcher), Snackbar.LENGTH_LONG).show();
+                        else
+                            toggleAppVisibility(mApp);
                     else
-                        Snackbar.make(mContainer, "Error in Opening App", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(mContainer, mContext.getString(R.string.error_unable_to_open), Snackbar.LENGTH_LONG).show();
                 }
             });
 

@@ -103,14 +103,12 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
     }
 
     private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new MaterialDialog.Builder(this)
-                    .content(R.string.progress_loading_apps)
-                    .progress(true, 0)
-                    .cancelable(false)
-                    .canceledOnTouchOutside(false)
-                    .show();
-        }
+        mProgressDialog = new MaterialDialog.Builder(this)
+                .content(R.string.progress_loading_apps)
+                .progress(true, 0)
+                .cancelable(false)
+                .canceledOnTouchOutside(false)
+                .show();
     }
 
     private void dismissProgressDialog() {
