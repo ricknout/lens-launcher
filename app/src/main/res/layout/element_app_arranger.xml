@@ -4,25 +4,25 @@
     android:id="@+id/element_app_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    card_view:cardCornerRadius="4dp">
+    android:layout_margin="4dp"
+    card_view:cardCornerRadius="@dimen/radius_corner_card">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dp">
+        android:padding="4dp">
 
         <ImageView
             android:id="@+id/element_app_icon"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
+            android:layout_width="@dimen/width_app_icon"
+            android:layout_height="@dimen/width_app_icon" />
 
         <TextView
             android:id="@+id/element_app_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="12dp"
             android:layout_toEndOf="@+id/element_app_icon"
             android:layout_toRightOf="@+id/element_app_icon"
             android:text="AppName"
@@ -30,16 +30,16 @@
 
         <ImageView
             android:id="@+id/element_app_hide"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/width_app_icon"
+            android:layout_height="@dimen/width_app_icon"
             android:layout_toLeftOf="@+id/element_app_menu"
             android:padding="6dp"
             android:src="@drawable/ic_visible" />
 
         <ImageView
             android:id="@+id/element_app_menu"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/width_app_icon"
+            android:layout_height="@dimen/width_app_icon"
             android:layout_alignParentRight="true"
             android:padding="12dp"
             android:src="@drawable/ic_menu" />

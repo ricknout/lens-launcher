@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -49,7 +50,25 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
         ButterKnife.bind(this);
         mSettings = new Settings(this);
 
+        setUpViews();
         loadApps(true);
+    }
+
+    private void setUpViews() {
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    mSortFab.show();
+                } else {
+                    mSortFab.hide();
+                }
+            }
+        });
     }
 
     @OnClick(R.id.arranger_sort_fab)
@@ -61,7 +80,7 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
         int selectedIndex = sortTypes.indexOf(selectedSortType);
 
         mSortTypeChooserDialog = new MaterialDialog.Builder(AppArrangerActivity.this)
-                .title(R.string.setting_icon_pack)
+                .title(R.string.setting_sort_apps)
                 .items(sortTypes)
                 .alwaysCallSingleChoiceCallback()
                 .itemsCallbackSingleChoice(selectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
@@ -78,7 +97,8 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
                         return true;
                     }
                 })
-                .show();
+                .build();
+        mSortTypeChooserDialog.show();
 
     }
 
@@ -137,5 +157,13 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
         /* Send broadcast to refresh the app drawer in background. */
         Intent refreshHomeIntent = new Intent(AppArrangerActivity.this, HomeActivity.AppsUpdatedReceiver.class);
         sendBroadcast(refreshHomeIntent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+            finish();
+        return true;
+
     }
 }

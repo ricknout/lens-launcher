@@ -18,6 +18,7 @@
     <string name="setting_icon_pack">Icon Pack</string>
     <string name="setting_default_icon_pack">Default Icon Pack</string>
     <string name="setting_app_arranger">Arrange/Hide App Order</string>
+    <string name="setting_sort_apps">App Order</string>
 
     <!-- Menu Strings -->
     <string name="menu_title_about">About</string>

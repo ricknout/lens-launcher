@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import butterknife.Bind;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.model.AppPersistent;
@@ -29,7 +30,9 @@ public class HomeActivity extends BaseActivity implements Observer, UpdateAppsTa
 
     private final static String TAG = "HomeActivity";
 
+    @Bind(R.id.lens_view_apps)
     private LensView mLensView;
+
     private PackageManager mPackageManager;
     private MaterialDialog mProgressDialog;
 
@@ -42,7 +45,6 @@ public class HomeActivity extends BaseActivity implements Observer, UpdateAppsTa
         }
         setContentView(R.layout.activity_home);
         ObservableObject.getInstance().addObserver(this);
-        mLensView = (LensView) findViewById(R.id.lens_view_apps);
         mPackageManager = getPackageManager();
         loadApps(true);
 

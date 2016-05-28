@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import nickrout.lenslauncher.R;
@@ -23,7 +22,6 @@ import nickrout.lenslauncher.model.App;
 public class AppUtil {
 
     private static final String TAG = AppUtil.class.getSimpleName();
-    private static ArrayList<App> appsList;
 
     // Get all available apps for launcher
     public static ArrayList<App> getApps(
