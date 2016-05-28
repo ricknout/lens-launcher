@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import nickrout.lenslauncher.R;
@@ -27,7 +26,7 @@ public class AppUtil {
     // Get all available apps for launcher
     public static ArrayList<App> getApps(
             PackageManager packageManager, Context context, Application application,
-            String iconPackLabelName, AppSorter.SORT_TYPE sortType) {
+            String iconPackLabelName, AppSorter.SortType sortType) {
         ArrayList<App> apps = new ArrayList<>();
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -39,9 +38,6 @@ public class AppUtil {
             Toast.makeText(context, R.string.error_too_many_apps, Toast.LENGTH_SHORT).show();
         }
         if (availableActivities != null) {
-            // Old method - sorts resolveInfos by label, in ascending order
-            //Collections.sort(availableActivities, new ResolveInfo.DisplayNameComparator(packageManager));
-
             IconPackManager.IconPack selectedIconPack = null;
             ArrayList<IconPackManager.IconPack> iconPacks = new IconPackManager().getAvailableIconPacksWithIcons(true, application);
 

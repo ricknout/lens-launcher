@@ -17,6 +17,12 @@
     <string name="setting_highlight_color">Highlight Color</string>
     <string name="setting_icon_pack">Icon Pack</string>
     <string name="setting_default_icon_pack">Default Icon Pack</string>
+    <string name="setting_sort_type_label_ascending">App Name (Ascending)</string>
+    <string name="setting_sort_type_label_descending">App Name (Descending)</string>
+    <string name="setting_sort_type_install_date_ascending">Newest First</string>
+    <string name="setting_sort_type_install_date_descending">Oldest First</string>
+    <string name="setting_sort_type_open_count_ascending">Most Opened First</string>
+    <string name="setting_sort_type_open_count_descending">Least Opened First</string>
 
     <!-- Menu Strings -->
     <string name="menu_title_about">About</string>

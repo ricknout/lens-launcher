@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.model.AppPersistent;
 
@@ -12,16 +13,26 @@ import nickrout.lenslauncher.model.AppPersistent;
  */
 public class AppSorter {
 
-    public enum SORT_TYPE {
-        LABEL_ASCENDING,
-        LABEL_DESCENDING,
-        INSTALL_DATE_ASCENDING,
-        INSTALL_DATE_DESCENDING,
-        OPEN_COUNT_ASCENDING,
-        OPEN_COUNT_DESCENDING
+    public enum SortType {
+        LABEL_ASCENDING(R.string.setting_sort_type_label_ascending),
+        LABEL_DESCENDING(R.string.setting_sort_type_label_descending),
+        INSTALL_DATE_ASCENDING(R.string.setting_sort_type_install_date_ascending),
+        INSTALL_DATE_DESCENDING(R.string.setting_sort_type_install_date_descending),
+        OPEN_COUNT_ASCENDING(R.string.setting_sort_type_open_count_ascending),
+        OPEN_COUNT_DESCENDING(R.string.setting_sort_type_open_count_descending);
+
+        int mDisplayNameResId;
+
+        SortType(int displayNameResId) {
+            mDisplayNameResId = displayNameResId;
+        }
+
+        public int getDisplayNameResId() {
+            return mDisplayNameResId;
+        }
     }
 
-    public static void sort(ArrayList<App> apps, SORT_TYPE sortType) {
+    public static void sort(ArrayList<App> apps, SortType sortType) {
         switch (sortType) {
             case LABEL_ASCENDING:
                 sortByLabelAscending(apps);

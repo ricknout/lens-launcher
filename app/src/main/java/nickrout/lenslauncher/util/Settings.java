@@ -114,7 +114,7 @@ public class Settings {
         }
     }
 
-    public void save(AppSorter.SORT_TYPE value) {
+    public void save(AppSorter.SortType value) {
         save(KEY_SORT_TYPE, value.ordinal());
     }
 
@@ -122,8 +122,8 @@ public class Settings {
         sharedPreferences().edit().putInt(name, value).commit();
     }
 
-    public AppSorter.SORT_TYPE getSortType() {
+    public AppSorter.SortType getSortType() {
         int ordinal = sharedPreferences().getInt(KEY_SORT_TYPE, 0);
-        return AppSorter.SORT_TYPE.values()[ordinal];
+        return AppSorter.SortType.values()[ordinal];
     }
 }
