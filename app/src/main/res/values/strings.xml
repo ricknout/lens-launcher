@@ -23,6 +23,8 @@
     <string name="setting_sort_type_install_date_descending">Oldest First</string>
     <string name="setting_sort_type_open_count_ascending">Most Opened First</string>
     <string name="setting_sort_type_open_count_descending">Least Opened First</string>
+    <string name="setting_sort_type_icon_color_ascending">Icon Color (Light to Dark)</string>
+    <string name="setting_sort_type_icon_color_descending">Icon Color (Dark to Light)</string>
 
     <!-- Menu Strings -->
     <string name="menu_title_about">About</string>

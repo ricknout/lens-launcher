@@ -19,7 +19,9 @@ public class AppSorter {
         INSTALL_DATE_ASCENDING(R.string.setting_sort_type_install_date_ascending),
         INSTALL_DATE_DESCENDING(R.string.setting_sort_type_install_date_descending),
         OPEN_COUNT_ASCENDING(R.string.setting_sort_type_open_count_ascending),
-        OPEN_COUNT_DESCENDING(R.string.setting_sort_type_open_count_descending);
+        OPEN_COUNT_DESCENDING(R.string.setting_sort_type_open_count_descending),
+        ICON_COLOR_ASCENDING(R.string.setting_sort_type_icon_color_ascending),
+        ICON_COLOR_DESCENDING(R.string.setting_sort_type_icon_color_descending);
 
         int mDisplayNameResId;
 
@@ -52,8 +54,14 @@ public class AppSorter {
             case OPEN_COUNT_DESCENDING:
                 sortByOpenCountDescending(apps);
                 break;
+            case ICON_COLOR_ASCENDING:
+                sortByIconColorAscending(apps);
+                break;
+            case ICON_COLOR_DESCENDING:
+                sortByIconColorDescending(apps);
+                break;
             default:
-
+                sortByLabelAscending(apps);
                 break;
         }
     }
@@ -109,6 +117,28 @@ public class AppSorter {
 
     public static void sortByOpenCountDescending(ArrayList<App> apps) {
         sortByOpenCountAscending(apps);
+        Collections.reverse(apps);
+    }
+
+    public static void sortByIconColorAscending(ArrayList<App> apps) {
+        Collections.sort(apps, new Comparator<App>() {
+            @Override
+            public int compare(App a1, App a2) {
+                float a1HSVColor = ColorUtil.getHueColorFromApp(a1);
+                float a2HSVColor = ColorUtil.getHueColorFromApp(a2);
+
+                if (a1HSVColor > a2HSVColor) {
+                    return -1;
+                } else if (a1HSVColor < a2HSVColor) {
+                    return +1;
+                }
+                return 0;
+            }
+        });
+    }
+
+    public static void sortByIconColorDescending(ArrayList<App> apps) {
+        sortByIconColorAscending(apps);
         Collections.reverse(apps);
     }
 }
