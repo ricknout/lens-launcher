@@ -160,13 +160,14 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
         }
 
         public void toggleAppVisibility(App app) {
-            boolean isAppVisible = AppPersistent.getAppVisibilityForPackage(app.getPackageName().toString());
-            AppPersistent.setAppVisibilityForPackage(app.getPackageName().toString(), !isAppVisible);
+            this.mApp = app;
+            boolean isAppVisible = AppPersistent.getAppVisibilityForPackage(mApp.getPackageName().toString());
+            AppPersistent.setAppVisibilityForPackage(mApp.getPackageName().toString(), !isAppVisible);
             if (isAppVisible) {
-                Snackbar.make(mContainer, app.getLabel() + " is now hidden", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(mContainer, mApp.getLabel() + " is now hidden", Snackbar.LENGTH_LONG).show();
                 mToggleAppVisibility.setImageResource(R.drawable.ic_invisible);
             } else {
-                Snackbar.make(mContainer, app.getLabel() + " is now visible", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(mContainer, mApp.getLabel() + " is now visible", Snackbar.LENGTH_LONG).show();
                 mToggleAppVisibility.setImageResource(R.drawable.ic_visible);
             }
         }

@@ -110,7 +110,7 @@ public class AppPersistent extends SugarRecord {
             appPersistent.setAppVisible(mHideApp);
             appPersistent.save();
         } else {
-            AppPersistent newAppPersistent = new AppPersistent(mPackageName, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, DEFAULT_APP_VISIBILITY);
+            AppPersistent newAppPersistent = new AppPersistent(mPackageName, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, mHideApp);
             newAppPersistent.save();
         }
     }
