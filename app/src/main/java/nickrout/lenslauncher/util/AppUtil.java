@@ -25,7 +25,9 @@ public class AppUtil {
     private static final String TAG = AppUtil.class.getSimpleName();
 
     // Get all available apps for launcher
-    public static ArrayList<App> getApps(PackageManager packageManager, Context context, Application application, String iconPackLabelName) {
+    public static ArrayList<App> getApps(
+            PackageManager packageManager, Context context, Application application,
+            String iconPackLabelName, AppSorter.SORT_TYPE sortType) {
         ArrayList<App> apps = new ArrayList<>();
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -37,7 +39,8 @@ public class AppUtil {
             Toast.makeText(context, R.string.error_too_many_apps, Toast.LENGTH_SHORT).show();
         }
         if (availableActivities != null) {
-            Collections.sort(availableActivities, new ResolveInfo.DisplayNameComparator(packageManager));
+            // Old method - sorts resolveInfos by label, in ascending order
+            //Collections.sort(availableActivities, new ResolveInfo.DisplayNameComparator(packageManager));
 
             IconPackManager.IconPack selectedIconPack = null;
             ArrayList<IconPackManager.IconPack> iconPacks = new IconPackManager().getAvailableIconPacksWithIcons(true, application);
@@ -66,6 +69,7 @@ public class AppUtil {
                 apps.add(app);
             }
         }
+        AppSorter.sort(apps, sortType);
         return apps;
     }
 
