@@ -22,7 +22,6 @@ import butterknife.OnClick;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.adapter.ArrangerDragDropAdapter;
 import nickrout.lenslauncher.model.App;
-import nickrout.lenslauncher.model.AppPersistent;
 import nickrout.lenslauncher.util.AppSorter;
 import nickrout.lenslauncher.util.Settings;
 import nickrout.lenslauncher.util.UpdateAppsTask;
@@ -145,16 +144,17 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
     }
 
     private void saveToPersistence() {
-        final List<App> appData = arrangerDragDropAdapter.getAppData();
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < appData.size(); i++)
-                    AppPersistent.setOrderNumberForPackage(appData.get(i).getPackageName().toString(), i);
-            }
-        });
-        thread.start();
-        /* Send broadcast to refresh the app drawer in background. */
+
+//        final List<App> appData = arrangerDragDropAdapter.getAppData();
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                for (int i = 0; i < appData.size(); i++)
+//                    AppPersistent.setOrderNumberForPackage(appData.get(i).getPackageName().toString(), i);
+//            }
+//        });
+//        thread.start();
+//        /* Send broadcast to refresh the app drawer in background. */
         Intent refreshHomeIntent = new Intent(AppArrangerActivity.this, HomeActivity.AppsUpdatedReceiver.class);
         sendBroadcast(refreshHomeIntent);
     }

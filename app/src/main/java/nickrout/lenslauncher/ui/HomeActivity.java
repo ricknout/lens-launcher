@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -107,8 +108,10 @@ public class HomeActivity extends BaseActivity implements Observer, UpdateAppsTa
     public void onUpdateAppsTaskPostExecute(ArrayList<App> mApps, ArrayList<Bitmap> mAppIcons) {
         for (int i = 0; i < mApps.size(); i++) {
             if (!AppPersistent.getAppVisibilityForPackage(mApps.get(i).getPackageName().toString())) {
+                Log.d(TAG, "Removing " + i + " " + mApps.get(i).getPackageName());
                 mApps.remove(i);
                 mAppIcons.remove(i);
+                i--;
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
