@@ -41,7 +41,7 @@ public class UpdateAppsTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... arg0) {
-        ArrayList<App> apps = AppUtil.getApps(mPackageManager, mContext, mApplication, mSettings.getString(Settings.KEY_ICON_PACK_LABEL_NAME));
+        ArrayList<App> apps = AppUtil.getApps(mPackageManager, mContext, mApplication, mSettings.getString(Settings.KEY_ICON_PACK_LABEL_NAME), mSettings.getSortType());
         mApps = new ArrayList<>();
         mAppIcons = new ArrayList<>();
         for (int i = 0; i < apps.size(); i++) {

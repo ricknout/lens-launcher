@@ -45,6 +45,7 @@ public class Settings {
     public static final String KEY_SHOW_NEW_APP_TAG = "show_new_tag_app";
     public static final String KEY_TOUCH_SELECTION_COLOR = "show_touch_selection_color";
     public static final String KEY_ICON_PACK_LABEL_NAME = "icon_pack_label_name";
+    public static final String KEY_SORT_TYPE = "sort_type";
 
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -64,10 +65,6 @@ public class Settings {
         sharedPreferences().edit().putFloat(name, value).commit();
     }
 
-    public void save(String name, String value) {
-        sharedPreferences().edit().putString(name, value).commit();
-    }
-
     public float getFloat(String name) {
         if (name.equals(KEY_LENS_DIAMETER)) {
             return sharedPreferences().getFloat(name, DEFAULT_LENS_DIAMETER);
@@ -80,6 +77,10 @@ public class Settings {
         } else {
             return sharedPreferences().getFloat(name, DEFAULT_FLOAT);
         }
+    }
+
+    public void save(String name, String value) {
+        sharedPreferences().edit().putString(name, value).commit();
     }
 
     public String getString(String name) {
@@ -111,5 +112,18 @@ public class Settings {
         } else {
             return sharedPreferences().getBoolean(name, DEFAULT_BOOLEAN);
         }
+    }
+
+    public void save(String name, int value) {
+        sharedPreferences().edit().putInt(name, value).commit();
+    }
+
+    public AppSorter.SORT_TYPE getSortType() {
+        int ordinal = sharedPreferences().getInt(KEY_SORT_TYPE, 0);
+        return AppSorter.SORT_TYPE.values()[ordinal];
+    }
+
+    public void save(AppSorter.SORT_TYPE value) {
+        save(KEY_SORT_TYPE, value.ordinal());
     }
 }

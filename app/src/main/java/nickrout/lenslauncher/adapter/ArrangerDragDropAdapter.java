@@ -188,7 +188,7 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
                 public void onClick(View view) {
                     PopupMenu popupMenu = new PopupMenu(mContext, view);
                     popupMenu.setOnMenuItemClickListener(MainViewHolder.this);
-                    popupMenu.inflate(R.menu.menu_app_arranger);
+                    popupMenu.inflate(R.menu.menu_app_arranger_element);
                     popupMenu.show();
                 }
             });
@@ -204,7 +204,7 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.menu_item_uninstall:
+                case R.id.menu_item_element_uninstall:
                     try {
                         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         intent.setData(Uri.parse("package:" + mApp.getPackageName()));

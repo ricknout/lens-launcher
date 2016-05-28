@@ -25,11 +25,19 @@ public class AppUtil {
     private static final String TAG = AppUtil.class.getSimpleName();
     private static ArrayList<App> appsList;
 
+<<<<<<< HEAD
+    /**
+     * This returns all available apps for launcher - this does not disclude hidden apps.
+     */
+    public static ArrayList<App> getApps(PackageManager packageManager, Context context, Application application, String iconPackLabelName) {
+        appsList = new ArrayList<>();
+=======
     // Get all available apps for launcher
     public static ArrayList<App> getApps(
             PackageManager packageManager, Context context, Application application,
             String iconPackLabelName, AppSorter.SORT_TYPE sortType) {
         ArrayList<App> apps = new ArrayList<>();
+>>>>>>> 653f9050553555a3d5129c24f52af59d66a02b8a
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         List<ResolveInfo> availableActivities = null;
@@ -69,11 +77,15 @@ public class AppUtil {
                     app.setIcon(selectedIconPack.getIconForPackage(app.getPackageName().toString(), defaultBitmap));
                 else
                     app.setIcon(defaultBitmap);
-                apps.add(app);
+                appsList.add(app);
             }
         }
+<<<<<<< HEAD
+        return appsList;
+=======
         AppSorter.sort(apps, sortType);
         return apps;
+>>>>>>> 653f9050553555a3d5129c24f52af59d66a02b8a
     }
 
     // Launch apps, for launcher :-P
