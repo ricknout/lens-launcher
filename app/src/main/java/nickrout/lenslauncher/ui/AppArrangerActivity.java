@@ -142,11 +142,11 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
     @Override
     protected void onDestroy() {
         dismissProgressDialog();
-        saveToPersistence();
+        saveToPersistenceAndUpdateHome();
         super.onDestroy();
     }
 
-    private void saveToPersistence() {
+    private void saveToPersistenceAndUpdateHome() {
 
 //        final List<App> appData = arrangerDragDropAdapter.getAppData();
 //        Thread thread = new Thread(new Runnable() {
