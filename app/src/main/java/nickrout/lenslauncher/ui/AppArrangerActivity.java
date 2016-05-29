@@ -73,14 +73,17 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
     @OnClick(R.id.arranger_sort_fab)
     public void onSortClicked() {
 
-        final List<AppSorter.SORT_TYPE> sortTypes = new ArrayList<>(EnumSet.allOf(AppSorter.SORT_TYPE.class));
+        final List<AppSorter.SortType> sortTypes = new ArrayList<>(EnumSet.allOf(AppSorter.SortType.class));
+        final List<String> sortTypeStrings = new ArrayList<>();
+        for (int i = 0; i < sortTypes.size(); i++)
+            sortTypeStrings.add(getApplicationContext().getString(sortTypes.get(i).getDisplayNameResId()));
 
-        AppSorter.SORT_TYPE selectedSortType = mSettings.getSortType();
+        AppSorter.SortType selectedSortType = mSettings.getSortType();
         int selectedIndex = sortTypes.indexOf(selectedSortType);
 
         mSortTypeChooserDialog = new MaterialDialog.Builder(AppArrangerActivity.this)
                 .title(R.string.setting_sort_apps)
-                .items(sortTypes)
+                .items(sortTypeStrings)
                 .alwaysCallSingleChoiceCallback()
                 .itemsCallbackSingleChoice(selectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override

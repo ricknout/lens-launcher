@@ -48,6 +48,7 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
     private ImageView mHighlightColor;
     private LinearLayout mIconPackLayout;
     private TextView mSelectedIconPack;
+    private TextView mSelectedAppSort;
     private LinearLayout mAppArrangerLayout;
 
     private SwitchCompat mVibrateAppHover;
@@ -211,6 +212,7 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
         });
         mIconPackLayout = (LinearLayout) findViewById(R.id.layout_icon_pack_chooser);
         mSelectedIconPack = (TextView) findViewById(R.id.textview_selected_icon_pack);
+        mSelectedAppSort = (TextView) findViewById(R.id.textview_selected_app_sort);
         mIconPackLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -240,12 +242,14 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
         mScaleFactor.setProgress((int) (2.0f * mSettings.getFloat(Settings.KEY_SCALE_FACTOR)));
         String scaleFactor = mSettings.getFloat(Settings.KEY_SCALE_FACTOR) + "";
         mValueScaleFactor.setText(scaleFactor);
+        mSelectedAppSort.setText(getString(mSettings.getSortType().getDisplayNameResId()));
 
         mVibrateAppHover.setChecked(mSettings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER));
         mVibrateAppLaunch.setChecked(mSettings.getBoolean(Settings.KEY_VIBRATE_APP_LAUNCH));
         mShowNameAppHover.setChecked(mSettings.getBoolean(Settings.KEY_SHOW_NAME_APP_HOVER));
         mShowTouchSelection.setChecked(mSettings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION));
         mShowNewAppTag.setChecked(mSettings.getBoolean(Settings.KEY_SHOW_NEW_APP_TAG));
+
 
         setHighlightColorDrawable();
         setSelectedIconPackText();

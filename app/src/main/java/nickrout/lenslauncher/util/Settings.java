@@ -115,16 +115,16 @@ public class Settings {
         }
     }
 
+    public void save(AppSorter.SortType value) {
+        save(KEY_SORT_TYPE, value.ordinal());
+    }
+
     public void save(String name, int value) {
         sharedPreferences().edit().putInt(name, value).commit();
     }
 
-    public AppSorter.SORT_TYPE getSortType() {
-        int ordinal = sharedPreferences().getInt(KEY_SORT_TYPE, DEFAULT_SORT_TYPE);
-        return AppSorter.SORT_TYPE.values()[ordinal];
-    }
-
-    public void save(AppSorter.SORT_TYPE value) {
-        save(KEY_SORT_TYPE, value.ordinal());
+    public AppSorter.SortType getSortType() {
+        int ordinal = sharedPreferences().getInt(KEY_SORT_TYPE, 0);
+        return AppSorter.SortType.values()[ordinal];
     }
 }

@@ -1,6 +1,7 @@
 package nickrout.lenslauncher.model;
 
 import android.graphics.Bitmap;
+import android.support.annotation.ColorInt;
 
 /**
  * Created by nickrout on 2016/04/02.
@@ -14,6 +15,7 @@ public class App {
     private int mIconResId;
     private Bitmap mIcon;
     private long mInstallDate;
+    private @ColorInt int mPaletteColor;
 
     public App() {
     }
@@ -62,6 +64,10 @@ public class App {
         return mIcon;
     }
 
+    public void setIcon(Bitmap icon) {
+        mIcon = icon;
+    }
+
     public long getInstallDate() {
         return mInstallDate;
     }
@@ -70,8 +76,12 @@ public class App {
         this.mInstallDate = mInstallDate;
     }
 
-    public void setIcon(Bitmap icon) {
-        mIcon = icon;
+    public int getPaletteColor() {
+        return mPaletteColor;
+    }
+
+    public void setPaletteColor(int paletteColor) {
+        mPaletteColor = paletteColor;
     }
 
     @Override
@@ -84,6 +94,7 @@ public class App {
                 ", mIconResId=" + mIconResId +
                 ", mIcon=" + mIcon +
                 ", mInstallDate=" + mInstallDate +
+                ", mPaletteColor=" + mPaletteColor +
                 '}';
     }
 }

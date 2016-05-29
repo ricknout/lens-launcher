@@ -28,6 +28,7 @@ import butterknife.ButterKnife;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.model.AppPersistent;
+import nickrout.lenslauncher.util.AppUtil;
 
 /**
  * Created by rish on 26/5/16.
@@ -156,6 +157,10 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
             } else {
                 mToggleAppVisibility.setImageResource(R.drawable.ic_invisible);
             }
+            if (mApp.getPackageName().toString().equals(mContext.getPackageName()))
+                mToggleAppVisibility.setVisibility(View.INVISIBLE);
+            else
+                mToggleAppVisibility.setVisibility(View.VISIBLE);
             mContainer.postInvalidate();
         }
 
@@ -177,10 +182,7 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
                 @Override
                 public void onClick(View v) {
                     if (mApp != null)
-                        if (mApp.getPackageName().toString().equals(mContext.getPackageName()))
-                            Snackbar.make(mContainer, mContext.getString(R.string.error_hide_lens_launcher), Snackbar.LENGTH_LONG).show();
-                        else
-                            toggleAppVisibility(mApp);
+                        toggleAppVisibility(mApp);
                     else
                         Snackbar.make(mContainer, mContext.getString(R.string.error_unable_to_open), Snackbar.LENGTH_LONG).show();
                     printAllPersistent();
@@ -208,6 +210,9 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
+                case R.id.menu_item_element_open:
+                    AppUtil.launchComponent(mApp.getPackageName().toString(), mApp.getName().toString(), mContext);
+                    return true;
                 case R.id.menu_item_element_uninstall:
                     try {
                         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);

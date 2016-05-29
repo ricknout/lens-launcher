@@ -17,19 +17,28 @@
     <string name="setting_highlight_color">Highlight Color</string>
     <string name="setting_icon_pack">Icon Pack</string>
     <string name="setting_default_icon_pack">Default Icon Pack</string>
-    <string name="setting_app_arranger">Arrange/Hide App Order</string>
+    <string name="setting_default_sort_selected">@string/setting_sort_type_label_ascending</string>
+    <string name="setting_sort_type_label_ascending">App Name (Ascending)</string>
+    <string name="setting_sort_type_label_descending">App Name (Descending)</string>
+    <string name="setting_sort_type_install_date_ascending">Newest First</string>
+    <string name="setting_sort_type_install_date_descending">Oldest First</string>
+    <string name="setting_sort_type_open_count_ascending">Most Opened First</string>
+    <string name="setting_sort_type_open_count_descending">Least Opened First</string>
+    <string name="setting_sort_type_icon_color_ascending">Icon Color (Light to Dark)</string>
+    <string name="setting_sort_type_icon_color_descending">Icon Color (Dark to Light)</string>
+    <string name="setting_app_arranger">App Arrangement &amp; Visibility</string>
     <string name="setting_sort_apps">App Order</string>
 
     <!-- Menu Strings -->
     <string name="menu_title_about">About</string>
     <string name="menu_title_reset_defaults">Reset To Defaults</string>
     <string name="menu_title_show_apps">Show Apps</string>
+    <string name="menu_app_open">Open</string>
     <string name="menu_app_uninstall">Uninstall</string>
 
     <!-- Error Strings -->
     <string name="error_app_not_found">App Not Found</string>
     <string name="error_too_many_apps">Failed to Load Apps</string>
-    <string name="error_hide_lens_launcher">You can\'t hide Lens Launcher!</string>
     <string name="error_unable_to_open">Error in Opening App</string>
 
     <!-- Progress Strings -->
@@ -41,5 +50,6 @@
 
     <!-- About Strings -->
     <string name="about"><![CDATA[Lens Launcher is a unique, efficient way to browse and launch your apps.<br><br>Instead of scrolling long lists or swiping through multiple pages, Lens Launcher implements two unique features:<br><br><b>• An Equispaced Grid that displays all of your apps, regardless of screen size or app count.<br><br>• A Graphical Fisheye Lens to quickly zoom, pan and launch apps using touch gestures.</b><br><br>Lens Launcher also includes a full Settings menu to tweak all aspects of the Lens; Distortion, Scaling, Icon Size, Haptic Feedback, etc.<br><br>The Graphical Fisheye Lens algorithm is derived from methods proposed by Manojit Sarkar and Marc H. Brown. Their original 1993 paper, titled <i>Graphical Fisheye Views</i>, can be found <a href="https://drive.google.com/file/d/0B6Nqy9y098RLa2pqNVFUcUhIZXM/view?usp=sharing">here</a>.<br><br>Lens Launcher is written by Nick Rout<br><a href="https://twitter.com/ricknout">Twitter</a> | <a href="https://plus.google.com/+NicholasRout">Google+</a><br><br>The source code and resources are available on <a href="https://github.com/nicholasrout/lens-launcher">Github</a>]]></string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>
