@@ -23,10 +23,12 @@ import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.adapter.ArrangerDragDropAdapter;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.util.AppSorter;
+import nickrout.lenslauncher.util.AppsSingleton;
 import nickrout.lenslauncher.util.Settings;
 import nickrout.lenslauncher.util.UpdateAppsTask;
 
-public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.UpdateAppsTaskListener {
+public class AppArrangerActivity extends BaseActivity
+        implements UpdateAppsTask.UpdateAppsTaskListener {
 
     private static final String TAG = "AppArrangerActivity";
 
@@ -49,7 +51,12 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
         ButterKnife.bind(this);
         mSettings = new Settings(this);
         setUpViews();
-        loadApps(true);
+        ArrayList<App> apps = AppsSingleton.getInstance().getApps();
+        if (apps == null || AppsSingleton.getInstance().doesNeedUpdate()) {
+            loadApps(true);
+        } else {
+            setupRecycler(apps);
+        }
     }
 
     private void setUpViews() {
@@ -114,10 +121,13 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
     }
 
     @Override
-    public void onUpdateAppsTaskPostExecute(ArrayList<App> mApps, ArrayList<Bitmap> mAppIcons) {
+    public void onUpdateAppsTaskPostExecute(ArrayList<App> apps, ArrayList<Bitmap> appIcons) {
         dismissProgressDialog();
-        mArrangerDragDropAdapter = new ArrangerDragDropAdapter(AppArrangerActivity.this, mRecyclerView, mApps);
+        setupRecycler(apps);
+    }
 
+    private void setupRecycler(ArrayList<App> apps) {
+        mArrangerDragDropAdapter = new ArrangerDragDropAdapter(AppArrangerActivity.this, mRecyclerView, apps);
         mRecyclerView.setAdapter(mArrangerDragDropAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());

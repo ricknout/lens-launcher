@@ -15,16 +15,21 @@ import nickrout.lenslauncher.model.App;
  */
 public class UpdateAppsTask extends AsyncTask<Void, Void, Void> {
 
-    private boolean mIsLoad;
     private PackageManager mPackageManager;
     private Context mContext;
     private Application mApplication;
+    private boolean mIsLoad;
+    private UpdateAppsTaskListener mUpdateAppsTaskListener;
+
     private Settings mSettings;
     private ArrayList<App> mApps;
     private ArrayList<Bitmap> mAppIcons;
-    private UpdateAppsTaskListener mUpdateAppsTaskListener;
 
-    public UpdateAppsTask(PackageManager packageManager, Context context, Application application, boolean isLoad, UpdateAppsTaskListener updateAppsTaskListener) {
+    public UpdateAppsTask(PackageManager packageManager,
+                           Context context,
+                           Application application,
+                           boolean isLoad,
+                           UpdateAppsTaskListener updateAppsTaskListener) {
         this.mPackageManager = packageManager;
         this.mContext = context;
         this.mApplication = application;
@@ -58,13 +63,13 @@ public class UpdateAppsTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         mUpdateAppsTaskListener.onUpdateAppsTaskPostExecute(mApps, mAppIcons);
+        AppsSingleton.getInstance().setApps(mApps);
+        AppsSingleton.getInstance().setNeedsUpdate(false);
         super.onPostExecute(result);
     }
 
     public interface UpdateAppsTaskListener {
         void onUpdateAppsTaskPreExecute(boolean isLoad);
-
-        void onUpdateAppsTaskPostExecute(ArrayList<App> mApps, ArrayList<Bitmap> mAppIcons);
+        void onUpdateAppsTaskPostExecute(ArrayList<App> apps, ArrayList<Bitmap> appIcons);
     }
-
 }

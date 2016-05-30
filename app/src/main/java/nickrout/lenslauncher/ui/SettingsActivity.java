@@ -25,6 +25,7 @@ import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import java.util.ArrayList;
 
 import nickrout.lenslauncher.R;
+import nickrout.lenslauncher.util.AppsSingleton;
 import nickrout.lenslauncher.util.IconPackManager;
 import nickrout.lenslauncher.util.Settings;
 
@@ -335,7 +336,7 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
                         mSettings.save(Settings.KEY_ICON_PACK_LABEL_NAME, iconPackNames.get(which));
                         setSelectedIconPackText();
                         dismissIconPackChooserDialog();
-
+                        AppsSingleton.getInstance().setNeedsUpdate(true);
                         /* Send broadcast to refresh the app drawer in background. */
                         Intent refreshHomeIntent = new Intent(SettingsActivity.this, HomeActivity.AppsUpdatedReceiver.class);
                         sendBroadcast(refreshHomeIntent);

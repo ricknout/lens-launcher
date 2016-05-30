@@ -105,11 +105,11 @@ public class HomeActivity extends BaseActivity implements Observer, UpdateAppsTa
     }
 
     @Override
-    public void onUpdateAppsTaskPostExecute(ArrayList<App> mApps, ArrayList<Bitmap> mAppIcons) {
-        for (int i = 0; i < mApps.size(); i++) {
-            if (!AppPersistent.getAppVisibilityForPackage(mApps.get(i).getPackageName().toString())) {
-                mApps.remove(i);
-                mAppIcons.remove(i);
+    public void onUpdateAppsTaskPostExecute(ArrayList<App> apps, ArrayList<Bitmap> appIcons) {
+        for (int i = 0; i < apps.size(); i++) {
+            if (!AppPersistent.getAppVisibilityForPackage(apps.get(i).getPackageName().toString())) {
+                apps.remove(i);
+                appIcons.remove(i);
                 i--;
             }
         }
@@ -124,6 +124,6 @@ public class HomeActivity extends BaseActivity implements Observer, UpdateAppsTa
         }
         dismissProgressDialog();
         mLensView.setPackageManager(mPackageManager);
-        mLensView.setApps(mApps, mAppIcons);
+        mLensView.setApps(apps, appIcons);
     }
 }

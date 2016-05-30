@@ -188,7 +188,11 @@ public class IconPackManager {
                 componentName = pm.getLaunchIntentForPackage(appPackageName).getComponent().toString();
             String drawable = mPackagesDrawables.get(componentName);
             if (drawable != null) {
-                return loadBitmap(drawable);
+                Bitmap bitmap = loadBitmap(drawable);
+                if (bitmap == null) {
+                    return generateBitmap(appPackageName, defaultBitmap);
+                }
+                return bitmap;
             } else {
                 // try to get a resource with the component filename
                 if (componentName != null) {
