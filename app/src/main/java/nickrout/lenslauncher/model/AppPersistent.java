@@ -16,10 +16,19 @@ public class AppPersistent extends SugarRecord {
 
     private String mPackageName;
     private long mOpenCount;
+    private int mOrderNumber;
+    private boolean mAppVisible;
 
-    public AppPersistent(String mPackageName, long mOpenCount) {
+    private static boolean DEFAULT_APP_VISIBILITY = true;
+    private static int DEFAULT_ORDER_NUMBER = -1;
+    private static long DEFAULT_OPEN_COUNT = 1;
+    private static final String TAG = "AppPersistent";
+
+    public AppPersistent(String mPackageName, long mOpenCount, int mOrderNumber, boolean mAppVisible) {
         this.mPackageName = mPackageName;
         this.mOpenCount = mOpenCount;
+        this.mOrderNumber = mOrderNumber;
+        this.mAppVisible = mAppVisible;
     }
 
     public String getPackageName() {
@@ -38,11 +47,29 @@ public class AppPersistent extends SugarRecord {
         this.mOpenCount = mOpenCount;
     }
 
+    public int getOrderNumber() {
+        return mOrderNumber;
+    }
+
+    public void setOrderNumber(int mOrderNumber) {
+        this.mOrderNumber = mOrderNumber;
+    }
+
+    public boolean isAppVisible() {
+        return mAppVisible;
+    }
+
+    public void setAppVisible(boolean mAppVisible) {
+        this.mAppVisible = mAppVisible;
+    }
+
     @Override
     public String toString() {
         return "AppPersistent{" +
                 "mPackageName='" + mPackageName + '\'' +
                 ", mOpenCount=" + mOpenCount +
+                ", mOrderNumber=" + mOrderNumber +
+                ", mAppVisible=" + mAppVisible +
                 '}';
     }
 
@@ -52,7 +79,38 @@ public class AppPersistent extends SugarRecord {
             appPersistent.setOpenCount(appPersistent.getOpenCount() + 1);
             appPersistent.save();
         } else {
-            AppPersistent newAppPersistent = new AppPersistent(mPackageName, 1); /* Set default incremented count to 1*/
+            AppPersistent newAppPersistent = new AppPersistent(mPackageName, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, DEFAULT_APP_VISIBILITY);
+            newAppPersistent.save();
+        }
+    }
+
+    public static void setOrderNumberForPackage(String mPackageName, int mOrderNumber) {
+        AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mPackageName")).eq(mPackageName)).first();
+        if (appPersistent != null) {
+            appPersistent.setOrderNumber(mOrderNumber);
+            appPersistent.save();
+        } else {
+            AppPersistent newAppPersistent = new AppPersistent(mPackageName, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, DEFAULT_APP_VISIBILITY);
+            newAppPersistent.save();
+        }
+    }
+
+    public static boolean getAppVisibilityForPackage(String mPackageName) {
+        AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mPackageName")).eq(mPackageName)).first();
+        if (appPersistent != null) {
+            return appPersistent.isAppVisible();
+        } else {
+            return true;
+        }
+    }
+
+    public static void setAppVisibilityForPackage(String mPackageName, boolean mHideApp) {
+        AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mPackageName")).eq(mPackageName)).first();
+        if (appPersistent != null) {
+            appPersistent.setAppVisible(mHideApp);
+            appPersistent.save();
+        } else {
+            AppPersistent newAppPersistent = new AppPersistent(mPackageName, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, mHideApp);
             newAppPersistent.save();
         }
     }
@@ -65,4 +123,5 @@ public class AppPersistent extends SugarRecord {
             return 0;
         }
     }
+
 }

@@ -12,6 +12,8 @@ import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import nickrout.lenslauncher.R;
 
 /**
@@ -21,16 +23,19 @@ public class AboutActivity extends BaseActivity {
 
     private static final String TAG = "AboutActivity";
 
-    private TextView mTextViewAbout;
-    private ImageView mImageAbout;
+    @Bind(R.id.text_view_about)
+    TextView mTextViewAbout;
+
+    @Bind(R.id.image_about)
+    ImageView mImageAbout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        ButterKnife.bind(this);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupText();
-        mImageAbout = (ImageView) findViewById(R.id.image_about);
         mImageAbout.post(new Runnable() {
             @Override
             public void run() {
@@ -56,7 +61,6 @@ public class AboutActivity extends BaseActivity {
     }
 
     private void setupText() {
-        mTextViewAbout = (TextView) findViewById(R.id.text_view_about);
         mTextViewAbout.setText(Html.fromHtml(getString(R.string.about)));
         mTextViewAbout.setMovementMethod(LinkMovementMethod.getInstance());
     }

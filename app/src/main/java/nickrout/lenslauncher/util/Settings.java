@@ -9,17 +9,18 @@ import android.preference.PreferenceManager;
  */
 public class Settings {
 
-    private static final float DEFAULT_LENS_DIAMETER = 600.0f;
-    private static final float DEFAULT_MIN_ICON_SIZE = 18.0f;
-    private static final float DEFAULT_DISTORTION_FACTOR = 2.5f;
-    private static final float DEFAULT_SCALE_FACTOR = 1.5f;
-    private static final boolean DEFAULT_VIBRATE_APP_HOVER = false;
-    private static final boolean DEFAULT_VIBRATE_APP_LAUNCH = true;
-    private static final boolean DEFAULT_SHOW_NAME_APP_HOVER = true;
-    private static final boolean DEFAULT_SHOW_TOUCH_SELECTION = false;
-    private static final boolean DEFAULT_SHOW_NEW_APP_TAG = true;
-    private static final String DEFAULT_TOUCH_SELECTION_COLOR = "#F50057"; /* Unable to access strings.xml from here */
-    private static final String DEFAULT_ICON_PACK_LABEL_NAME = "Default Icon Pack"; /* Unable to access strings.xml from here */
+    public static final float DEFAULT_LENS_DIAMETER = 600.0f;
+    public static final float DEFAULT_MIN_ICON_SIZE = 18.0f;
+    public static final float DEFAULT_DISTORTION_FACTOR = 2.5f;
+    public static final float DEFAULT_SCALE_FACTOR = 1.5f;
+    public static final boolean DEFAULT_VIBRATE_APP_HOVER = false;
+    public static final boolean DEFAULT_VIBRATE_APP_LAUNCH = true;
+    public static final boolean DEFAULT_SHOW_NAME_APP_HOVER = true;
+    public static final boolean DEFAULT_SHOW_TOUCH_SELECTION = false;
+    public static final boolean DEFAULT_SHOW_NEW_APP_TAG = true;
+    public static final String DEFAULT_TOUCH_SELECTION_COLOR = "#F50057"; /* Unable to access strings.xml from here */
+    public static final String DEFAULT_ICON_PACK_LABEL_NAME = "Default Icon Pack"; /* Unable to access strings.xml from here */
+    public static final int DEFAULT_SORT_TYPE = 0;
 
     public static final int MAX_LENS_DIAMETER = 1500;
     public static final int MAX_MIN_ICON_SIZE = 20;

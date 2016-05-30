@@ -46,8 +46,15 @@ public class AppUtil {
                     selectedIconPack = iconPack;
             }
 
-            for (ResolveInfo resolveInfo : availableActivities) {
+            for (int i = 0; i < availableActivities.size(); i++) {
+                ResolveInfo resolveInfo = availableActivities.get(i);
                 App app = new App();
+                app.setID(i);
+                try {
+                    app.setInstallDate(packageManager.getPackageInfo(resolveInfo.activityInfo.packageName, 0).firstInstallTime);
+                } catch (PackageManager.NameNotFoundException e) {
+                    app.setInstallDate(0);
+                }
                 app.setLabel(resolveInfo.loadLabel(packageManager));
                 app.setPackageName(resolveInfo.activityInfo.packageName);
                 app.setName(resolveInfo.activityInfo.name);
@@ -57,12 +64,7 @@ public class AppUtil {
                     app.setIcon(selectedIconPack.getIconForPackage(app.getPackageName().toString(), defaultBitmap));
                 else
                     app.setIcon(defaultBitmap);
-                try {
-                    app.setInstallDate(packageManager.getPackageInfo(resolveInfo.activityInfo.packageName, 0).firstInstallTime);
-                } catch (PackageManager.NameNotFoundException e) {
-                    app.setInstallDate(0);
-                }
-                app.setPaletteColor(ColorUtil.getPaletteColorFromApp(app));
+				app.setPaletteColor(ColorUtil.getPaletteColorFromApp(app));
                 apps.add(app);
             }
         }

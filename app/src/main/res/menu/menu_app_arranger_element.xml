@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_item_element_open"
+        android:title="@string/menu_app_open"
+        android:visible="true" />
+
+    <item
+        android:id="@+id/menu_item_element_uninstall"
+        android:title="@string/menu_app_uninstall"
+        android:visible="true" />
+
+</menu>

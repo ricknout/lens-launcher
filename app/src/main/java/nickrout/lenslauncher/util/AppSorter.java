@@ -66,7 +66,7 @@ public class AppSorter {
         }
     }
 
-    public static void sortByLabelAscending(ArrayList<App> apps) {
+    private static void sortByLabelAscending(ArrayList<App> apps) {
         Collections.sort(apps, new Comparator<App>() {
             @Override
             public int compare(App a1, App a2) {
@@ -75,12 +75,12 @@ public class AppSorter {
         });
     }
 
-    public static void sortByLabelDescending(ArrayList<App> apps) {
+    private static void sortByLabelDescending(ArrayList<App> apps) {
         sortByLabelAscending(apps);
         Collections.reverse(apps);
     }
 
-    public static void sortByInstallDateAscending(ArrayList<App> apps) {
+    private static void sortByInstallDateAscending(ArrayList<App> apps) {
         Collections.sort(apps, new Comparator<App>() {
             @Override
             public int compare(App a1, App a2) {
@@ -94,12 +94,12 @@ public class AppSorter {
         });
     }
 
-    public static void sortByInstallDateDescending(ArrayList<App> apps) {
+    private static void sortByInstallDateDescending(ArrayList<App> apps) {
         sortByInstallDateAscending(apps);
         Collections.reverse(apps);
     }
 
-    public static void sortByOpenCountAscending(ArrayList<App> apps) {
+    private static void sortByOpenCountAscending(ArrayList<App> apps) {
         Collections.sort(apps, new Comparator<App>() {
             @Override
             public int compare(App a1, App a2) {
@@ -115,12 +115,12 @@ public class AppSorter {
         });
     }
 
-    public static void sortByOpenCountDescending(ArrayList<App> apps) {
+    private static void sortByOpenCountDescending(ArrayList<App> apps) {
         sortByOpenCountAscending(apps);
         Collections.reverse(apps);
     }
 
-    public static void sortByIconColorAscending(ArrayList<App> apps) {
+    private static void sortByIconColorAscending(ArrayList<App> apps) {
         Collections.sort(apps, new Comparator<App>() {
             @Override
             public int compare(App a1, App a2) {
@@ -137,7 +137,7 @@ public class AppSorter {
         });
     }
 
-    public static void sortByIconColorDescending(ArrayList<App> apps) {
+    private static void sortByIconColorDescending(ArrayList<App> apps) {
         sortByIconColorAscending(apps);
         Collections.reverse(apps);
     }

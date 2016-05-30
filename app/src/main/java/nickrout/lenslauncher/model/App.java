@@ -8,6 +8,7 @@ import android.support.annotation.ColorInt;
  */
 public class App {
 
+    private int mID;
     private CharSequence mLabel;
     private CharSequence mPackageName;
     private CharSequence mName;
@@ -17,6 +18,14 @@ public class App {
     private @ColorInt int mPaletteColor;
 
     public App() {
+    }
+
+    public int getID() {
+        return mID;
+    }
+
+    public void setID(int mID) {
+        this.mID = mID;
     }
 
     public CharSequence getLabel() {
@@ -78,7 +87,8 @@ public class App {
     @Override
     public String toString() {
         return "App{" +
-                "mLabel=" + mLabel +
+                "mID=" + mID +
+                ", mLabel=" + mLabel +
                 ", mPackageName=" + mPackageName +
                 ", mName=" + mName +
                 ", mIconResId=" + mIconResId +
