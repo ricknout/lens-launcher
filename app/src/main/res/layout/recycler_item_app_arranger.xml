@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:layout_toEndOf="@+id/element_app_icon"
             android:layout_toRightOf="@+id/element_app_icon"
             android:text="AppName"
             android:textStyle="bold" />
