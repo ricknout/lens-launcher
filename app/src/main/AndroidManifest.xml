@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="nickrout.lenslauncher" >
+          package="nickrout.lenslauncher" >
 
     <application
         android:name="com.orm.SugarApp"
@@ -32,7 +32,6 @@
             android:theme="@style/HomeTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -55,15 +54,22 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/activity_title_about"
-            android:screenOrientation="portrait" />
-        <activity android:name=".ui.AppArrangerActivity" />
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".ui.AppArrangerActivity"
+            android:label="@string/activity_title_arranger"
+            android:screenOrientation="portrait">
+        </activity>
+
     </application>
 
 </manifest>

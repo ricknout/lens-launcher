@@ -42,7 +42,7 @@ public class AppUtil {
             ArrayList<IconPackManager.IconPack> iconPacks = new IconPackManager().getAvailableIconPacksWithIcons(true, application);
 
             for (IconPackManager.IconPack iconPack : iconPacks) {
-                if (iconPack.name.equals(iconPackLabelName))
+                if (iconPack.mName.equals(iconPackLabelName))
                     selectedIconPack = iconPack;
             }
 

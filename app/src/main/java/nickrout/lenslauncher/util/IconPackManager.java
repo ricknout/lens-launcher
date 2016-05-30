@@ -38,8 +38,8 @@ public class IconPackManager {
     private Application mApplication;
 
     public class IconPack {
-        public String packageName;
-        public String name;
+        public String mPackageName;
+        public String mName;
 
         private boolean mLoaded = false;
         private HashMap<String, String> mPackagesDrawables = new HashMap<String, String>();
@@ -49,7 +49,7 @@ public class IconPackManager {
         private Bitmap mFrontImage = null;
         private float mFactor = 1.0f;
 
-        Resources iconPackres = null;
+        Resources mIconPackRes = null;
 
         public void load() {
             // load appfilter.xml from the icon pack package
@@ -57,14 +57,14 @@ public class IconPackManager {
             try {
                 XmlPullParser xpp = null;
 
-                iconPackres = pm.getResourcesForApplication(packageName);
-                int appfilterid = iconPackres.getIdentifier("appfilter", "xml", packageName);
+                mIconPackRes = pm.getResourcesForApplication(mPackageName);
+                int appfilterid = mIconPackRes.getIdentifier("appfilter", "xml", mPackageName);
                 if (appfilterid > 0) {
-                    xpp = iconPackres.getXml(appfilterid);
+                    xpp = mIconPackRes.getXml(appfilterid);
                 } else {
                     // no resource found, try to open it from assests folder
                     try {
-                        InputStream appfilterstream = iconPackres.getAssets().open("appfilter.xml");
+                        InputStream appfilterstream = mIconPackRes.getAssets().open("appfilter.xml");
 
                         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                         factory.setNamespaceAware(true);
@@ -132,9 +132,9 @@ public class IconPackManager {
         }
 
         private Bitmap loadBitmap(String drawableName) {
-            int id = iconPackres.getIdentifier(drawableName, "drawable", packageName);
+            int id = mIconPackRes.getIdentifier(drawableName, "drawable", mPackageName);
             if (id > 0) {
-                Drawable bitmap = iconPackres.getDrawable(id);
+                Drawable bitmap = mIconPackRes.getDrawable(id);
                 if (bitmap instanceof BitmapDrawable)
                     return ((BitmapDrawable) bitmap).getBitmap();
             }
@@ -142,9 +142,9 @@ public class IconPackManager {
         }
 
         private Drawable loadDrawable(String drawableName) {
-            int id = iconPackres.getIdentifier(drawableName, "drawable", packageName);
+            int id = mIconPackRes.getIdentifier(drawableName, "drawable", mPackageName);
             if (id > 0) {
-                Drawable bitmap = iconPackres.getDrawable(id);
+                Drawable bitmap = mIconPackRes.getDrawable(id);
                 return bitmap;
             }
             return null;
@@ -169,7 +169,7 @@ public class IconPackManager {
                     int end = componentName.indexOf("}", start);
                     if (end > start) {
                         drawable = componentName.substring(start, end).toLowerCase(Locale.getDefault()).replace(".", "_").replace("/", "_");
-                        if (iconPackres.getIdentifier(drawable, "drawable", packageName) > 0)
+                        if (mIconPackRes.getIdentifier(drawable, "drawable", mPackageName) > 0)
                             return loadDrawable(drawable);
                     }
                 }
@@ -196,7 +196,7 @@ public class IconPackManager {
                     int end = componentName.indexOf("}", start);
                     if (end > start) {
                         drawable = componentName.substring(start, end).toLowerCase(Locale.getDefault()).replace(".", "_").replace("/", "_");
-                        if (iconPackres.getIdentifier(drawable, "drawable", packageName) > 0)
+                        if (mIconPackRes.getIdentifier(drawable, "drawable", mPackageName) > 0)
                             return loadBitmap(drawable);
                     }
                 }
@@ -206,7 +206,7 @@ public class IconPackManager {
 
         private Bitmap generateBitmap(String appPackageName, Bitmap defaultBitmap) {
             // the key for the cache is the icon pack package name and the app package name
-            String key = packageName + ":" + appPackageName;
+            String key = mPackageName + ":" + appPackageName;
 
             // if generated bitmaps cache already contains the package name return it
             //      Bitmap cachedBitmap = BitmapCache.getInstance(mApplication).getBitmap(key);
@@ -287,12 +287,12 @@ public class IconPackManager {
 
             for (ResolveInfo ri : rinfo) {
                 IconPack ip = new IconPack();
-                ip.packageName = ri.activityInfo.packageName;
+                ip.mPackageName = ri.activityInfo.packageName;
 
                 ApplicationInfo ai = null;
                 try {
-                    ai = pm.getApplicationInfo(ip.packageName, PackageManager.GET_META_DATA);
-                    ip.name = mApplication.getPackageManager().getApplicationLabel(ai).toString();
+                    ai = pm.getApplicationInfo(ip.mPackageName, PackageManager.GET_META_DATA);
+                    ip.mName = mApplication.getPackageManager().getApplicationLabel(ai).toString();
                     iconPacksList.add(ip);
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();

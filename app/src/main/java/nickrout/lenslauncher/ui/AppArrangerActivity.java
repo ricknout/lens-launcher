@@ -38,7 +38,7 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
 
     private MaterialDialog mProgressDialog;
     private MaterialDialog mSortTypeChooserDialog;
-    private ArrangerDragDropAdapter arrangerDragDropAdapter;
+    private ArrangerDragDropAdapter mArrangerDragDropAdapter;
 
     private Settings mSettings;
 
@@ -48,7 +48,6 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
         setContentView(R.layout.activity_app_arranger);
         ButterKnife.bind(this);
         mSettings = new Settings(this);
-
         setUpViews();
         loadApps(true);
     }
@@ -117,9 +116,9 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
     @Override
     public void onUpdateAppsTaskPostExecute(ArrayList<App> mApps, ArrayList<Bitmap> mAppIcons) {
         dismissProgressDialog();
-        arrangerDragDropAdapter = new ArrangerDragDropAdapter(AppArrangerActivity.this, mRecyclerView, mApps);
+        mArrangerDragDropAdapter = new ArrangerDragDropAdapter(AppArrangerActivity.this, mRecyclerView, mApps);
 
-        mRecyclerView.setAdapter(arrangerDragDropAdapter);
+        mRecyclerView.setAdapter(mArrangerDragDropAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
@@ -148,7 +147,7 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
 
     private void saveToPersistenceAndUpdateHome() {
 
-//        final List<App> appData = arrangerDragDropAdapter.getAppData();
+//        final List<App> appData = mArrangerDragDropAdapter.getApps();
 //        Thread thread = new Thread(new Runnable() {
 //            @Override
 //            public void run() {
@@ -164,8 +163,9 @@ public class AppArrangerActivity extends BaseActivity implements UpdateAppsTask.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home) {
             finish();
+        }
         return true;
 
     }

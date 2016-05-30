@@ -3,6 +3,7 @@
     <!-- App & Activity Strings -->
     <string name="app_name"><b>Lens</b> Launcher</string>
     <string name="activity_title_about">About</string>
+    <string name="activity_title_arranger">Order &amp; Visibility</string>
 
     <!-- Settings Strings -->
     <string name="setting_lens_diameter">Lens Diameter</string>
@@ -26,12 +27,12 @@
     <string name="setting_sort_type_open_count_descending">Least Opened First</string>
     <string name="setting_sort_type_icon_color_ascending">Icon Color (Light to Dark)</string>
     <string name="setting_sort_type_icon_color_descending">Icon Color (Dark to Light)</string>
-    <string name="setting_app_arranger">App Arrangement &amp; Visibility</string>
+    <string name="setting_app_arranger">@string/activity_title_arranger</string>
     <string name="setting_sort_apps">App Order</string>
 
     <!-- Menu Strings -->
     <string name="menu_title_about">About</string>
-    <string name="menu_title_reset_defaults">Reset To Defaults</string>
+    <string name="menu_title_reset_defaults">Reset Defaults</string>
     <string name="menu_title_show_apps">Show Apps</string>
     <string name="menu_app_open">Open</string>
     <string name="menu_app_uninstall">Uninstall</string>

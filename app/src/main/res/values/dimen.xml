@@ -23,9 +23,10 @@
 
     <!-- App Element Dimension -->
     <dimen name="width_app_icon">48dp</dimen>
+    <dimen name="height_app_action_button">64dp</dimen>
     <dimen name="radius_corner_card">4dp</dimen>
 
     <!-- General -->
-    <dimen name="margin_fab">12dp</dimen>
+    <dimen name="margin_fab">16dp</dimen>
 
 </resources>

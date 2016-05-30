@@ -18,8 +18,8 @@ public class AppSorter {
         LABEL_DESCENDING(R.string.setting_sort_type_label_descending),
         INSTALL_DATE_ASCENDING(R.string.setting_sort_type_install_date_ascending),
         INSTALL_DATE_DESCENDING(R.string.setting_sort_type_install_date_descending),
-        OPEN_COUNT_ASCENDING(R.string.setting_sort_type_open_count_ascending),
-        OPEN_COUNT_DESCENDING(R.string.setting_sort_type_open_count_descending),
+        /*OPEN_COUNT_ASCENDING(R.string.setting_sort_type_open_count_ascending),
+        OPEN_COUNT_DESCENDING(R.string.setting_sort_type_open_count_descending),*/
         ICON_COLOR_ASCENDING(R.string.setting_sort_type_icon_color_ascending),
         ICON_COLOR_DESCENDING(R.string.setting_sort_type_icon_color_descending);
 
@@ -48,12 +48,12 @@ public class AppSorter {
             case INSTALL_DATE_DESCENDING:
                 sortByInstallDateDescending(apps);
                 break;
-            case OPEN_COUNT_ASCENDING:
+            /*case OPEN_COUNT_ASCENDING:
                 sortByOpenCountAscending(apps);
                 break;
             case OPEN_COUNT_DESCENDING:
                 sortByOpenCountDescending(apps);
-                break;
+                break;*/
             case ICON_COLOR_ASCENDING:
                 sortByIconColorAscending(apps);
                 break;

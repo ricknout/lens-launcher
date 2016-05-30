@@ -36,46 +36,46 @@ import nickrout.lenslauncher.util.AppUtil;
 public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAdapter.MainViewHolder> {
 
     public static final String TAG = "ArrangerDragDropAdapter";
-    private final List<App> appData;
+    private final List<App> mApps;
     private RecyclerView mRecyclerView;
     private Context mContext;
 
-    public ArrangerDragDropAdapter(Context mContext, RecyclerView recyclerView, List<App> appData) {
+    public ArrangerDragDropAdapter(Context mContext, RecyclerView recyclerView, List<App> mApps) {
         super(recyclerView);
         this.mContext = mContext;
-        this.appData = appData;
+        this.mApps = mApps;
         this.mRecyclerView = recyclerView;
     }
 
     public App getItemForPosition(int position) {
-        return appData.get(position);
+        return mApps.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return appData.get(position).getID();
+        return mApps.get(position).getID();
     }
 
     @Override
     public int getPositionForId(long id) {
-        for (int i = 0; i < appData.size(); i++)
-            if (appData.get(i).getID() == ((int) id))
+        for (int i = 0; i < mApps.size(); i++)
+            if (mApps.get(i).getID() == ((int) id))
                 return i;
         return -1;
     }
 
     @Override
     public boolean move(int fromPosition, int toPosition) {
-        appData.add(toPosition, appData.remove(fromPosition));
+        mApps.add(toPosition, mApps.remove(fromPosition));
         return true;
     }
 
     @Override
     public MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.element_app_arranger, parent, false);
+        View view = inflater.inflate(R.layout.recycler_item_app_arranger, parent, false);
         final MainViewHolder holder = new MainViewHolder(mContext, ArrangerDragDropAdapter.this, view);
-        view.setOnLongClickListener(holder);
+        //view.setOnLongClickListener(holder);
         holder.setOnClickListeners();
         return holder;
     }
@@ -98,7 +98,7 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
 
     @Override
     public int getItemCount() {
-        return appData.size();
+        return mApps.size();
     }
 
     @Override
@@ -106,8 +106,8 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
         super.onDrop();
     }
 
-    public List<App> getAppData() {
-        return appData;
+    public List<App> getApps() {
+        return mApps;
     }
 
     public static class MainViewHolder extends DragSortAdapter.ViewHolder implements View.OnLongClickListener, PopupMenu.OnMenuItemClickListener {
@@ -153,9 +153,9 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
             mIcon.setImageBitmap(mApp.getIcon());
             boolean isAppVisible = AppPersistent.getAppVisibilityForPackage(mApp.getPackageName().toString());
             if (isAppVisible) {
-                mToggleAppVisibility.setImageResource(R.drawable.ic_visible);
+                mToggleAppVisibility.setImageResource(R.drawable.ic_visibility_grey_24dp);
             } else {
-                mToggleAppVisibility.setImageResource(R.drawable.ic_invisible);
+                mToggleAppVisibility.setImageResource(R.drawable.ic_visibility_off_grey_24dp);
             }
             if (mApp.getPackageName().toString().equals(mContext.getPackageName()))
                 mToggleAppVisibility.setVisibility(View.INVISIBLE);
@@ -170,10 +170,10 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
             AppPersistent.setAppVisibilityForPackage(mApp.getPackageName().toString(), !isAppVisible);
             if (isAppVisible) {
                 Snackbar.make(mContainer, mApp.getLabel() + " is now hidden", Snackbar.LENGTH_LONG).show();
-                mToggleAppVisibility.setImageResource(R.drawable.ic_invisible);
+                mToggleAppVisibility.setImageResource(R.drawable.ic_visibility_off_grey_24dp);
             } else {
                 Snackbar.make(mContainer, mApp.getLabel() + " is now visible", Snackbar.LENGTH_LONG).show();
-                mToggleAppVisibility.setImageResource(R.drawable.ic_visible);
+                mToggleAppVisibility.setImageResource(R.drawable.ic_visibility_grey_24dp);
             }
         }
 

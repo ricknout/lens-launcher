@@ -320,7 +320,7 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
 
         iconPackNames.add(getString(R.string.setting_default_icon_pack));
         for (int i = 0; i < availableIconPacks.size(); i++)
-            iconPackNames.add(availableIconPacks.get(i).name);
+            iconPackNames.add(availableIconPacks.get(i).mName);
 
         String selectedPackageName = mSettings.getString(Settings.KEY_ICON_PACK_LABEL_NAME);
         int selectedIndex = iconPackNames.indexOf(selectedPackageName);
