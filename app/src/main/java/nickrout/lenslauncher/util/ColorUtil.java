@@ -12,7 +12,13 @@ import nickrout.lenslauncher.model.App;
 public class ColorUtil {
 
     public static @ColorInt int getPaletteColorFromApp(App app) {
-        Palette palette = Palette.from(app.getIcon()).generate();
+        Palette palette;
+        try {
+            palette = Palette.from(app.getIcon()).generate();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return Color.BLACK;
+        }
         if (palette.getSwatches().size() > 0) {
             int swatchIndex = 0;
             for (int i = 1; i < palette.getSwatches().size(); i++) {
