@@ -15,6 +15,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,11 +26,12 @@ import nickrout.lenslauncher.adapter.ArrangerDragDropAdapter;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.util.AppSorter;
 import nickrout.lenslauncher.util.AppsSingleton;
+import nickrout.lenslauncher.util.ObservableObject;
 import nickrout.lenslauncher.util.Settings;
 import nickrout.lenslauncher.util.UpdateAppsTask;
 
 public class AppArrangerActivity extends BaseActivity
-        implements UpdateAppsTask.UpdateAppsTaskListener {
+        implements Observer, UpdateAppsTask.UpdateAppsTaskListener {
 
     private static final String TAG = "AppArrangerActivity";
 
@@ -43,6 +46,8 @@ public class AppArrangerActivity extends BaseActivity
     private ArrangerDragDropAdapter mArrangerDragDropAdapter;
 
     private Settings mSettings;
+
+    private int mScrolledItemIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,7 @@ public class AppArrangerActivity extends BaseActivity
                 loadApps(false);
             }
         }
+        ObservableObject.getInstance().addObserver(this);
     }
 
     private void setUpViews() {
@@ -134,6 +140,8 @@ public class AppArrangerActivity extends BaseActivity
         mRecyclerView.setAdapter(mArrangerDragDropAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.scrollToPosition(mScrolledItemIndex);
+        mScrolledItemIndex = 0;
     }
 
     private void showProgressDialog() {
@@ -154,6 +162,7 @@ public class AppArrangerActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         dismissProgressDialog();
+        ObservableObject.getInstance().deleteObserver(this);
         saveToPersistenceAndUpdateHome();
         super.onDestroy();
     }
@@ -181,5 +190,11 @@ public class AppArrangerActivity extends BaseActivity
         }
         return true;
 
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        mScrolledItemIndex = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        loadApps(false);
     }
 }

@@ -23,16 +23,20 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.util.AppsSingleton;
 import nickrout.lenslauncher.util.IconPackManager;
+import nickrout.lenslauncher.util.ObservableObject;
 import nickrout.lenslauncher.util.Settings;
 
 /**
  * Created by nickrout on 2016/04/02.
  */
-public class SettingsActivity extends BaseActivity implements ColorChooserDialog.ColorCallback {
+public class SettingsActivity extends BaseActivity
+        implements Observer, ColorChooserDialog.ColorCallback {
 
     private static final String TAG = "SettingsActivity";
 
@@ -69,6 +73,7 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
         setContentView(R.layout.activity_settings);
         mSettings = new Settings(this);
         setupViews();
+        ObservableObject.getInstance().addObserver(this);
     }
 
     @Override
@@ -371,6 +376,12 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
     @Override
     protected void onDestroy() {
         dismissIconPackChooserDialog();
+        ObservableObject.getInstance().deleteObserver(this);
         super.onDestroy();
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        AppsSingleton.getInstance().setNeedsUpdate(true);
     }
 }

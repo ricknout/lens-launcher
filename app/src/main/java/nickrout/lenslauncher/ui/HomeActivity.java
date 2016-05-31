@@ -27,7 +27,8 @@ import nickrout.lenslauncher.util.UpdateAppsTask;
 /**
  * Created by nickrout on 2016/04/02.
  */
-public class HomeActivity extends BaseActivity implements Observer, UpdateAppsTask.UpdateAppsTaskListener {
+public class HomeActivity extends BaseActivity
+        implements Observer, UpdateAppsTask.UpdateAppsTaskListener {
 
     private final static String TAG = "HomeActivity";
 
@@ -89,6 +90,7 @@ public class HomeActivity extends BaseActivity implements Observer, UpdateAppsTa
     @Override
     protected void onDestroy() {
         dismissProgressDialog();
+        ObservableObject.getInstance().deleteObserver(this);
         super.onDestroy();
     }
 
