@@ -52,10 +52,13 @@ public class AppArrangerActivity extends BaseActivity
         mSettings = new Settings(this);
         setUpViews();
         ArrayList<App> apps = AppsSingleton.getInstance().getApps();
-        if (apps == null || AppsSingleton.getInstance().doesNeedUpdate()) {
+        if (apps == null) {
             loadApps(true);
         } else {
             setupRecycler(apps);
+            if (AppsSingleton.getInstance().doesNeedUpdate()) {
+                loadApps(false);
+            }
         }
     }
 
