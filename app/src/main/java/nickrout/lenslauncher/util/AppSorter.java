@@ -103,8 +103,8 @@ public class AppSorter {
         Collections.sort(apps, new Comparator<App>() {
             @Override
             public int compare(App a1, App a2) {
-                long a1OpenCount = AppPersistent.getOpenCountByPackageName(a1.getPackageName().toString());
-                long a2OpenCount = AppPersistent.getOpenCountByPackageName(a2.getPackageName().toString());
+                long a1OpenCount = AppPersistent.getOpenCountByName(a1.getName().toString());
+                long a2OpenCount = AppPersistent.getOpenCountByName(a2.getName().toString());
                 if (a1OpenCount > a2OpenCount) {
                     return -1;
                 } else if (a1OpenCount < a2OpenCount) {

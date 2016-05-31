@@ -109,7 +109,7 @@ public class HomeActivity extends BaseActivity
     @Override
     public void onUpdateAppsTaskPostExecute(ArrayList<App> apps, ArrayList<Bitmap> appIcons) {
         for (int i = 0; i < apps.size(); i++) {
-            if (!AppPersistent.getAppVisibilityForPackage(apps.get(i).getPackageName().toString())) {
+            if (!AppPersistent.getAppVisibilityForPackage(apps.get(i).getName().toString())) {
                 apps.remove(i);
                 appIcons.remove(i);
                 i--;

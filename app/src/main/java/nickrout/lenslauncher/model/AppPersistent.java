@@ -15,6 +15,7 @@ public class AppPersistent extends SugarRecord {
     }
 
     private String mPackageName;
+    private String mName;
     private long mOpenCount;
     private int mOrderNumber;
     private boolean mAppVisible;
@@ -24,11 +25,12 @@ public class AppPersistent extends SugarRecord {
     private static long DEFAULT_OPEN_COUNT = 1;
     private static final String TAG = "AppPersistent";
 
-    public AppPersistent(String mPackageName, long mOpenCount, int mOrderNumber, boolean mAppVisible) {
-        this.mPackageName = mPackageName;
-        this.mOpenCount = mOpenCount;
-        this.mOrderNumber = mOrderNumber;
-        this.mAppVisible = mAppVisible;
+    public AppPersistent(String packageName, String name, long openCount, int orderNumber, boolean appVisible) {
+        this.mPackageName = packageName;
+        this.mName = name;
+        this.mOpenCount = openCount;
+        this.mOrderNumber = orderNumber;
+        this.mAppVisible = appVisible;
     }
 
     public String getPackageName() {
@@ -37,6 +39,14 @@ public class AppPersistent extends SugarRecord {
 
     public void setPackageName(String mPackageName) {
         this.mPackageName = mPackageName;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String name) {
+        mName = name;
     }
 
     public long getOpenCount() {
@@ -67,36 +77,37 @@ public class AppPersistent extends SugarRecord {
     public String toString() {
         return "AppPersistent{" +
                 "mPackageName='" + mPackageName + '\'' +
+                ", mName='" + mName + '\'' +
                 ", mOpenCount=" + mOpenCount +
                 ", mOrderNumber=" + mOrderNumber +
                 ", mAppVisible=" + mAppVisible +
                 '}';
     }
 
-    public static void incrementAppCount(String mPackageName) {
-        AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mPackageName")).eq(mPackageName)).first();
+    public static void incrementAppCount(String packageName, String name) {
+        AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mName")).eq(name)).first();
         if (appPersistent != null) {
             appPersistent.setOpenCount(appPersistent.getOpenCount() + 1);
             appPersistent.save();
         } else {
-            AppPersistent newAppPersistent = new AppPersistent(mPackageName, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, DEFAULT_APP_VISIBILITY);
+            AppPersistent newAppPersistent = new AppPersistent(packageName, name, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, DEFAULT_APP_VISIBILITY);
             newAppPersistent.save();
         }
     }
 
-    public static void setOrderNumberForPackage(String mPackageName, int mOrderNumber) {
-        AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mPackageName")).eq(mPackageName)).first();
+    public static void setOrderNumberForPackage(String packageName, String name, int orderNumber) {
+        AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mName")).eq(name)).first();
         if (appPersistent != null) {
-            appPersistent.setOrderNumber(mOrderNumber);
+            appPersistent.setOrderNumber(orderNumber);
             appPersistent.save();
         } else {
-            AppPersistent newAppPersistent = new AppPersistent(mPackageName, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, DEFAULT_APP_VISIBILITY);
+            AppPersistent newAppPersistent = new AppPersistent(packageName, name, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, DEFAULT_APP_VISIBILITY);
             newAppPersistent.save();
         }
     }
 
-    public static boolean getAppVisibilityForPackage(String mPackageName) {
-        AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mPackageName")).eq(mPackageName)).first();
+    public static boolean getAppVisibilityForPackage(String name) {
+        AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mName")).eq(name)).first();
         if (appPersistent != null) {
             return appPersistent.isAppVisible();
         } else {
@@ -104,19 +115,19 @@ public class AppPersistent extends SugarRecord {
         }
     }
 
-    public static void setAppVisibilityForPackage(String mPackageName, boolean mHideApp) {
-        AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mPackageName")).eq(mPackageName)).first();
+    public static void setAppVisibilityForPackage(String packageName, String name, boolean mHideApp) {
+        AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mName")).eq(name)).first();
         if (appPersistent != null) {
             appPersistent.setAppVisible(mHideApp);
             appPersistent.save();
         } else {
-            AppPersistent newAppPersistent = new AppPersistent(mPackageName, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, mHideApp);
+            AppPersistent newAppPersistent = new AppPersistent(packageName, name, DEFAULT_OPEN_COUNT, DEFAULT_ORDER_NUMBER, mHideApp);
             newAppPersistent.save();
         }
     }
 
-    public static long getOpenCountByPackageName(String mPackageName) {
-        AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mPackageName")).eq(mPackageName)).first();
+    public static long getOpenCountByName(String name) {
+        AppPersistent appPersistent = Select.from(AppPersistent.class).where(Condition.prop(NamingHelper.toSQLNameDefault("mName")).eq(name)).first();
         if (appPersistent != null) {
             return appPersistent.getOpenCount();
         } else {

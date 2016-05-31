@@ -313,7 +313,7 @@ public class LensView extends View {
              * If not, drawNewAppTag()
              */
             if ((mApps.get(index).getInstallDate() >= (System.currentTimeMillis() - Settings.SHOW_NEW_APP_TAG_DURATION)
-                    && (AppPersistent.getOpenCountByPackageName(mApps.get(index).getPackageName().toString()) == 0))) {
+                    && (AppPersistent.getOpenCountByName(mApps.get(index).getName().toString()) == 0))) {
                 drawNewAppTag(canvas, rect);
             }
         }
@@ -364,10 +364,13 @@ public class LensView extends View {
 
     private void launchApp() {
         if (mPackageManager != null && mApps != null && mSelectIndex >= 0) {
-            AppUtil.launchComponent((String) mApps.get(mSelectIndex).getPackageName(),
+            AppUtil.launchComponent(
+                    (String) mApps.get(mSelectIndex).getPackageName(),
                     (String) mApps.get(mSelectIndex).getName(),
                     getContext());
-            AppPersistent.incrementAppCount((String) mApps.get(mSelectIndex).getPackageName());
+            AppPersistent.incrementAppCount(
+                    (String) mApps.get(mSelectIndex).getPackageName(),
+                    (String) mApps.get(mSelectIndex).getName());
         }
     }
 

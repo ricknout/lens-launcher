@@ -47,6 +47,7 @@ public class AppArrangerActivity extends BaseActivity
 
     private Settings mSettings;
 
+    private boolean mMustShowDialog = false;
     private int mScrolledItemIndex = 0;
 
     @Override
@@ -69,9 +70,7 @@ public class AppArrangerActivity extends BaseActivity
     }
 
     private void setUpViews() {
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -104,13 +103,10 @@ public class AppArrangerActivity extends BaseActivity
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         mSettings.save(sortTypes.get(which));
-
-                        loadApps(true);
-
                         /* Send broadcast to refresh the app drawer in background. */
-                        Intent refreshHomeIntent = new Intent(AppArrangerActivity.this, HomeActivity.AppsUpdatedReceiver.class);
-                        sendBroadcast(refreshHomeIntent);
-
+                        mMustShowDialog = true;
+                        Intent refreshAppsIntent = new Intent(AppArrangerActivity.this, HomeActivity.AppsUpdatedReceiver.class);
+                        sendBroadcast(refreshAppsIntent);
                         return true;
                     }
                 })
@@ -125,6 +121,7 @@ public class AppArrangerActivity extends BaseActivity
 
     @Override
     public void onUpdateAppsTaskPreExecute(boolean isLoad) {
+        mMustShowDialog = false;
         if (isLoad) {
             showProgressDialog();
         }
@@ -133,6 +130,9 @@ public class AppArrangerActivity extends BaseActivity
     @Override
     public void onUpdateAppsTaskPostExecute(ArrayList<App> apps, ArrayList<Bitmap> appIcons) {
         dismissProgressDialog();
+        if (mRecyclerView.getLayoutManager() != null) {
+            mScrolledItemIndex = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        }
         setupRecycler(apps);
     }
 
@@ -190,12 +190,10 @@ public class AppArrangerActivity extends BaseActivity
             finish();
         }
         return true;
-
     }
 
     @Override
     public void update(Observable observable, Object data) {
-        mScrolledItemIndex = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-        loadApps(false);
+        loadApps(mMustShowDialog);
     }
 }
