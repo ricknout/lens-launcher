@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -77,9 +78,9 @@ public class AppUtil {
         if (packageName != null && name != null) {
             Intent componentIntent = new Intent();
             componentIntent.setComponent(new ComponentName(packageName, name));
-            componentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (!packageName.equals("nickrout.lenslauncher")) {
                 componentIntent.setAction(Intent.ACTION_MAIN);
+                componentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
             componentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             try {
