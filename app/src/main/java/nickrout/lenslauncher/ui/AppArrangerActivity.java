@@ -125,8 +125,9 @@ public class AppArrangerActivity extends BaseActivity
 
     @Override
     public void onUpdateAppsTaskPreExecute(boolean isLoad) {
-        if (isLoad)
+        if (isLoad) {
             showProgressDialog();
+        }
     }
 
     @Override

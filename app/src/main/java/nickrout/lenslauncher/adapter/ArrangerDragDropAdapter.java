@@ -184,7 +184,7 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
                     if (mApp != null)
                         toggleAppVisibility(mApp);
                     else
-                        Snackbar.make(mContainer, mContext.getString(R.string.error_unable_to_open), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(mContainer, mContext.getString(R.string.error_app_not_found), Snackbar.LENGTH_LONG).show();
                     printAllPersistent();
                 }
             });
