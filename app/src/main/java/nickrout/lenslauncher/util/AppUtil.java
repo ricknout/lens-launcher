@@ -80,7 +80,6 @@ public class AppUtil {
             componentIntent.setComponent(new ComponentName(packageName, name));
             if (!packageName.equals("nickrout.lenslauncher")) {
                 componentIntent.setAction(Intent.ACTION_MAIN);
-                componentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
             componentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             try {
