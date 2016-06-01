@@ -161,10 +161,15 @@ public class AppArrangerActivity extends BaseActivity
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        saveToPersistenceAndUpdateHome();
+    }
+
+    @Override
     protected void onDestroy() {
         dismissProgressDialog();
         ObservableObject.getInstance().deleteObserver(this);
-        saveToPersistenceAndUpdateHome();
         super.onDestroy();
     }
 
