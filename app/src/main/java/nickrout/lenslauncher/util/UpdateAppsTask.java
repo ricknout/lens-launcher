@@ -65,7 +65,6 @@ public class UpdateAppsTask extends AsyncTask<Void, Void, Void> {
         ArrayList<App> singletonApps = new ArrayList<>();
         singletonApps.addAll(mApps);
         AppsSingleton.getInstance().setApps(singletonApps);
-        AppsSingleton.getInstance().setNeedsUpdate(false);
         mUpdateAppsTaskListener.onUpdateAppsTaskPostExecute(mApps, mAppIcons);
         super.onPostExecute(result);
     }

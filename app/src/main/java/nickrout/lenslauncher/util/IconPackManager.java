@@ -253,7 +253,11 @@ public class IconPackManager {
                 paint.setXfermode(null);
             } else // draw the scaled bitmap without mask
             {
-                mCanvas.drawBitmap(scaledBitmap, (w - scaledBitmap.getWidth()) / 2, (h - scaledBitmap.getHeight()) / 2, null);
+                if (scaledBitmap != null) {
+                    mCanvas.drawBitmap(scaledBitmap, (w - scaledBitmap.getWidth()) / 2, (h - scaledBitmap.getHeight()) / 2, null);
+                } else {
+                    return null;
+                }
             }
 
             // paint the front

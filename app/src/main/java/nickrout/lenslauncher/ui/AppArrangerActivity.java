@@ -134,6 +134,7 @@ public class AppArrangerActivity extends BaseActivity
             mScrolledItemIndex = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
         }
         setupRecycler(apps);
+        AppsSingleton.getInstance().setNeedsUpdate(false);
     }
 
     private void setupRecycler(ArrayList<App> apps) {
