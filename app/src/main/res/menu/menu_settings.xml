@@ -7,8 +7,12 @@
         android:title="@string/menu_title_about"
         app:showAsAction="never"></item>
     <item
-        android:id="@+id/menu_item_reset_default"
+        android:id="@+id/menu_item_reset_default_settings"
         android:title="@string/menu_title_reset_defaults"
+        app:showAsAction="never"></item>
+    <item
+        android:id="@+id/menu_item_alter_default_launcher"
+        android:title="@string/menu_title_alter_default_launcher"
         app:showAsAction="never"></item>
 
     <item
