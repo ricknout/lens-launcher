@@ -283,8 +283,13 @@ public class SettingsActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_show_apps:
-                Intent homeIntent = new Intent(SettingsActivity.this, HomeActivity.class);
-                startActivity(homeIntent);
+
+                if (!FakeLauncherActivity.isMyAppLauncherDefault(getApplication())) {
+                    FakeLauncherActivity.resetPreferredLauncherAndOpenChooser(getApplicationContext());
+                } else {
+                    Intent homeIntent = new Intent(SettingsActivity.this, HomeActivity.class);
+                    startActivity(homeIntent);
+                }
                 return true;
             case R.id.menu_item_about:
                 Intent aboutIntent = new Intent(SettingsActivity.this, AboutActivity.class);
