@@ -22,13 +22,15 @@ public class Settings {
     public static final String DEFAULT_ICON_PACK_LABEL_NAME = "Default Icon Pack"; /* Unable to access strings.xml from here */
     public static final int DEFAULT_SORT_TYPE = 0;
 
+    // These values are for the progress bars, their real values = (MAX_VALUE / INTERVAL (eg. 2)) + MIN_VALUE
     public static final int MAX_MIN_ICON_SIZE = 20;
     public static final int MAX_DISTORTION_FACTOR = 8;
     public static final int MAX_SCALE_FACTOR = 4;
     public static final int MAX_ANIMATION_TIME = 600;
+
     public static final int SHOW_NEW_APP_TAG_DURATION = 12 * 60 * 60 * 1000; /* An app has the new tag for twelve hours. If openCount >= 1, the new tag is not drawn. */
 
-    public static final int MIN_MIN_ICON_SIZE = 10;
+    public static final float MIN_MIN_ICON_SIZE = 10.0f;
     public static final float MIN_DISTORTION_FACTOR = 0.5f;
     public static final float MIN_SCALE_FACTOR = 1.0f;
     public static final long MIN_ANIMATION_TIME = 100;
@@ -71,10 +73,25 @@ public class Settings {
 
     public float getFloat(String name) {
         if (name.equals(KEY_MIN_ICON_SIZE)) {
+            if (sharedPreferences().getFloat(name, DEFAULT_MIN_ICON_SIZE) < MIN_MIN_ICON_SIZE) {
+                save(name, MIN_MIN_ICON_SIZE);
+            } else if (sharedPreferences().getFloat(name, DEFAULT_MIN_ICON_SIZE) > getMaxFloatValue(name)) {
+                save(name, getMaxFloatValue(name));
+            }
             return sharedPreferences().getFloat(name, DEFAULT_MIN_ICON_SIZE);
         } else if (name.equals(KEY_DISTORTION_FACTOR)) {
+            if (sharedPreferences().getFloat(name, DEFAULT_DISTORTION_FACTOR) < MIN_DISTORTION_FACTOR) {
+                save(name, MIN_DISTORTION_FACTOR);
+            } else if (sharedPreferences().getFloat(name, DEFAULT_DISTORTION_FACTOR) > getMaxFloatValue(name)) {
+                save(name, getMaxFloatValue(name));
+            }
             return sharedPreferences().getFloat(name, DEFAULT_DISTORTION_FACTOR);
         } else if (name.equals(KEY_SCALE_FACTOR)) {
+            if (sharedPreferences().getFloat(name, DEFAULT_SCALE_FACTOR) < MIN_SCALE_FACTOR) {
+                save(name, MIN_SCALE_FACTOR);
+            } else if (sharedPreferences().getFloat(name, DEFAULT_SCALE_FACTOR) > getMaxFloatValue(name)) {
+                save(name, getMaxFloatValue(name));
+            }
             return sharedPreferences().getFloat(name, DEFAULT_SCALE_FACTOR);
         } else {
             return sharedPreferences().getFloat(name, DEFAULT_FLOAT);
@@ -87,6 +104,11 @@ public class Settings {
 
     public long getLong(String name) {
         if (name.equals(KEY_ANIMATION_TIME)) {
+            if (sharedPreferences().getLong(name, DEFAULT_ANIMATION_TIME) < MIN_ANIMATION_TIME) {
+                save(name, MIN_ANIMATION_TIME);
+            } else if (sharedPreferences().getLong(name, DEFAULT_ANIMATION_TIME) > getMaxLongValue(name)) {
+                save(name, getMaxLongValue(name));
+            }
             return sharedPreferences().getLong(name, DEFAULT_ANIMATION_TIME);
         } else {
             return sharedPreferences().getLong(name, DEFAULT_LONG);
@@ -139,5 +161,25 @@ public class Settings {
     public AppSorter.SortType getSortType() {
         int ordinal = sharedPreferences().getInt(KEY_SORT_TYPE, 0);
         return AppSorter.SortType.values()[ordinal];
+    }
+
+    public float getMaxFloatValue(String name) {
+        if (name.equals(KEY_MIN_ICON_SIZE)) {
+            return (float) MAX_MIN_ICON_SIZE + MIN_MIN_ICON_SIZE;
+        } else if (name.equals(KEY_DISTORTION_FACTOR)) {
+            return (float) MAX_DISTORTION_FACTOR / 2 + MIN_DISTORTION_FACTOR;
+        } else if (name.equals(KEY_SCALE_FACTOR)) {
+            return (float) MAX_SCALE_FACTOR / 2 + MIN_SCALE_FACTOR;
+        } else {
+            return DEFAULT_FLOAT;
+        }
+    }
+
+    public long getMaxLongValue(String name) {
+        if (name.equals(KEY_ANIMATION_TIME)) {
+            return (long) MAX_ANIMATION_TIME / 2 + MIN_ANIMATION_TIME;
+        } else {
+            return DEFAULT_LONG;
+        }
     }
 }

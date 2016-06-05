@@ -93,7 +93,7 @@ public class SettingsActivity extends BaseActivity
         mMinIconSize.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int appropriateProgress = progress + Settings.MIN_MIN_ICON_SIZE;
+                int appropriateProgress = progress + (int) Settings.MIN_MIN_ICON_SIZE;
                 String minIconSize = appropriateProgress + "dp";
                 mValueMinIconSize.setText(minIconSize);
                 mSettings.save(Settings.KEY_MIN_ICON_SIZE, (float) appropriateProgress);
@@ -235,7 +235,7 @@ public class SettingsActivity extends BaseActivity
 
     private void assignValues() {
 
-        mMinIconSize.setProgress((int) mSettings.getFloat(Settings.KEY_MIN_ICON_SIZE) - Settings.MIN_MIN_ICON_SIZE);
+        mMinIconSize.setProgress((int) mSettings.getFloat(Settings.KEY_MIN_ICON_SIZE) - (int) Settings.MIN_MIN_ICON_SIZE);
         String minIconSize = (int) mSettings.getFloat(Settings.KEY_MIN_ICON_SIZE) + "dp";
         mValueMinIconSize.setText(minIconSize);
         mDistortionFactor.setProgress((int) (2.0f * (mSettings.getFloat(Settings.KEY_DISTORTION_FACTOR) - Settings.MIN_DISTORTION_FACTOR)));
