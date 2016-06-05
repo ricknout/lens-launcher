@@ -310,7 +310,8 @@ public class LensView extends View {
              * If not, drawNewAppTag()
              */
             if ((mApps.get(index).getInstallDate() >= (System.currentTimeMillis() - Settings.SHOW_NEW_APP_TAG_DURATION)
-                    && (AppPersistent.getOpenCountByName(mApps.get(index).getName().toString()) == 0))) {
+                    && (AppPersistent.getAppOpenCount(
+                    mApps.get(index).getPackageName().toString(), mApps.get(index).getName().toString()) == 0))) {
                 drawNewAppTag(canvas, rect);
             }
         }
