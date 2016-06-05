@@ -128,10 +128,6 @@ public class LensView extends View {
         mPaintText.setAntiAlias(true);
         mPaintText.setStyle(Paint.Style.FILL);
         mPaintText.setColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
-        mPaintText.setShadowLayer(getResources().getDimension(R.dimen.shadow_text),
-                getResources().getDimension(R.dimen.shadow_text),
-                getResources().getDimension(R.dimen.shadow_text),
-                ContextCompat.getColor(getContext(), R.color.colorShadow));
         mPaintText.setTextSize(getResources().getDimension(R.dimen.text_size_lens));
         mPaintText.setTextAlign(Paint.Align.CENTER);
 
@@ -385,6 +381,7 @@ public class LensView extends View {
                 public void onAnimationStart(Animation animation) {
                     if (!mShow) {
                         mAnimationHiding = true;
+                        mPaintText.clearShadowLayer();
                     } else {
                         mAnimationHiding = false;
                     }
@@ -397,6 +394,12 @@ public class LensView extends View {
                         mTouchX = -Float.MAX_VALUE;
                         mTouchY = -Float.MAX_VALUE;
                         mAnimationHiding = false;
+                    } else {
+                        mPaintText.setShadowLayer(
+                                getResources().getDimension(R.dimen.shadow_text),
+                                getResources().getDimension(R.dimen.shadow_text),
+                                getResources().getDimension(R.dimen.shadow_text),
+                                ContextCompat.getColor(getContext(), R.color.colorShadow));
                     }
                 }
 
@@ -413,10 +416,12 @@ public class LensView extends View {
                 mAnimationMultiplier = interpolatedTime;
                 mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
                 mPaintTouchSelection.setAlpha((int) (255.0f * interpolatedTime));
+                mPaintText.setAlpha((int) (255.0f * interpolatedTime));
             } else {
                 mAnimationMultiplier = 1.0f - interpolatedTime;
                 mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
                 mPaintTouchSelection.setAlpha((int) (255.0f * (1.0f - interpolatedTime)));
+                mPaintText.setAlpha((int) (255.0f * (1.0f - interpolatedTime)));
             }
             postInvalidate();
         }
