@@ -55,52 +55,38 @@ public class LensCalculator {
     }
 
     // Graphical Fisheye Lens algorithm for shifting
-    public static float shiftPoint(Context context, float lensPosition, float itemPosition, float boundary) {
+    public static float shiftPoint(Context context, float lensPosition, float itemPosition, float boundary, float multiplier) {
         if (lensPosition < 0) {
             return itemPosition;
         }
         Settings settings = new Settings(context);
-        float shiftedPosition = itemPosition;
+        float shiftedPosition;
         float a = Math.abs(lensPosition - itemPosition);
-        float x = a / (boundary / 2.0f);
-        float y = ((1.0f + settings.getFloat(Settings.KEY_DISTORTION_FACTOR)) * x) / (1.0f + (settings.getFloat(Settings.KEY_DISTORTION_FACTOR) * x));
-        float newDistanceFromCenter = (boundary / 2.0f) * y;
-        // Removed - handled in LensView and causes weird edge 'ballooning'
-        //if ((lensPosition + boundary / 2.0f) >= itemPosition && (lensPosition - boundary / 2) <= itemPosition) {
-        if (lensPosition > itemPosition) {
+        float b = Math.max(lensPosition, boundary - lensPosition);
+        float x = a / b;
+        float y = ((1.0f + multiplier * settings.getFloat(Settings.KEY_DISTORTION_FACTOR)) * x) / (1.0f + (multiplier * settings.getFloat(Settings.KEY_DISTORTION_FACTOR) * x));
+        float newDistanceFromCenter = b * y;
+        if (lensPosition >= itemPosition) {
             shiftedPosition = lensPosition - newDistanceFromCenter;
-        } else if (lensPosition < itemPosition) {
+        } else {
             shiftedPosition = lensPosition + newDistanceFromCenter;
         }
-        //}
         return shiftedPosition;
     }
 
     // Graphical Fisheye Lens algorithm for scaling
-    public static float scalePoint(Context context, float lensPosition, float itemPosition, float itemSize, float boundary) {
+    public static float scalePoint(Context context, float lensPosition, float itemPosition, float itemSize, float boundary, float multiplier) {
         if (lensPosition < 0) {
             return itemSize;
         }
         Settings settings = new Settings(context);
-        float scaledPosition = itemPosition;
-        if (lensPosition > itemPosition) {
-            itemPosition = itemPosition - settings.getFloat(Settings.KEY_SCALE_FACTOR) * (itemSize / 2.0f);
+        float scaleDifference = settings.getFloat(Settings.KEY_SCALE_FACTOR) - Settings.MIN_SCALE_FACTOR;
+        if (lensPosition >= itemPosition) {
+            itemPosition = itemPosition - (Settings.MIN_SCALE_FACTOR + scaleDifference * multiplier) * (itemSize / 2.0f);
         } else {
-            itemPosition = itemPosition + settings.getFloat(Settings.KEY_SCALE_FACTOR) * (itemSize / 2.0f);
+            itemPosition = itemPosition + (Settings.MIN_SCALE_FACTOR + scaleDifference * multiplier) * (itemSize / 2.0f);
         }
-        float a = Math.abs(lensPosition - itemPosition);
-        float x = a / (boundary / 2.0f);
-        float y = ((1.0f + settings.getFloat(Settings.KEY_DISTORTION_FACTOR)) * x) / (1.0f + (settings.getFloat(Settings.KEY_DISTORTION_FACTOR) * x));
-        float scaledDistanceFromCenter = (boundary / 2.0f) * y;
-        // Removed - handled in LensView and causes weird edge 'ballooning'
-        //if ((lensPosition + boundary / 2.0f) >= itemPosition && (lensPosition - boundary / 2) <= itemPosition) {
-        if (lensPosition > itemPosition) {
-            scaledPosition = lensPosition - scaledDistanceFromCenter;
-        } else if (lensPosition < itemPosition) {
-            scaledPosition = lensPosition + scaledDistanceFromCenter;
-        }
-        //}
-        return scaledPosition;
+        return LensCalculator.shiftPoint(context, lensPosition, itemPosition, boundary, multiplier);
     }
 
     // Graphical Fisheye Lens algorithm for determining final scaled size
@@ -110,7 +96,8 @@ public class LensCalculator {
 
     // Algorithm for calculating new rect
     public static RectF calculateRect(float newCenterX, float newCenterY, float newSize) {
-        RectF newRect = new RectF(newCenterX - newSize / 2.0f,
+        RectF newRect = new RectF(
+                newCenterX - newSize / 2.0f,
                 newCenterY - newSize / 2.0f,
                 newCenterX + newSize / 2.0f,
                 newCenterY + newSize / 2.0f);

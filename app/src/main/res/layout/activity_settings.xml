@@ -33,32 +33,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:text="@string/setting_lens_diameter" />
-
-                <TextView
-                    android:id="@+id/value_lens_diameter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/colorValue" />
-
-            </RelativeLayout>
-
-            <android.support.v7.widget.AppCompatSeekBar
-                android:id="@+id/seek_bar_lens_diameter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:text="@string/setting_min_icon_size" />
 
                 <TextView
@@ -124,6 +98,32 @@
 
             <android.support.v7.widget.AppCompatSeekBar
                 android:id="@+id/seek_bar_scale_factor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/setting_animation_time" />
+
+                <TextView
+                    android:id="@+id/value_animation_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/colorValue" />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/seek_bar_animation_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp" />
@@ -200,6 +200,35 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDivider" />
+
+        <RelativeLayout
+            android:id="@+id/setting_show_touch_selection_color_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/setting_highlight_color" />
+
+            <ImageView
+                android:id="@+id/selector_highlight_color"
+                android:layout_width="@dimen/diameter_highlight_color_switch"
+                android:layout_height="@dimen/diameter_highlight_color_switch"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
@@ -341,36 +370,6 @@
                 android:id="@+id/switch_show_touch_selection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
-
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorDivider" />
-
-        <RelativeLayout
-            android:id="@+id/setting_show_touch_selection_color_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="16dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:text="@string/setting_highlight_color" />
-
-            <ImageView
-                android:id="@+id/selector_highlight_color"
-                android:layout_width="@dimen/diameter_highlight_color_switch"
-                android:layout_height="@dimen/diameter_highlight_color_switch"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true" />
 
