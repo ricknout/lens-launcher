@@ -62,7 +62,8 @@
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/activity_title_about"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
@@ -72,7 +73,7 @@
         </activity>
 
         <activity
-            android:name="nickrout.lenslauncher.ui.FakeLauncherActivity"
+            android:name=".ui.FakeLauncherActivity"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
