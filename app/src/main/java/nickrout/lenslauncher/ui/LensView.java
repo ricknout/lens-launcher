@@ -101,7 +101,6 @@ public class LensView extends View {
         mAppIcons = new ArrayList<>();
         mDrawType = DrawType.APPS;
         setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTransparent));
-        mNumberOfCircles = (int) getResources().getDimension(R.dimen.number_circles);
         mSettings = new Settings(getContext());
         setupPaints();
     }
@@ -154,6 +153,7 @@ public class LensView extends View {
                 drawTouchSelection(canvas);
             }
         } else if (mDrawType == DrawType.CIRCLES) {
+            mNumberOfCircles = getWidth() / 10;
             mTouchX = getWidth() / 2;
             mTouchY = getHeight() / 2;
             drawGrid(canvas, mNumberOfCircles);
