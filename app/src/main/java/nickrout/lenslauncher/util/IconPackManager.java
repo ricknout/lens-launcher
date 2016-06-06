@@ -248,11 +248,14 @@ public class IconPackManager {
                 // paint the bitmap with mask into the result
                 Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
                 paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-                mCanvas.drawBitmap(scaledBitmap, (w - scaledBitmap.getWidth()) / 2, (h - scaledBitmap.getHeight()) / 2, null);
+                if (scaledBitmap != null) {
+                    mCanvas.drawBitmap(scaledBitmap, (w - scaledBitmap.getWidth()) / 2, (h - scaledBitmap.getHeight()) / 2, null);
+                } else {
+                    return null;
+                }
                 mCanvas.drawBitmap(mutableMask, 0, 0, paint);
                 paint.setXfermode(null);
-            } else // draw the scaled bitmap without mask
-            {
+            } else { // draw the scaled bitmap without mask
                 if (scaledBitmap != null) {
                     mCanvas.drawBitmap(scaledBitmap, (w - scaledBitmap.getWidth()) / 2, (h - scaledBitmap.getHeight()) / 2, null);
                 } else {
