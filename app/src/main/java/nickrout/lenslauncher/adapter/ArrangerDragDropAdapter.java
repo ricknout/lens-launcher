@@ -36,6 +36,7 @@ import nickrout.lenslauncher.util.AppUtil;
 public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAdapter.MainViewHolder> {
 
     public static final String TAG = "ArrangerDragDropAdapter";
+
     private final List<App> mApps;
     private RecyclerView mRecyclerView;
     private Context mContext;
