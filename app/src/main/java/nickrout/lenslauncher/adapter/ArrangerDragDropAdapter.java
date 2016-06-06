@@ -151,7 +151,8 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
             this.mApp = app;
             mLabel.setText(mApp.getLabel());
             mIcon.setImageBitmap(mApp.getIcon());
-            boolean isAppVisible = AppPersistent.getAppVisibilityForPackage(mApp.getName().toString());
+            boolean isAppVisible =
+                    AppPersistent.getAppVisibility(mApp.getPackageName().toString(), mApp.getName().toString());
             if (isAppVisible) {
                 mToggleAppVisibility.setImageResource(R.drawable.ic_visibility_grey_24dp);
             } else {
@@ -166,8 +167,9 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
 
         public void toggleAppVisibility(App app) {
             this.mApp = app;
-            boolean isAppVisible = AppPersistent.getAppVisibilityForPackage(mApp.getName().toString());
-            AppPersistent.setAppVisibilityForPackage(
+            boolean isAppVisible =
+                    AppPersistent.getAppVisibility(mApp.getPackageName().toString(), mApp.getName().toString());
+            AppPersistent.setAppVisibility(
                     mApp.getPackageName().toString(),
                     mApp.getName().toString(),
                     !isAppVisible);

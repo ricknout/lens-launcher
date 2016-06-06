@@ -43,14 +43,14 @@ public class SettingsActivity extends BaseActivity
 
     private LensView mLensView;
 
-    private AppCompatSeekBar mLensDiameter;
-    private TextView mValueLensDiameter;
     private AppCompatSeekBar mMinIconSize;
     private TextView mValueMinIconSize;
     private AppCompatSeekBar mDistortionFactor;
     private TextView mValueDistortionFactor;
     private AppCompatSeekBar mScaleFactor;
     private TextView mValueScaleFactor;
+    private AppCompatSeekBar mAnimationTime;
+    private TextView mValueAnimationTime;
     private ImageView mHighlightColor;
     private LinearLayout mIconPackLayout;
     private TextView mSelectedIconPack;
@@ -88,34 +88,13 @@ public class SettingsActivity extends BaseActivity
         mLensView = (LensView) findViewById(R.id.lens_view_settings);
         mLensView.setDrawType(LensView.DrawType.CIRCLES);
 
-        mLensDiameter = (AppCompatSeekBar) findViewById(R.id.seek_bar_lens_diameter);
-        mLensDiameter.setMax(Settings.MAX_LENS_DIAMETER);
-        mValueLensDiameter = (TextView) findViewById(R.id.value_lens_diameter);
-        mLensDiameter.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int appropriateProgress = progress + Settings.MIN_LENS_DIAMETER;
-                String lensDiameter = appropriateProgress + "dp";
-                mValueLensDiameter.setText(lensDiameter);
-                mSettings.save(Settings.KEY_LENS_DIAMETER, (float) appropriateProgress);
-                mLensView.invalidate();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
         mMinIconSize = (AppCompatSeekBar) findViewById(R.id.seek_bar_min_icon_size);
         mMinIconSize.setMax(Settings.MAX_MIN_ICON_SIZE);
         mValueMinIconSize = (TextView) findViewById(R.id.value_min_icon_size);
         mMinIconSize.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int appropriateProgress = progress + Settings.MIN_MIN_ICON_SIZE;
+                int appropriateProgress = progress + (int) Settings.MIN_MIN_ICON_SIZE;
                 String minIconSize = appropriateProgress + "dp";
                 mValueMinIconSize.setText(minIconSize);
                 mSettings.save(Settings.KEY_MIN_ICON_SIZE, (float) appropriateProgress);
@@ -136,7 +115,7 @@ public class SettingsActivity extends BaseActivity
         mDistortionFactor.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float appropriateProgress = (float) progress / 2.0f;
+                float appropriateProgress = (float) progress / 2.0f + Settings.MIN_DISTORTION_FACTOR;
                 String distortionFactor = appropriateProgress + "";
                 mValueDistortionFactor.setText(distortionFactor);
                 mSettings.save(Settings.KEY_DISTORTION_FACTOR, appropriateProgress);
@@ -157,11 +136,31 @@ public class SettingsActivity extends BaseActivity
         mScaleFactor.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float appropriateProgress = (float) progress / 2.0f;
+                float appropriateProgress = (float) progress / 2.0f + Settings.MIN_SCALE_FACTOR;
                 String scaleFactor = appropriateProgress + "";
                 mValueScaleFactor.setText(scaleFactor);
                 mSettings.save(Settings.KEY_SCALE_FACTOR, appropriateProgress);
                 mLensView.invalidate();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+        mAnimationTime = (AppCompatSeekBar) findViewById(R.id.seek_bar_animation_time);
+        mAnimationTime.setMax(Settings.MAX_ANIMATION_TIME);
+        mValueAnimationTime = (TextView) findViewById(R.id.value_animation_time);
+        mAnimationTime.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                long appropriateProgress = (long) progress / 2 + Settings.MIN_ANIMATION_TIME;
+                String animationTime = appropriateProgress + "ms";
+                mValueAnimationTime.setText(animationTime);
+                mSettings.save(Settings.KEY_ANIMATION_TIME, appropriateProgress);
             }
 
             @Override
@@ -237,29 +236,26 @@ public class SettingsActivity extends BaseActivity
 
     private void assignValues() {
 
-        mLensDiameter.setProgress((int) mSettings.getFloat(Settings.KEY_LENS_DIAMETER) - Settings.MIN_LENS_DIAMETER);
-        String lensDiameter = (int) mSettings.getFloat(Settings.KEY_LENS_DIAMETER) + "dp";
-        mValueLensDiameter.setText(lensDiameter);
-        mMinIconSize.setProgress((int) mSettings.getFloat(Settings.KEY_MIN_ICON_SIZE) - Settings.MIN_MIN_ICON_SIZE);
+        mMinIconSize.setProgress((int) mSettings.getFloat(Settings.KEY_MIN_ICON_SIZE) - (int) Settings.MIN_MIN_ICON_SIZE);
         String minIconSize = (int) mSettings.getFloat(Settings.KEY_MIN_ICON_SIZE) + "dp";
         mValueMinIconSize.setText(minIconSize);
-        mDistortionFactor.setProgress((int) (2.0f * mSettings.getFloat(Settings.KEY_DISTORTION_FACTOR)));
+        mDistortionFactor.setProgress((int) (2.0f * (mSettings.getFloat(Settings.KEY_DISTORTION_FACTOR) - Settings.MIN_DISTORTION_FACTOR)));
         String distortionFactor = mSettings.getFloat(Settings.KEY_DISTORTION_FACTOR) + "";
         mValueDistortionFactor.setText(distortionFactor);
-        mScaleFactor.setProgress((int) (2.0f * mSettings.getFloat(Settings.KEY_SCALE_FACTOR)));
+        mScaleFactor.setProgress((int) (2.0f * (mSettings.getFloat(Settings.KEY_SCALE_FACTOR) - Settings.MIN_SCALE_FACTOR)));
         String scaleFactor = mSettings.getFloat(Settings.KEY_SCALE_FACTOR) + "";
         mValueScaleFactor.setText(scaleFactor);
+        mAnimationTime.setProgress((int) (2 * (mSettings.getLong(Settings.KEY_ANIMATION_TIME) - Settings.MIN_ANIMATION_TIME)));
+        String animationTime = mSettings.getLong(Settings.KEY_ANIMATION_TIME) + "ms";
+        mValueAnimationTime.setText(animationTime);
+        setSelectedIconPackText();
         mSelectedAppSort.setText(getString(mSettings.getSortType().getDisplayNameResId()));
-
+        setHighlightColorDrawable();
         mVibrateAppHover.setChecked(mSettings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER));
         mVibrateAppLaunch.setChecked(mSettings.getBoolean(Settings.KEY_VIBRATE_APP_LAUNCH));
         mShowNameAppHover.setChecked(mSettings.getBoolean(Settings.KEY_SHOW_NAME_APP_HOVER));
         mShowTouchSelection.setChecked(mSettings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION));
         mShowNewAppTag.setChecked(mSettings.getBoolean(Settings.KEY_SHOW_NEW_APP_TAG));
-
-
-        setHighlightColorDrawable();
-        setSelectedIconPackText();
     }
 
     private void setHighlightColorDrawable() {
@@ -367,10 +363,10 @@ public class SettingsActivity extends BaseActivity
     }
 
     private void resetToDefault() {
-        mSettings.save(Settings.KEY_LENS_DIAMETER, Settings.DEFAULT_LENS_DIAMETER);
         mSettings.save(Settings.KEY_MIN_ICON_SIZE, Settings.DEFAULT_MIN_ICON_SIZE);
         mSettings.save(Settings.KEY_DISTORTION_FACTOR, Settings.DEFAULT_DISTORTION_FACTOR);
         mSettings.save(Settings.KEY_SCALE_FACTOR, Settings.DEFAULT_SCALE_FACTOR);
+        mSettings.save(Settings.KEY_ANIMATION_TIME, Settings.DEFAULT_ANIMATION_TIME);
         mSettings.save(Settings.KEY_VIBRATE_APP_HOVER, Settings.DEFAULT_VIBRATE_APP_HOVER);
         mSettings.save(Settings.KEY_VIBRATE_APP_LAUNCH, Settings.DEFAULT_VIBRATE_APP_LAUNCH);
         mSettings.save(Settings.KEY_SHOW_NAME_APP_HOVER, Settings.DEFAULT_SHOW_NAME_APP_HOVER);

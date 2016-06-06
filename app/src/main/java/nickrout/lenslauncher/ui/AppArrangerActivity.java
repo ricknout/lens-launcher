@@ -181,7 +181,7 @@ public class AppArrangerActivity extends BaseActivity
 //            @Override
 //            public void run() {
 //                for (int i = 0; i < appData.size(); i++)
-//                    AppPersistent.setOrderNumberForPackage(appData.get(i).getPackageName().toString(), i);
+//                    AppPersistent.setAppOrderNumber(appData.get(i).getPackageName().toString(), i);
 //            }
 //        });
 //        thread.start();

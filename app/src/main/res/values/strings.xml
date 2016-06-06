@@ -10,6 +10,7 @@
     <string name="setting_min_icon_size">Minimum Icon Size</string>
     <string name="setting_distortion_factor">Distortion Factor</string>
     <string name="setting_scale_factor">Scale Factor</string>
+    <string name="setting_animation_time">Animation Time</string>
     <string name="setting_vibrate_app_hover">Vibrate on App Hover</string>
     <string name="setting_vibrate_app_launch">Vibrate on App Launch</string>
     <string name="setting_show_name_app_hover">Show Name on App Hover</string>

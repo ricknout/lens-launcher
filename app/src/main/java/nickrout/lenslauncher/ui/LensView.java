@@ -52,12 +52,10 @@ public class LensView extends View {
     private ArrayList<Bitmap> mAppIcons;
     private PackageManager mPackageManager;
 
-    private float mLensDiameter = 10.0f;
-    private boolean mLensDiameterHiding = false;
-    private final float mMinimumLensSize = 10.0f;
-    private final float mBaseAnimationSpeed = 15.0f;
+    private float mAnimationMultiplier = 0.0f;
+    private boolean mAnimationHiding = false;
 
-    private final int mNumberOfCircles = 100;
+    private int mNumberOfCircles;
 
     private Settings mSettings;
 
@@ -103,6 +101,7 @@ public class LensView extends View {
         mAppIcons = new ArrayList<>();
         mDrawType = DrawType.APPS;
         setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTransparent));
+        mNumberOfCircles = (int) getResources().getDimension(R.dimen.number_circles);
         mSettings = new Settings(getContext());
         setupPaints();
     }
@@ -129,10 +128,6 @@ public class LensView extends View {
         mPaintText.setAntiAlias(true);
         mPaintText.setStyle(Paint.Style.FILL);
         mPaintText.setColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
-        mPaintText.setShadowLayer(getResources().getDimension(R.dimen.shadow_text),
-                getResources().getDimension(R.dimen.shadow_text),
-                getResources().getDimension(R.dimen.shadow_text),
-                ContextCompat.getColor(getContext(), R.color.colorShadow));
         mPaintText.setTextSize(getResources().getDimension(R.dimen.text_size_lens));
         mPaintText.setTextAlign(Paint.Align.CENTER);
 
@@ -181,8 +176,8 @@ public class LensView extends View {
                         mTouchY = event.getY();
                     }
                     mSelectIndex = -1;
-                    LensDiameterAnimation lensDiameterShowAnimation = new LensDiameterAnimation(true);
-                    startAnimation(lensDiameterShowAnimation);
+                    LensAnimation lensShowAnimation = new LensAnimation(true);
+                    startAnimation(lensShowAnimation);
                     return true;
                 }
                 case MotionEvent.ACTION_MOVE: {
@@ -201,8 +196,8 @@ public class LensView extends View {
                 }
                 case MotionEvent.ACTION_UP: {
                     performLaunchVibration();
-                    LensDiameterAnimation lensDiameterHideAnimation = new LensDiameterAnimation(false);
-                    startAnimation(lensDiameterHideAnimation);
+                    LensAnimation lensHideAnimation = new LensAnimation(false);
+                    startAnimation(lensHideAnimation);
                     return true;
                 }
                 default: {
@@ -241,20 +236,18 @@ public class LensView extends View {
                     rect.right = rect.left + grid.getItemSize();
                     rect.bottom = rect.top + grid.getItemSize();
 
-                    float lensDiameter = mLensDiameter;
-                    if (mDrawType == DrawType.CIRCLES) {
-                        // Animation does not affect lens size for Settings (Circles) mode
-                        lensDiameter = LensCalculator.convertDpToPixel(mSettings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
+                    float animationMultiplier;
+                    if (mDrawType == DrawType.APPS) {
+                        animationMultiplier = mAnimationMultiplier;
+                    } else {
+                        animationMultiplier = 1.0f;
                     }
 
-                    if (LensCalculator.isRectWithinLens(rect, mTouchX, mTouchY, lensDiameter)) {
-                        // Old Method - calculates circular distance but causes some unwanted icon overlap
-                        //if (LensCalculator.calculateDistance(mTouchX, rect.centerX(), mTouchY, rect.centerY()) <= lensDiameter / 2.0f) {
-
-                        float shiftedCenterX = LensCalculator.shiftPoint(getContext(), mTouchX, rect.centerX(), lensDiameter);
-                        float shiftedCenterY = LensCalculator.shiftPoint(getContext(), mTouchY, rect.centerY(), lensDiameter);
-                        float scaledCenterX = LensCalculator.scalePoint(getContext(), mTouchX, rect.centerX(), rect.width(), lensDiameter);
-                        float scaledCenterY = LensCalculator.scalePoint(getContext(), mTouchY, rect.centerY(), rect.height(), lensDiameter);
+                    if (mTouchX >= 0 && mTouchY >= 0) {
+                        float shiftedCenterX = LensCalculator.shiftPoint(getContext(), mTouchX, rect.centerX(), getWidth(), animationMultiplier);
+                        float shiftedCenterY = LensCalculator.shiftPoint(getContext(), mTouchY, rect.centerY(), getHeight(), animationMultiplier);
+                        float scaledCenterX = LensCalculator.scalePoint(getContext(), mTouchX, rect.centerX(), rect.width(), getWidth(), animationMultiplier);
+                        float scaledCenterY = LensCalculator.scalePoint(getContext(), mTouchY, rect.centerY(), rect.height(), getHeight(), animationMultiplier);
                         float newSize = LensCalculator.calculateSquareScaledSize(scaledCenterX, shiftedCenterX, scaledCenterY, shiftedCenterY);
 
                         if (mSettings.getFloat(Settings.KEY_DISTORTION_FACTOR) > 0.0f && mSettings.getFloat(Settings.KEY_SCALE_FACTOR) > 0.0f) {
@@ -289,7 +282,7 @@ public class LensView extends View {
             mMustVibrate = false;
         }
 
-        if (!mLensDiameterHiding) {
+        if (!mAnimationHiding) {
             mSelectIndex = selectIndex;
         }
 
@@ -313,7 +306,8 @@ public class LensView extends View {
              * If not, drawNewAppTag()
              */
             if ((mApps.get(index).getInstallDate() >= (System.currentTimeMillis() - Settings.SHOW_NEW_APP_TAG_DURATION)
-                    && (AppPersistent.getOpenCountByName(mApps.get(index).getName().toString()) == 0))) {
+                    && (AppPersistent.getAppOpenCount(
+                    mApps.get(index).getPackageName().toString(), mApps.get(index).getName().toString()) == 0))) {
                 drawNewAppTag(canvas, rect);
             }
         }
@@ -344,7 +338,7 @@ public class LensView extends View {
     private void performHoverVibration() {
         if (mInsideRect) {
             if (mMustVibrate) {
-                if (mSettings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER) && !mLensDiameterHiding) {
+                if (mSettings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER) && !mAnimationHiding) {
                     performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 }
                 mMustVibrate = false;
@@ -374,27 +368,22 @@ public class LensView extends View {
         }
     }
 
-    private class LensDiameterAnimation extends Animation {
+    private class LensAnimation extends Animation {
 
-        private float mStart;
-        private float mEnd;
         private boolean mShow;
 
-        public LensDiameterAnimation(boolean show) {
-            mStart = mMinimumLensSize;
-            mEnd = LensCalculator.convertDpToPixel(mSettings.getFloat(Settings.KEY_LENS_DIAMETER), getContext());
+        public LensAnimation(boolean show) {
             mShow = show;
             setInterpolator(new AccelerateDecelerateInterpolator());
-            float speed = (mSettings.getFloat(Settings.KEY_LENS_DIAMETER) / (float) Settings.MAX_LENS_DIAMETER) * mBaseAnimationSpeed;
-            float duration = Math.abs(mEnd - mStart) / speed;
-            setDuration((long) duration);
+            setDuration(mSettings.getLong(Settings.KEY_ANIMATION_TIME));
             setAnimationListener(new AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
                     if (!mShow) {
-                        mLensDiameterHiding = true;
+                        mAnimationHiding = true;
+                        mPaintText.clearShadowLayer();
                     } else {
-                        mLensDiameterHiding = false;
+                        mAnimationHiding = false;
                     }
                 }
 
@@ -404,7 +393,13 @@ public class LensView extends View {
                         launchApp();
                         mTouchX = -Float.MAX_VALUE;
                         mTouchY = -Float.MAX_VALUE;
-                        mLensDiameterHiding = false;
+                        mAnimationHiding = false;
+                    } else {
+                        mPaintText.setShadowLayer(
+                                getResources().getDimension(R.dimen.shadow_text),
+                                getResources().getDimension(R.dimen.shadow_text),
+                                getResources().getDimension(R.dimen.shadow_text),
+                                ContextCompat.getColor(getContext(), R.color.colorShadow));
                     }
                 }
 
@@ -418,13 +413,15 @@ public class LensView extends View {
         protected void applyTransformation(float interpolatedTime, Transformation t) {
             super.applyTransformation(interpolatedTime, t);
             if (mShow) {
-                mLensDiameter = mStart + interpolatedTime * mEnd;
+                mAnimationMultiplier = interpolatedTime;
                 mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
                 mPaintTouchSelection.setAlpha((int) (255.0f * interpolatedTime));
+                mPaintText.setAlpha((int) (255.0f * interpolatedTime));
             } else {
-                mLensDiameter = mStart + (1.0f - interpolatedTime) * mEnd;
+                mAnimationMultiplier = 1.0f - interpolatedTime;
                 mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
                 mPaintTouchSelection.setAlpha((int) (255.0f * (1.0f - interpolatedTime)));
+                mPaintText.setAlpha((int) (255.0f * (1.0f - interpolatedTime)));
             }
             postInvalidate();
         }
