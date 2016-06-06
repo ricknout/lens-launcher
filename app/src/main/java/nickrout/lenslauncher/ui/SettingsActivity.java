@@ -29,6 +29,7 @@ import java.util.Observer;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.util.AppsSingleton;
 import nickrout.lenslauncher.util.IconPackManager;
+import nickrout.lenslauncher.util.LauncherUtil;
 import nickrout.lenslauncher.util.ObservableObject;
 import nickrout.lenslauncher.util.Settings;
 
@@ -279,17 +280,24 @@ public class SettingsActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_show_apps:
-                Intent homeIntent = new Intent(SettingsActivity.this, HomeActivity.class);
-                startActivity(homeIntent);
+                if (!LauncherUtil.isMyAppLauncherDefault(getApplication())) {
+                    LauncherUtil.resetPreferredLauncherAndOpenChooser(getApplicationContext());
+                } else {
+                    Intent homeIntent = new Intent(SettingsActivity.this, HomeActivity.class);
+                    startActivity(homeIntent);
+                }
                 return true;
             case R.id.menu_item_about:
                 Intent aboutIntent = new Intent(SettingsActivity.this, AboutActivity.class);
                 startActivity(aboutIntent);
                 return true;
-            case R.id.menu_item_reset_default:
+            case R.id.menu_item_reset_default_settings:
                 resetToDefault();
                 assignValues();
                 Snackbar.make(mLensView, getString(R.string.snackbar_reset_successful), Snackbar.LENGTH_LONG).show();
+                return true;
+            case R.id.menu_item_alter_default_launcher:
+                LauncherUtil.resetPreferredLauncherAndOpenChooser(getApplicationContext());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
