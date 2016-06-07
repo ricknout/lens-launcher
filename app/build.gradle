@@ -8,8 +8,8 @@ android {
         applicationId "nickrout.lenslauncher"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 21
-        versionName "1.5.2"
+        versionCode 22
+        versionName "1.5.3"
     }
     buildTypes {
         release {
