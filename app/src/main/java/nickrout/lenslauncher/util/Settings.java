@@ -159,7 +159,7 @@ public class Settings {
     }
 
     public AppSorter.SortType getSortType() {
-        int ordinal = sharedPreferences().getInt(KEY_SORT_TYPE, 0);
+        int ordinal = sharedPreferences().getInt(KEY_SORT_TYPE, DEFAULT_SORT_TYPE);
         return AppSorter.SortType.values()[ordinal];
     }
 

@@ -15,6 +15,7 @@ import java.util.List;
 
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
+import nickrout.lenslauncher.ui.BaseActivity;
 
 /**
  * Created by nickrout on 2016/04/02.
@@ -83,6 +84,11 @@ public class AppUtil {
             componentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             try {
                 context.startActivity(componentIntent);
+                if (context instanceof BaseActivity) {
+                    ((BaseActivity) context).overridePendingTransition(
+                        R.anim.fade_in, R.anim.fade_out
+                    );
+                }
             } catch (ActivityNotFoundException e) {
                 Toast.makeText(context, R.string.error_app_not_found, Toast.LENGTH_SHORT).show();
             }

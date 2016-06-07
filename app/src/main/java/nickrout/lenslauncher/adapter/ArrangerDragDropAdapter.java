@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.makeramen.dragsortadapter.DragSortAdapter;
 import com.makeramen.dragsortadapter.NoForegroundShadowBuilder;
@@ -226,8 +227,7 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);
                     } catch (ActivityNotFoundException e) {
-                        Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
-                        mContext.startActivity(intent);
+                        Toast.makeText(mContext, R.string.error_app_not_found, Toast.LENGTH_SHORT).show();
                     }
                     return true;
             }

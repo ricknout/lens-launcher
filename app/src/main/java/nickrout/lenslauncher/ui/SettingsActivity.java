@@ -230,6 +230,7 @@ public class SettingsActivity extends BaseActivity
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SettingsActivity.this, AppArrangerActivity.class));
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
     }
@@ -282,10 +283,12 @@ public class SettingsActivity extends BaseActivity
             case R.id.menu_item_show_apps:
                 Intent homeIntent = new Intent(SettingsActivity.this, HomeActivity.class);
                 startActivity(homeIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
             case R.id.menu_item_about:
                 Intent aboutIntent = new Intent(SettingsActivity.this, AboutActivity.class);
                 startActivity(aboutIntent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
             case R.id.menu_item_reset_default_settings:
                 resetToDefault();
@@ -383,5 +386,16 @@ public class SettingsActivity extends BaseActivity
     @Override
     public void update(Observable observable, Object data) {
         AppsSingleton.getInstance().setNeedsUpdate(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }

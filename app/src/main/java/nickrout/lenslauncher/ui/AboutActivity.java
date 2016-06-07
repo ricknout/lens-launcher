@@ -41,12 +41,12 @@ public class AboutActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupText();
-        mImageAbout.post(new Runnable() {
+        mImageAbout.postDelayed(new Runnable() {
             @Override
             public void run() {
                 circularRevealAboutImage();
             }
-        });
+        }, 150);
     }
 
     private void circularRevealAboutImage() {
@@ -71,11 +71,22 @@ public class AboutActivity extends BaseActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                super.onBackPressed();
-                break;
+                finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
