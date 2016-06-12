@@ -19,6 +19,7 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.adapter.ArrangerDragDropAdapter;
 import nickrout.lenslauncher.model.App;
+import nickrout.lenslauncher.util.AppSorter;
 import nickrout.lenslauncher.util.AppsSingleton;
 import nickrout.lenslauncher.util.BroadcastReceivers;
 import nickrout.lenslauncher.util.Settings;
@@ -86,8 +87,10 @@ public class AppsFragment extends Fragment implements SettingsActivity.AppsInter
 
     @Override
     public void onDefaultsReset() {
-        mSettings.save(Settings.KEY_SORT_TYPE, Settings.DEFAULT_SORT_TYPE);
-        sendRefreshAppsBroadcast();
+        if (mSettings.getSortType() != AppSorter.SortType.values()[Settings.DEFAULT_SORT_TYPE]) {
+            mSettings.save(Settings.KEY_SORT_TYPE, Settings.DEFAULT_SORT_TYPE);
+            sendRefreshAppsBroadcast();
+        }
     }
 
     @Override
