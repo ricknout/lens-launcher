@@ -1,5 +1,7 @@
 package nickrout.lenslauncher.util;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import nickrout.lenslauncher.model.App;
 
@@ -11,8 +13,8 @@ public class AppsSingleton {
     private static AppsSingleton mAppsSingleton;
 
     private ArrayList<App> mApps;
-
-    private boolean mNeedsUpdate = true;
+    private ArrayList<Bitmap> mAppIcons;
+    private boolean mNeedsUpdate;
 
     private AppsSingleton() {}
 
@@ -24,11 +26,29 @@ public class AppsSingleton {
     }
 
     public ArrayList<App> getApps() {
-        return mApps;
+        ArrayList<App> apps = new ArrayList<>();
+        if (mApps == null) {
+            return apps;
+        }
+        apps.addAll(mApps);
+        return apps;
     }
 
     public void setApps(ArrayList<App> apps) {
         mApps = apps;
+    }
+
+    public ArrayList<Bitmap> getAppIcons() {
+        ArrayList<Bitmap> appIcons = new ArrayList<>();
+        if (mAppIcons == null) {
+            return appIcons;
+        }
+        appIcons.addAll(mAppIcons);
+        return appIcons;
+    }
+
+    public void setAppIcons(ArrayList<Bitmap> appIcons) {
+        mAppIcons = appIcons;
     }
 
     public boolean doesNeedUpdate() {

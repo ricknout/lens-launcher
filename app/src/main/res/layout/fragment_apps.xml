@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <nickrout.lenslauncher.ui.LensView
-        android:id="@+id/lens_view_apps"
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/recycler_apps"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hapticFeedbackEnabled="true"
+        android:paddingBottom="88dp"
+        android:clipToPadding="false"
         android:visibility="invisible"/>
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-        android:id="@+id/progress_home"
+        android:id="@+id/progress_apps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>

@@ -1,273 +1,152 @@
 package nickrout.lenslauncher.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.AppCompatSeekBar;
-import android.support.v7.widget.SwitchCompat;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import nickrout.lenslauncher.R;
+import nickrout.lenslauncher.model.App;
+import nickrout.lenslauncher.util.AppSorter;
 import nickrout.lenslauncher.util.AppsSingleton;
+import nickrout.lenslauncher.util.BroadcastReceivers;
 import nickrout.lenslauncher.util.IconPackManager;
 import nickrout.lenslauncher.util.LauncherUtil;
-import nickrout.lenslauncher.util.ObservableObject;
+import nickrout.lenslauncher.util.LoadedObservable;
 import nickrout.lenslauncher.util.Settings;
 
 /**
- * Created by nickrout on 2016/04/02.
+ * Created by nicholasrout on 2016/06/07.
  */
 public class SettingsActivity extends BaseActivity
         implements Observer, ColorChooserDialog.ColorCallback {
 
     private static final String TAG = "SettingsActivity";
 
-    private LensView mLensView;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
 
-    private AppCompatSeekBar mMinIconSize;
-    private TextView mValueMinIconSize;
-    private AppCompatSeekBar mDistortionFactor;
-    private TextView mValueDistortionFactor;
-    private AppCompatSeekBar mScaleFactor;
-    private TextView mValueScaleFactor;
-    private AppCompatSeekBar mAnimationTime;
-    private TextView mValueAnimationTime;
-    private ImageView mHighlightColor;
-    private LinearLayout mIconPackLayout;
-    private TextView mSelectedIconPack;
-    private TextView mSelectedAppSort;
-    private LinearLayout mAppArrangerLayout;
+    @Bind(R.id.tabs)
+    TabLayout mTabLayout;
 
-    private SwitchCompat mVibrateAppHover;
-    private SwitchCompat mVibrateAppLaunch;
-    private SwitchCompat mShowNameAppHover;
-    private SwitchCompat mShowTouchSelection;
-    private SwitchCompat mShowNewAppTag;
+    @Bind(R.id.viewpager)
+    ViewPager mViewPager;
 
-    private ColorChooserDialog mHighlightColorDialog;
-    private MaterialDialog mIconPackChooserDialog;
+    @Bind(R.id.fab_sort)
+    FloatingActionButton mSortFab;
+
+    @OnClick(R.id.fab_sort)
+    public void onSortClicked() {
+        showSortTypeDialog();
+    }
+
+    private FragmentPagerAdapter mPagerAdapter;
 
     private Settings mSettings;
+    private PackageManager mPackageManager;
+    private ArrayList<App> mApps;
+    private MaterialDialog mSortTypeDialog;
+    private MaterialDialog mIconPackDialog;
+    private ColorChooserDialog mHighlightColorDialog;
+
+    public interface LensInterface {
+        void onDefaultsReset();
+    }
+    private LensInterface mLensInterface;
+    public void setLensInterface(LensInterface lensInterface) {
+        mLensInterface = lensInterface;
+    }
+
+    public interface AppsInterface {
+        void onDefaultsReset();
+        void onAppsUpdated(ArrayList<App> apps);
+    }
+    private AppsInterface mAppsInterface;
+    public void setAppsInterface(AppsInterface appsInterface) {
+        mAppsInterface = appsInterface;
+    }
+
+    public interface SettingsInterface {
+        void onDefaultsReset();
+        void onValuesUpdated();
+    }
+    private SettingsInterface mSettingsInterface;
+    public void setSettingsInterface(SettingsInterface settingsInterface) {
+        mSettingsInterface = settingsInterface;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        ButterKnife.bind(this);
+        mSortFab.hide();
+        setSupportActionBar(mToolbar);
+        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(), SettingsActivity.this);
+        mViewPager.setAdapter(mPagerAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 1:
+                        mSortFab.show();
+                        break;
+                    default:
+                        mSortFab.hide();
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
         mSettings = new Settings(this);
-        setupViews();
-        ObservableObject.getInstance().addObserver(this);
+        mPackageManager = getPackageManager();
+        mApps = AppsSingleton.getInstance().getApps();
+        LoadedObservable.getInstance().addObserver(this);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        assignValues();
-    }
-
-    private void setupViews() {
-
-        mLensView = (LensView) findViewById(R.id.lens_view_settings);
-        mLensView.setDrawType(LensView.DrawType.CIRCLES);
-
-        mMinIconSize = (AppCompatSeekBar) findViewById(R.id.seek_bar_min_icon_size);
-        mMinIconSize.setMax(Settings.MAX_MIN_ICON_SIZE);
-        mValueMinIconSize = (TextView) findViewById(R.id.value_min_icon_size);
-        mMinIconSize.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int appropriateProgress = progress + (int) Settings.MIN_MIN_ICON_SIZE;
-                String minIconSize = appropriateProgress + "dp";
-                mValueMinIconSize.setText(minIconSize);
-                mSettings.save(Settings.KEY_MIN_ICON_SIZE, (float) appropriateProgress);
-                mLensView.invalidate();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-        mDistortionFactor = (AppCompatSeekBar) findViewById(R.id.seek_bar_distortion_factor);
-        mDistortionFactor.setMax(Settings.MAX_DISTORTION_FACTOR);
-        mValueDistortionFactor = (TextView) findViewById(R.id.value_distortion_factor);
-        mDistortionFactor.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float appropriateProgress = (float) progress / 2.0f + Settings.MIN_DISTORTION_FACTOR;
-                String distortionFactor = appropriateProgress + "";
-                mValueDistortionFactor.setText(distortionFactor);
-                mSettings.save(Settings.KEY_DISTORTION_FACTOR, appropriateProgress);
-                mLensView.invalidate();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-        mScaleFactor = (AppCompatSeekBar) findViewById(R.id.seek_bar_scale_factor);
-        mScaleFactor.setMax(Settings.MAX_SCALE_FACTOR);
-        mValueScaleFactor = (TextView) findViewById(R.id.value_scale_factor);
-        mScaleFactor.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float appropriateProgress = (float) progress / 2.0f + Settings.MIN_SCALE_FACTOR;
-                String scaleFactor = appropriateProgress + "";
-                mValueScaleFactor.setText(scaleFactor);
-                mSettings.save(Settings.KEY_SCALE_FACTOR, appropriateProgress);
-                mLensView.invalidate();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-        mAnimationTime = (AppCompatSeekBar) findViewById(R.id.seek_bar_animation_time);
-        mAnimationTime.setMax(Settings.MAX_ANIMATION_TIME);
-        mValueAnimationTime = (TextView) findViewById(R.id.value_animation_time);
-        mAnimationTime.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                long appropriateProgress = (long) progress / 2 + Settings.MIN_ANIMATION_TIME;
-                String animationTime = appropriateProgress + "ms";
-                mValueAnimationTime.setText(animationTime);
-                mSettings.save(Settings.KEY_ANIMATION_TIME, appropriateProgress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-
-        mVibrateAppHover = (SwitchCompat) findViewById(R.id.switch_vibrate_app_hover);
-        mVibrateAppHover.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSettings.save(Settings.KEY_VIBRATE_APP_HOVER, isChecked);
-                mLensView.invalidate();
-            }
-        });
-        mVibrateAppLaunch = (SwitchCompat) findViewById(R.id.switch_vibrate_app_launch);
-        mVibrateAppLaunch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSettings.save(Settings.KEY_VIBRATE_APP_LAUNCH, isChecked);
-                mLensView.invalidate();
-            }
-        });
-        mShowNameAppHover = (SwitchCompat) findViewById(R.id.switch_show_name_app_hover);
-        mShowNameAppHover.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSettings.save(Settings.KEY_SHOW_NAME_APP_HOVER, isChecked);
-            }
-        });
-        mShowTouchSelection = (SwitchCompat) findViewById(R.id.switch_show_touch_selection);
-        mShowTouchSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSettings.save(Settings.KEY_SHOW_TOUCH_SELECTION, isChecked);
-            }
-        });
-        mShowNewAppTag = (SwitchCompat) findViewById(R.id.switch_show_new_app_tag);
-        mShowNewAppTag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSettings.save(Settings.KEY_SHOW_NEW_APP_TAG, isChecked);
-            }
-        });
-        mHighlightColor = (ImageView) findViewById(R.id.selector_highlight_color);
-        mHighlightColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showColorPickerDialog();
-            }
-        });
-        mIconPackLayout = (LinearLayout) findViewById(R.id.layout_icon_pack_chooser);
-        mSelectedIconPack = (TextView) findViewById(R.id.textview_selected_icon_pack);
-        mSelectedAppSort = (TextView) findViewById(R.id.textview_selected_app_sort);
-        mIconPackLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showIconPackChooserDialog();
-            }
-        });
-        mAppArrangerLayout = (LinearLayout) findViewById(R.id.layout_app_arranger);
-        mAppArrangerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SettingsActivity.this, AppArrangerActivity.class));
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            }
-        });
-    }
-
-    private void assignValues() {
-
-        mMinIconSize.setProgress((int) mSettings.getFloat(Settings.KEY_MIN_ICON_SIZE) - (int) Settings.MIN_MIN_ICON_SIZE);
-        String minIconSize = (int) mSettings.getFloat(Settings.KEY_MIN_ICON_SIZE) + "dp";
-        mValueMinIconSize.setText(minIconSize);
-        mDistortionFactor.setProgress((int) (2.0f * (mSettings.getFloat(Settings.KEY_DISTORTION_FACTOR) - Settings.MIN_DISTORTION_FACTOR)));
-        String distortionFactor = mSettings.getFloat(Settings.KEY_DISTORTION_FACTOR) + "";
-        mValueDistortionFactor.setText(distortionFactor);
-        mScaleFactor.setProgress((int) (2.0f * (mSettings.getFloat(Settings.KEY_SCALE_FACTOR) - Settings.MIN_SCALE_FACTOR)));
-        String scaleFactor = mSettings.getFloat(Settings.KEY_SCALE_FACTOR) + "";
-        mValueScaleFactor.setText(scaleFactor);
-        mAnimationTime.setProgress((int) (2 * (mSettings.getLong(Settings.KEY_ANIMATION_TIME) - Settings.MIN_ANIMATION_TIME)));
-        String animationTime = mSettings.getLong(Settings.KEY_ANIMATION_TIME) + "ms";
-        mValueAnimationTime.setText(animationTime);
-        setSelectedIconPackText();
-        mSelectedAppSort.setText(getString(mSettings.getSortType().getDisplayNameResId()));
-        setHighlightColorDrawable();
-        mVibrateAppHover.setChecked(mSettings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER));
-        mVibrateAppLaunch.setChecked(mSettings.getBoolean(Settings.KEY_VIBRATE_APP_LAUNCH));
-        mShowNameAppHover.setChecked(mSettings.getBoolean(Settings.KEY_SHOW_NAME_APP_HOVER));
-        mShowTouchSelection.setChecked(mSettings.getBoolean(Settings.KEY_SHOW_TOUCH_SELECTION));
-        mShowNewAppTag.setChecked(mSettings.getBoolean(Settings.KEY_SHOW_NEW_APP_TAG));
-    }
-
-    private void setHighlightColorDrawable() {
-        GradientDrawable colorDrawable = new GradientDrawable();
-        colorDrawable.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
-        colorDrawable.setCornerRadius(getResources().getDimension(R.dimen.radius_highlight_color_switch));
-        mHighlightColor.setImageDrawable(colorDrawable);
-    }
-
-    private void setSelectedIconPackText() {
-        mSelectedIconPack.setText(mSettings.getString(Settings.KEY_ICON_PACK_LABEL_NAME));
+    protected void onPause() {
+        super.onPause();
+        if (AppsSingleton.getInstance().doesNeedUpdate()) {
+            AppsSingleton.getInstance().setNeedsUpdate(false);
+            sendUpdateAppsBroadcast();
+        }
     }
 
     @Override
@@ -291,19 +170,99 @@ public class SettingsActivity extends BaseActivity
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 return true;
             case R.id.menu_item_reset_default_settings:
-                resetToDefault();
-                assignValues();
-                Snackbar.make(mLensView, getString(R.string.snackbar_reset_successful), Snackbar.LENGTH_LONG).show();
-                return true;
-            case R.id.menu_item_change_home_launcher:
-                LauncherUtil.resetPreferredLauncherAndOpenChooser(getApplicationContext());
+                switch (mViewPager.getCurrentItem()) {
+                    case 0:
+                        if (mLensInterface != null) {
+                            mLensInterface.onDefaultsReset();
+                        }
+                        break;
+                    case 1:
+                        if (mAppsInterface != null) {
+                            mAppsInterface.onDefaultsReset();
+                        }
+                         break;
+                    case 2:
+                        if (mSettingsInterface != null) {
+                            mSettingsInterface.onDefaultsReset();
+                        }
+                        break;
+                }
+                Snackbar.make(mToolbar, getString(R.string.snackbar_reset_successful), Snackbar.LENGTH_LONG).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void showColorPickerDialog() {
+    @Override
+    public void update(Observable observable, Object data) {
+        mApps = AppsSingleton.getInstance().getApps();
+        if (mAppsInterface != null) {
+            mAppsInterface.onAppsUpdated(mApps);
+        }
+    }
+
+    private void sendUpdateAppsBroadcast() {
+        Intent refreshAppsIntent = new Intent(SettingsActivity.this, BroadcastReceivers.AppsUpdatedReceiver.class);
+        sendBroadcast(refreshAppsIntent);
+    }
+
+    private void showSortTypeDialog() {
+        final List<AppSorter.SortType> sortTypes = new ArrayList<>(EnumSet.allOf(AppSorter.SortType.class));
+        final List<String> sortTypeStrings = new ArrayList<>();
+        for (int i = 0; i < sortTypes.size(); i++) {
+            sortTypeStrings.add(getApplicationContext().getString(sortTypes.get(i).getDisplayNameResId()));
+        }
+        AppSorter.SortType selectedSortType = mSettings.getSortType();
+        int selectedIndex = sortTypes.indexOf(selectedSortType);
+        mSortTypeDialog = new MaterialDialog.Builder(SettingsActivity.this)
+                .title(R.string.setting_sort_apps)
+                .items(sortTypeStrings)
+                .alwaysCallSingleChoiceCallback()
+                .itemsCallbackSingleChoice(selectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        mSettings.save(sortTypes.get(which));
+                        sendUpdateAppsBroadcast();
+                        return true;
+                    }
+                })
+                .show();
+    }
+
+    public void showIconPackDialog() {
+        final ArrayList<IconPackManager.IconPack> availableIconPacks =
+                new IconPackManager().getAvailableIconPacksWithIcons(true, getApplication());
+        final ArrayList<String> iconPackNames = new ArrayList<>();
+        iconPackNames.add(getString(R.string.setting_default_icon_pack));
+        for (int i = 0; i < availableIconPacks.size(); i++) {
+            iconPackNames.add(availableIconPacks.get(i).mName);
+        }
+        String selectedPackageName = mSettings.getString(Settings.KEY_ICON_PACK_LABEL_NAME);
+        int selectedIndex = iconPackNames.indexOf(selectedPackageName);
+        mIconPackDialog = new MaterialDialog.Builder(SettingsActivity.this)
+                .title(R.string.setting_icon_pack)
+                .items(iconPackNames)
+                .alwaysCallSingleChoiceCallback()
+                .itemsCallbackSingleChoice(selectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        mSettings.save(Settings.KEY_ICON_PACK_LABEL_NAME, iconPackNames.get(which));
+                        if (mSettingsInterface != null) {
+                            mSettingsInterface.onValuesUpdated();
+                        }
+                        sendUpdateAppsBroadcast();
+                        return true;
+                    }
+                })
+                .show();
+    }
+
+    public void showHomeLauncherChooser() {
+        LauncherUtil.resetPreferredLauncherAndOpenChooser(getApplicationContext());
+    }
+
+    public void showHighlightColorDialog() {
         mHighlightColorDialog = new ColorChooserDialog.Builder(this, R.string.setting_highlight_color)
                 .titleSub(R.string.setting_highlight_color)
                 .accentMode(true)
@@ -320,72 +279,34 @@ public class SettingsActivity extends BaseActivity
     public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
         String hexColor = String.format("#%06X", (0xFFFFFFFF & selectedColor));
         mSettings.save(Settings.KEY_TOUCH_SELECTION_COLOR, hexColor);
-        setHighlightColorDrawable();
-    }
-
-    private void showIconPackChooserDialog() {
-        final ArrayList<IconPackManager.IconPack> availableIconPacks = new IconPackManager().getAvailableIconPacksWithIcons(true, getApplication());
-        final ArrayList<String> iconPackNames = new ArrayList<>();
-
-        iconPackNames.add(getString(R.string.setting_default_icon_pack));
-        for (int i = 0; i < availableIconPacks.size(); i++)
-            iconPackNames.add(availableIconPacks.get(i).mName);
-
-        String selectedPackageName = mSettings.getString(Settings.KEY_ICON_PACK_LABEL_NAME);
-        int selectedIndex = iconPackNames.indexOf(selectedPackageName);
-
-        mIconPackChooserDialog = new MaterialDialog.Builder(SettingsActivity.this)
-                .title(R.string.setting_icon_pack)
-                .items(iconPackNames)
-                .alwaysCallSingleChoiceCallback()
-                .itemsCallbackSingleChoice(selectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        mSettings.save(Settings.KEY_ICON_PACK_LABEL_NAME, iconPackNames.get(which));
-                        setSelectedIconPackText();
-                        dismissIconPackChooserDialog();
-                        AppsSingleton.getInstance().setNeedsUpdate(true);
-                        /* Send broadcast to refresh the app drawer in background. */
-                        Intent refreshHomeIntent = new Intent(SettingsActivity.this, HomeActivity.AppsUpdatedReceiver.class);
-                        sendBroadcast(refreshHomeIntent);
-
-                        return true;
-                    }
-                })
-                .show();
-    }
-
-    private void dismissIconPackChooserDialog() {
-        if (mIconPackChooserDialog != null && mIconPackChooserDialog.isShowing()) {
-            mIconPackChooserDialog.dismiss();
+        if (mSettingsInterface != null) {
+            mSettingsInterface.onValuesUpdated();
         }
     }
 
-    private void resetToDefault() {
-        mSettings.save(Settings.KEY_MIN_ICON_SIZE, Settings.DEFAULT_MIN_ICON_SIZE);
-        mSettings.save(Settings.KEY_DISTORTION_FACTOR, Settings.DEFAULT_DISTORTION_FACTOR);
-        mSettings.save(Settings.KEY_SCALE_FACTOR, Settings.DEFAULT_SCALE_FACTOR);
-        mSettings.save(Settings.KEY_ANIMATION_TIME, Settings.DEFAULT_ANIMATION_TIME);
-        mSettings.save(Settings.KEY_VIBRATE_APP_HOVER, Settings.DEFAULT_VIBRATE_APP_HOVER);
-        mSettings.save(Settings.KEY_VIBRATE_APP_LAUNCH, Settings.DEFAULT_VIBRATE_APP_LAUNCH);
-        mSettings.save(Settings.KEY_SHOW_NAME_APP_HOVER, Settings.DEFAULT_SHOW_NAME_APP_HOVER);
-        mSettings.save(Settings.KEY_SHOW_TOUCH_SELECTION, Settings.DEFAULT_SHOW_TOUCH_SELECTION);
-        mSettings.save(Settings.KEY_SHOW_NEW_APP_TAG, Settings.DEFAULT_SHOW_NEW_APP_TAG);
-        mSettings.save(Settings.KEY_TOUCH_SELECTION_COLOR, Settings.DEFAULT_TOUCH_SELECTION_COLOR);
-        mSettings.save(Settings.KEY_ICON_PACK_LABEL_NAME, Settings.DEFAULT_ICON_PACK_LABEL_NAME);
-        mSettings.save(Settings.KEY_SORT_TYPE, Settings.DEFAULT_SORT_TYPE);
+    private void dismissSortTypeDialog() {
+        if (mSortTypeDialog != null && mSortTypeDialog.isShowing()) {
+            mSortTypeDialog.dismiss();
+        }
+    }
+
+    private void dismissIconPackDialog() {
+        if (mIconPackDialog != null && mIconPackDialog.isShowing()) {
+            mIconPackDialog.dismiss();
+        }
+    }
+
+    private void dismissAllDialogs() {
+        dismissSortTypeDialog();
+        dismissIconPackDialog();
+        // Highlight color dialog does not need to be dismissed
     }
 
     @Override
     protected void onDestroy() {
-        dismissIconPackChooserDialog();
-        ObservableObject.getInstance().deleteObserver(this);
+        dismissAllDialogs();
+        LoadedObservable.getInstance().deleteObserver(this);
         super.onDestroy();
-    }
-
-    @Override
-    public void update(Observable observable, Object data) {
-        AppsSingleton.getInstance().setNeedsUpdate(true);
     }
 
     @Override
@@ -397,5 +318,54 @@ public class SettingsActivity extends BaseActivity
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    private class FragmentPagerAdapter extends FragmentStatePagerAdapter {
+
+        private static final int NUM_PAGES = 3;
+
+        private Context mContext;
+
+        public FragmentPagerAdapter(FragmentManager fragmentManager, Context context) {
+            super(fragmentManager);
+            mContext = context;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    LensFragment lensFragment = LensFragment.newInstance();
+                    SettingsActivity.this.setLensInterface(lensFragment);
+                    return lensFragment;
+                case 1:
+                    AppsFragment appsFragment = AppsFragment.newInstance();
+                    SettingsActivity.this.setAppsInterface(appsFragment);
+                    return appsFragment;
+                case 2:
+                    SettingsFragment settingsFragment = SettingsFragment.newInstance();
+                    SettingsActivity.this.setSettingsInterface(settingsFragment);
+                    return settingsFragment;
+            }
+            return new Fragment();
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_PAGES;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return mContext.getResources().getString(R.string.tab_lens);
+                case 1:
+                    return mContext.getResources().getString(R.string.tab_apps);
+                case 2:
+                    return mContext.getResources().getString(R.string.tab_settings);
+            }
+            return super.getPageTitle(position);
+        }
     }
 }

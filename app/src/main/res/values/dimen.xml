@@ -8,7 +8,7 @@
     <dimen name="text_stroke_lens">1dp</dimen>
     <dimen name="margin_lens_text">8dp</dimen>
     <dimen name="shadow_text">1dp</dimen>
-    <dimen name="margin_system">40dp</dimen>
+    <dimen name="margin_system">30dp</dimen>
     <dimen name="radius_new_app_tag">3dp</dimen>
     <dimen name="margin_new_app_tag">6dp</dimen>
 
@@ -21,7 +21,7 @@
     <dimen name="padding_about">32dp</dimen>
     <dimen name="header_margin_about">16dp</dimen>
 
-    <!-- App Element Dimension -->
+    <!-- App Recycler Item Dimensions -->
     <dimen name="width_app_icon">48dp</dimen>
     <dimen name="height_app_action_button">64dp</dimen>
     <dimen name="radius_corner_card">4dp</dimen>

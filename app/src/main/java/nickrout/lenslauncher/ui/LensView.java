@@ -11,6 +11,7 @@ import android.graphics.RectF;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -217,6 +218,7 @@ public class LensView extends View {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mDrawType != DrawType.CIRCLES) {
             systemOffset = (int) getResources().getDimension(R.dimen.margin_system);
         }
+        Log.d(TAG, "Height = " + getHeight());
         Grid grid = LensCalculator.calculateGrid(getContext(), getWidth(), getHeight(), itemCount, systemOffset);
         mInsideRect = false;
         int selectIndex = -1;

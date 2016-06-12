@@ -27,6 +27,16 @@ public class LauncherUtil {
         }
     }
 
+    public static String getHomeLauncherName(Application application) {
+        final Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        final ResolveInfo res = application.getPackageManager().resolveActivity(intent, 0);
+        if (res.activityInfo == null) {
+            return "";
+        }
+        return res.activityInfo.loadLabel(application.getPackageManager()).toString();
+    }
+
     public static void resetPreferredLauncherAndOpenChooser(Context context) {
         PackageManager packageManager = context.getPackageManager();
         ComponentName componentName = new ComponentName(context, nickrout.lenslauncher.ui.FakeLauncherActivity.class);

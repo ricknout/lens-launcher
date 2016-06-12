@@ -30,6 +30,7 @@ import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.model.AppPersistent;
 import nickrout.lenslauncher.util.AppUtil;
+import nickrout.lenslauncher.util.AppsSingleton;
 
 /**
  * Created by rish on 26/5/16.
@@ -188,10 +189,12 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
             mToggleAppVisibility.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mApp != null)
+                    if (mApp != null) {
                         toggleAppVisibility(mApp);
-                    else
+                        AppsSingleton.getInstance().setNeedsUpdate(true);
+                    } else {
                         Snackbar.make(mContainer, mContext.getString(R.string.error_app_not_found), Snackbar.LENGTH_LONG).show();
+                    }
                     printAllPersistent();
                 }
             });
@@ -201,7 +204,7 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
                 public void onClick(View view) {
                     PopupMenu popupMenu = new PopupMenu(mContext, view);
                     popupMenu.setOnMenuItemClickListener(MainViewHolder.this);
-                    popupMenu.inflate(R.menu.menu_app_arranger_element);
+                    popupMenu.inflate(R.menu.menu_app);
                     popupMenu.show();
                 }
             });

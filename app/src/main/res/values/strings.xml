@@ -5,6 +5,11 @@
     <string name="activity_title_about">About</string>
     <string name="activity_title_arranger">Order &amp; Visibility</string>
 
+    <!-- Tab Strings -->
+    <string name="tab_lens">Lens</string>
+    <string name="tab_apps">Apps</string>
+    <string name="tab_settings">Settings</string>
+
     <!-- Settings Strings -->
     <string name="setting_lens_diameter">Lens Diameter</string>
     <string name="setting_min_icon_size">Minimum Icon Size</string>
@@ -18,6 +23,7 @@
     <string name="setting_show_new_app_tag">Show New App Tag</string>
     <string name="setting_highlight_color">Highlight Color</string>
     <string name="setting_icon_pack">Icon Pack</string>
+    <string name="setting_home_launcher">Home Launcher</string>
     <string name="setting_default_icon_pack">Default Icon Pack</string>
     <string name="setting_default_sort_selected">@string/setting_sort_type_label_ascending</string>
     <string name="setting_sort_type_label_ascending">App Name (Ascending)</string>
