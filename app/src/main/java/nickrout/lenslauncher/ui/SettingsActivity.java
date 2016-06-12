@@ -160,8 +160,14 @@ public class SettingsActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_show_apps:
-                Intent homeIntent = new Intent(SettingsActivity.this, HomeActivity.class);
-                startActivity(homeIntent);
+                if (LauncherUtil.isLauncherDefault(getApplication())) {
+                    Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                    homeIntent.addCategory(Intent.CATEGORY_HOME);
+                    startActivity(homeIntent);
+                } else {
+                    Intent homeIntent = new Intent(SettingsActivity.this, HomeActivity.class);
+                    startActivity(homeIntent);
+                }
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 return true;
             case R.id.menu_item_about:

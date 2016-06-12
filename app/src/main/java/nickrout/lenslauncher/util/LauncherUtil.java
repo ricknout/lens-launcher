@@ -12,7 +12,7 @@ import android.content.pm.ResolveInfo;
  */
 public class LauncherUtil {
 
-    public static boolean isMyAppLauncherDefault(Application application) {
+    public static boolean isLauncherDefault(Application application) {
         final Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         final ResolveInfo res = application.getPackageManager().resolveActivity(intent, 0);
