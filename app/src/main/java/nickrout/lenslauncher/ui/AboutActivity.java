@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -30,6 +32,9 @@ public class AboutActivity extends BaseActivity {
     @Bind(R.id.backdrop)
     ImageView mImageAbout;
 
+    @Bind(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout mCollapsingToolbar;
+
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -40,6 +45,7 @@ public class AboutActivity extends BaseActivity {
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mCollapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(this, R.color.colorTransparent));
         setupText();
         mImageAbout.postDelayed(new Runnable() {
             @Override
