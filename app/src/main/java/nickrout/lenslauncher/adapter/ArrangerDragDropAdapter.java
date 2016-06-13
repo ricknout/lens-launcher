@@ -204,7 +204,11 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
                 public void onClick(View view) {
                     PopupMenu popupMenu = new PopupMenu(mContext, view);
                     popupMenu.setOnMenuItemClickListener(MainViewHolder.this);
-                    popupMenu.inflate(R.menu.menu_app);
+                    if (mApp.getPackageName().equals("nickrout.lenslauncher")) {
+                        popupMenu.inflate(R.menu.menu_app_lens_launcher);
+                    } else {
+                        popupMenu.inflate(R.menu.menu_app);
+                    }
                     popupMenu.show();
                 }
             });

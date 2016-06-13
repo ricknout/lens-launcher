@@ -77,6 +77,7 @@ public class AppUtil {
     public static void launchComponent(String packageName, String name, Context context) {
         if (packageName != null && name != null) {
             Intent componentIntent = new Intent();
+            componentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             componentIntent.setComponent(new ComponentName(packageName, name));
             if (!packageName.equals("nickrout.lenslauncher")) {
                 componentIntent.setAction(Intent.ACTION_MAIN);
