@@ -8,7 +8,7 @@
     <dimen name="text_stroke_lens">1dp</dimen>
     <dimen name="margin_lens_text">8dp</dimen>
     <dimen name="shadow_text">1dp</dimen>
-    <dimen name="margin_system">30dp</dimen>
+    <dimen name="margin_system">40dp</dimen>
     <dimen name="radius_new_app_tag">3dp</dimen>
     <dimen name="margin_new_app_tag">6dp</dimen>
 
