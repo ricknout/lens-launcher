@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/element_app_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -27,8 +28,9 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
             android:layout_toRightOf="@+id/element_app_icon"
-            android:text="AppName"
-            android:textStyle="bold" />
+            tools:text="AppName"
+            tools:ignore="MissingPrefix"
+            fontPath="fonts/Roboto-Bold.ttf" />
 
         <ImageView
             android:id="@+id/element_app_hide"

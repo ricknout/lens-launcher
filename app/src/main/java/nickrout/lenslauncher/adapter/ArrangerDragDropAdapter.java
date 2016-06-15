@@ -76,7 +76,7 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
     @Override
     public MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.recycler_item_app_arranger, parent, false);
+        View view = inflater.inflate(R.layout.recycler_item_app, parent, false);
         final MainViewHolder holder = new MainViewHolder(mContext, ArrangerDragDropAdapter.this, view);
         //view.setOnLongClickListener(holder);
         holder.setOnClickListeners();

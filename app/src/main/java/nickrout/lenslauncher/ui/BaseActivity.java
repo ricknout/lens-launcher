@@ -1,6 +1,7 @@
 package nickrout.lenslauncher.ui;
 
 import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import nickrout.lenslauncher.R;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by nickrout on 2016/04/05.
@@ -30,5 +32,10 @@ public class BaseActivity extends AppCompatActivity {
                     ContextCompat.getColor(getBaseContext(), R.color.colorPrimaryDark));
             setTaskDescription(taskDescription);
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

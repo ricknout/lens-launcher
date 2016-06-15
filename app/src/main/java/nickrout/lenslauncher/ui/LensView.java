@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -129,6 +130,7 @@ public class LensView extends View {
         mPaintText.setColor(ContextCompat.getColor(getContext(), R.color.colorWhite));
         mPaintText.setTextSize(getResources().getDimension(R.dimen.text_size_lens));
         mPaintText.setTextAlign(Paint.Align.CENTER);
+        mPaintText.setTypeface(Typeface.createFromAsset(getContext().getAssets(),"fonts/RobotoCondensed-Regular.ttf"));
 
         mPaintNewAppTag = new Paint();
         mPaintNewAppTag.setAntiAlias(true);
