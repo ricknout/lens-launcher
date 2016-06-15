@@ -101,7 +101,12 @@ public class IconPackManager {
                             } else if (xpp.getName().equals("scale")) {
                                 // mFactor
                                 if (xpp.getAttributeCount() > 0 && xpp.getAttributeName(0).equals("factor")) {
-                                    mFactor = Float.valueOf(xpp.getAttributeValue(0));
+                                    try {
+                                        mFactor = Float.valueOf(xpp.getAttributeValue(0));
+                                    } catch (NumberFormatException e) {
+                                        mFactor = 1.0f;
+                                        e.printStackTrace();
+                                    }
                                 }
                             } else if (xpp.getName().equals("item")) {
                                 String componentName = null;

@@ -70,7 +70,8 @@ public class LensCalculator {
         float a = Math.abs(lensPosition - itemPosition);
         float b = Math.max(lensPosition, boundary - lensPosition);
         float x = a / b;
-        float y = ((1.0f + multiplier * settings.getFloat(Settings.KEY_DISTORTION_FACTOR)) * x) / (1.0f + (multiplier * settings.getFloat(Settings.KEY_DISTORTION_FACTOR) * x));
+        float d = multiplier * settings.getFloat(Settings.KEY_DISTORTION_FACTOR);
+        float y = ((1.0f + d) * x) / (1.0f + (d * x));
         float newDistanceFromCenter = b * y;
         if (lensPosition >= itemPosition) {
             shiftedPosition = lensPosition - newDistanceFromCenter;
@@ -87,10 +88,11 @@ public class LensCalculator {
         }
         Settings settings = new Settings(context);
         float scaleDifference = settings.getFloat(Settings.KEY_SCALE_FACTOR) - Settings.MIN_SCALE_FACTOR;
+        float d = Settings.MIN_SCALE_FACTOR + scaleDifference * multiplier;
         if (lensPosition >= itemPosition) {
-            itemPosition = itemPosition - (Settings.MIN_SCALE_FACTOR + scaleDifference * multiplier) * (itemSize / 2.0f);
+            itemPosition = itemPosition - d * (itemSize / 2.0f);
         } else {
-            itemPosition = itemPosition + (Settings.MIN_SCALE_FACTOR + scaleDifference * multiplier) * (itemSize / 2.0f);
+            itemPosition = itemPosition + d * (itemSize / 2.0f);
         }
         return LensCalculator.shiftPoint(context, lensPosition, itemPosition, boundary, multiplier);
     }
