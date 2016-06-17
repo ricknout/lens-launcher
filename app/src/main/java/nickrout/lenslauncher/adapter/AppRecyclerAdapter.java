@@ -19,9 +19,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.makeramen.dragsortadapter.DragSortAdapter;
-import com.makeramen.dragsortadapter.NoForegroundShadowBuilder;
-
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,71 +29,20 @@ import nickrout.lenslauncher.model.AppPersistent;
 import nickrout.lenslauncher.util.AppUtil;
 import nickrout.lenslauncher.util.AppsSingleton;
 
-/**
- * Created by rish on 26/5/16.
- */
-public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAdapter.MainViewHolder> {
+public class AppRecyclerAdapter extends RecyclerView.Adapter {
 
-    public static final String TAG = "ArrangerDragDropAdapter";
+    public static final String TAG = "AppRecyclerAdapter";
 
-    private final List<App> mApps;
-    private RecyclerView mRecyclerView;
     private Context mContext;
+    private final List<App> mApps;
 
-    public ArrangerDragDropAdapter(Context mContext, RecyclerView recyclerView, List<App> mApps) {
-        super(recyclerView);
+    public AppRecyclerAdapter(Context mContext, List<App> mApps) {
         this.mContext = mContext;
         this.mApps = mApps;
-        this.mRecyclerView = recyclerView;
     }
 
     public App getItemForPosition(int position) {
         return mApps.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return mApps.get(position).getID();
-    }
-
-    @Override
-    public int getPositionForId(long id) {
-        for (int i = 0; i < mApps.size(); i++)
-            if (mApps.get(i).getID() == ((int) id))
-                return i;
-        return -1;
-    }
-
-    @Override
-    public boolean move(int fromPosition, int toPosition) {
-        mApps.add(toPosition, mApps.remove(fromPosition));
-        return true;
-    }
-
-    @Override
-    public MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.recycler_item_app, parent, false);
-        final MainViewHolder holder = new MainViewHolder(mContext, ArrangerDragDropAdapter.this, view);
-        //view.setOnLongClickListener(holder);
-        holder.setOnClickListeners();
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(final MainViewHolder holder, final int position) {
-        App app = getItemForPosition(position);
-
-        // NOTE: check for getDraggingId() match to set an "invisible space" while dragging
-        holder.mContainer.setVisibility(getDraggingId() == getPositionForId(position) ? View.INVISIBLE : View.VISIBLE);
-        holder.mContainer.postInvalidate();
-
-        holder.setAppElement(app);
-    }
-
-    @Override
-    public long getDraggingId() {
-        return super.getDraggingId();
     }
 
     @Override
@@ -105,15 +51,30 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
     }
 
     @Override
-    public void onDrop() {
-        super.onDrop();
+    public long getItemId(int position) {
+        return mApps.get(position).getId();
     }
 
-    public List<App> getApps() {
-        return mApps;
+    @Override
+    public AppViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.recycler_item_app, parent, false);
+        final AppViewHolder holder = new AppViewHolder(view, mContext);
+        holder.setOnClickListeners();
+        return holder;
     }
 
-    public static class MainViewHolder extends DragSortAdapter.ViewHolder implements View.OnLongClickListener, PopupMenu.OnMenuItemClickListener {
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        App app = getItemForPosition(position);
+        if (app == null) {
+            return;
+        }
+        AppViewHolder appViewHolder = (AppViewHolder) holder;
+        appViewHolder.setAppElement(app);
+    }
+
+    public static class AppViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
 
         @Bind(R.id.element_app_container)
         CardView mContainer;
@@ -133,21 +94,10 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
         private App mApp;
         private Context mContext;
 
-        public MainViewHolder(Context context, final ArrangerDragDropAdapter adapter, View itemView) {
-            super(adapter, itemView);
+        public AppViewHolder(View itemView, Context context) {
+            super(itemView);
             ButterKnife.bind(this, itemView);
             this.mContext = context;
-        }
-
-        @Override
-        public boolean onLongClick(@NonNull View v) {
-            //startDrag();
-            return true;
-        }
-
-        @Override
-        public View.DragShadowBuilder getShadowBuilder(View itemView, Point touchPoint) {
-            return new NoForegroundShadowBuilder(itemView, touchPoint);
         }
 
         public void setAppElement(App app) {
@@ -161,11 +111,11 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
             } else {
                 mToggleAppVisibility.setImageResource(R.drawable.ic_visibility_off_grey_24dp);
             }
-            if (mApp.getPackageName().toString().equals(mContext.getPackageName()))
+            if (mApp.getPackageName().toString().equals("nickrout.lenslauncher")) {
                 mToggleAppVisibility.setVisibility(View.INVISIBLE);
-            else
+            } else {
                 mToggleAppVisibility.setVisibility(View.VISIBLE);
-            mContainer.postInvalidate();
+            }
         }
 
         public void toggleAppVisibility(App app) {
@@ -195,7 +145,6 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
                     } else {
                         Snackbar.make(mContainer, mContext.getString(R.string.error_app_not_found), Snackbar.LENGTH_LONG).show();
                     }
-                    printAllPersistent();
                 }
             });
 
@@ -203,7 +152,7 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
                 @Override
                 public void onClick(View view) {
                     PopupMenu popupMenu = new PopupMenu(mContext, view);
-                    popupMenu.setOnMenuItemClickListener(MainViewHolder.this);
+                    popupMenu.setOnMenuItemClickListener(AppViewHolder.this);
                     if (mApp.getPackageName().equals("nickrout.lenslauncher")) {
                         popupMenu.inflate(R.menu.menu_app_lens_launcher);
                     } else {
@@ -212,13 +161,6 @@ public class ArrangerDragDropAdapter extends DragSortAdapter<ArrangerDragDropAda
                     popupMenu.show();
                 }
             });
-        }
-
-        public void printAllPersistent() {
-            for (AppPersistent appPersistent : AppPersistent.listAll(AppPersistent.class)) {
-                if (!appPersistent.isAppVisible())
-                    Log.d(TAG, appPersistent.toString());
-            }
         }
 
         @Override

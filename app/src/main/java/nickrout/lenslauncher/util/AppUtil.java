@@ -50,7 +50,7 @@ public class AppUtil {
             for (int i = 0; i < availableActivities.size(); i++) {
                 ResolveInfo resolveInfo = availableActivities.get(i);
                 App app = new App();
-                app.setID(i);
+                app.setId(i);
                 try {
                     app.setInstallDate(packageManager.getPackageInfo(resolveInfo.activityInfo.packageName, 0).firstInstallTime);
                 } catch (PackageManager.NameNotFoundException e) {

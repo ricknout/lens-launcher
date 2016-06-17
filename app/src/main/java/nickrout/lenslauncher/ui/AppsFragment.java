@@ -17,7 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import nickrout.lenslauncher.R;
-import nickrout.lenslauncher.adapter.ArrangerDragDropAdapter;
+import nickrout.lenslauncher.adapter.AppRecyclerAdapter;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.util.AppSorter;
 import nickrout.lenslauncher.util.AppsSingleton;
@@ -38,7 +38,7 @@ public class AppsFragment extends Fragment implements SettingsActivity.AppsInter
     MaterialProgressBar mProgress;
 
     private Settings mSettings;
-    private ArrangerDragDropAdapter mAdapter;
+    private AppRecyclerAdapter mAppRecyclerAdapter;
     private int mScrolledItemIndex;
 
     public AppsFragment() {
@@ -77,8 +77,8 @@ public class AppsFragment extends Fragment implements SettingsActivity.AppsInter
         }
         mProgress.setVisibility(View.INVISIBLE);
         mRecycler.setVisibility(View.VISIBLE);
-        mAdapter = new ArrangerDragDropAdapter(getActivity(), mRecycler, apps);
-        mRecycler.setAdapter(mAdapter);
+        mAppRecyclerAdapter = new AppRecyclerAdapter(getActivity(), apps);
+        mRecycler.setAdapter(mAppRecyclerAdapter);
         mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecycler.setItemAnimator(new DefaultItemAnimator());
         mRecycler.scrollToPosition(mScrolledItemIndex);
