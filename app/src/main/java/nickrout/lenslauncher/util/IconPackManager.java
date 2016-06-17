@@ -246,7 +246,13 @@ public class IconPackManager {
 
             if (mMaskImage != null) {
                 // draw the scaled bitmap with mask
-                Bitmap mutableMask = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+                Bitmap mutableMask;
+                try {
+                    mutableMask = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+                } catch (OutOfMemoryError e) {
+                    e.printStackTrace();
+                    return null;
+                }
                 Canvas maskCanvas = new Canvas(mutableMask);
                 maskCanvas.drawBitmap(mMaskImage, 0, 0, new Paint());
 
