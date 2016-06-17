@@ -7,7 +7,6 @@ import java.util.Observer;
 
 import nickrout.lenslauncher.util.UpdateObservable;
 import nickrout.lenslauncher.util.UpdateAppsTask;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created by nicholasrout on 2016/06/12.
@@ -17,11 +16,6 @@ public class LensLauncherApplication extends SugarApp implements Observer {
     @Override
     public void onCreate() {
         super.onCreate();
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
         UpdateObservable.getInstance().addObserver(this);
         updateApps();
     }
@@ -38,6 +32,4 @@ public class LensLauncherApplication extends SugarApp implements Observer {
                 this)
                 .execute();
     }
-
-
 }

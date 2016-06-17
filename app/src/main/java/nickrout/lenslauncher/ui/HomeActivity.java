@@ -58,7 +58,7 @@ public class HomeActivity extends BaseActivity implements Observer {
     }
 
     private void sendUpdateAppsBroadcast() {
-        Intent refreshAppsIntent = new Intent(getApplication(), BroadcastReceivers.AppsLoadedReceiver.class);
+        Intent refreshAppsIntent = new Intent(getApplication(), BroadcastReceivers.AppsUpdatedReceiver.class);
         sendBroadcast(refreshAppsIntent);
     }
 

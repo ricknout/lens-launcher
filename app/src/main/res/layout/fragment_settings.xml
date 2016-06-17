@@ -27,8 +27,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:text="@string/setting_icon_pack"
-                tools:ignore="MissingPrefix"
-                fontPath="fonts/Roboto-Bold.ttf" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_view_selected_icon_pack"
@@ -63,8 +62,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:text="@string/setting_home_launcher"
-                tools:ignore="MissingPrefix"
-                fontPath="fonts/Roboto-Bold.ttf" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_view_selected_home_launcher"
@@ -102,14 +100,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/setting_highlight_color"
-                    tools:ignore="MissingPrefix"
-                    fontPath="fonts/Roboto-Bold.ttf" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/text_view_selected_highlight_color"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="#FFFFFF" />
+                    tools:text="#FFFFFF" />
 
             </LinearLayout>
 

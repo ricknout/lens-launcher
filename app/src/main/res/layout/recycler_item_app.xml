@@ -29,8 +29,7 @@
             android:layout_marginLeft="16dp"
             android:layout_toRightOf="@+id/element_app_icon"
             tools:text="AppName"
-            tools:ignore="MissingPrefix"
-            fontPath="fonts/Roboto-Bold.ttf" />
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/element_app_hide"
