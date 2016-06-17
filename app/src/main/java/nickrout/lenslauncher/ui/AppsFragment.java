@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import nickrout.lenslauncher.R;
@@ -31,10 +31,10 @@ public class AppsFragment extends Fragment implements SettingsActivity.AppsInter
 
     private static final String TAG = "AppsFragment";
 
-    @Bind(R.id.recycler_apps)
+    @BindView(R.id.recycler_apps)
     RecyclerView mRecycler;
 
-    @Bind(R.id.progress_apps)
+    @BindView(R.id.progress_apps)
     MaterialProgressBar mProgress;
 
     private Settings mSettings;

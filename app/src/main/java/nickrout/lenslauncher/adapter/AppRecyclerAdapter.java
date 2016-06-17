@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
@@ -76,19 +76,19 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter {
 
     public static class AppViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
 
-        @Bind(R.id.element_app_container)
+        @BindView(R.id.element_app_container)
         CardView mContainer;
 
-        @Bind(R.id.element_app_label)
+        @BindView(R.id.element_app_label)
         TextView mLabel;
 
-        @Bind(R.id.element_app_icon)
+        @BindView(R.id.element_app_icon)
         ImageView mIcon;
 
-        @Bind(R.id.element_app_hide)
+        @BindView(R.id.element_app_hide)
         ImageView mToggleAppVisibility;
 
-        @Bind(R.id.element_app_menu)
+        @BindView(R.id.element_app_menu)
         ImageView mMenu;
 
         private App mApp;

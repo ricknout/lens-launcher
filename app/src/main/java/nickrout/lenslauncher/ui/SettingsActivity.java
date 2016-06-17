@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import nickrout.lenslauncher.R;
@@ -51,16 +51,16 @@ public class SettingsActivity extends BaseActivity
 
     private static final String TAG = "SettingsActivity";
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.tabs)
+    @BindView(R.id.tabs)
     TabLayout mTabLayout;
 
-    @Bind(R.id.viewpager)
+    @BindView(R.id.viewpager)
     ViewPager mViewPager;
 
-    @Bind(R.id.fab_sort)
+    @BindView(R.id.fab_sort)
     FloatingActionButton mSortFab;
 
     @OnClick(R.id.fab_sort)

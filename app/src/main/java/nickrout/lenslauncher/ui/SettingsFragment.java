@@ -13,7 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import nickrout.lenslauncher.R;
@@ -32,7 +32,7 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
         showIconPackDialog();
     }
 
-    @Bind(R.id.text_view_selected_icon_pack)
+    @BindView(R.id.text_view_selected_icon_pack)
     TextView mIconPackTextView;
 
     @OnClick(R.id.layout_home_launcher)
@@ -40,7 +40,7 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
         showHomeLauncherChooser();
     }
 
-    @Bind(R.id.text_view_selected_home_launcher)
+    @BindView(R.id.text_view_selected_home_launcher)
     TextView mHomeLauncherTextView;
 
     @OnClick(R.id.layout_highlight_color)
@@ -48,25 +48,25 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
         showHighlightColorDialog();
     }
 
-    @Bind(R.id.text_view_selected_highlight_color)
+    @BindView(R.id.text_view_selected_highlight_color)
     TextView mHighlightColorTextView;
 
-    @Bind(R.id.image_view_selected_highlight_color)
+    @BindView(R.id.image_view_selected_highlight_color)
     ImageView mHighlightColorImageView;
 
-    @Bind(R.id.switch_vibrate_app_hover)
+    @BindView(R.id.switch_vibrate_app_hover)
     SwitchCompat mVibrateAppHover;
 
-    @Bind(R.id.switch_vibrate_app_launch)
+    @BindView(R.id.switch_vibrate_app_launch)
     SwitchCompat mVibrateAppLaunch;
 
-    @Bind(R.id.switch_show_name_app_hover)
+    @BindView(R.id.switch_show_name_app_hover)
     SwitchCompat mShowNameAppHover;
 
-    @Bind(R.id.switch_show_new_app_tag)
+    @BindView(R.id.switch_show_new_app_tag)
     SwitchCompat mShowNewAppTag;
 
-    @Bind(R.id.switch_show_touch_selection)
+    @BindView(R.id.switch_show_touch_selection)
     SwitchCompat mShowTouchSelection;
 
     private Settings mSettings;

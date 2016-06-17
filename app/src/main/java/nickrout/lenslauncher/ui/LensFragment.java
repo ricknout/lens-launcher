@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.util.Settings;
@@ -22,31 +22,31 @@ public class LensFragment extends Fragment implements SettingsActivity.LensInter
 
     private static final String TAG = "LensFragment";
 
-    @Bind(R.id.lens_view_settings)
+    @BindView(R.id.lens_view_settings)
     LensView mLensView;
 
-    @Bind(R.id.seek_bar_min_icon_size)
+    @BindView(R.id.seek_bar_min_icon_size)
     AppCompatSeekBar mMinIconSize;
 
-    @Bind(R.id.value_min_icon_size)
+    @BindView(R.id.value_min_icon_size)
     TextView mValueMinIconSize;
 
-    @Bind(R.id.seek_bar_distortion_factor)
+    @BindView(R.id.seek_bar_distortion_factor)
     AppCompatSeekBar mDistortionFactor;
 
-    @Bind(R.id.value_distortion_factor)
+    @BindView(R.id.value_distortion_factor)
     TextView mValueDistortionFactor;
 
-    @Bind(R.id.seek_bar_scale_factor)
+    @BindView(R.id.seek_bar_scale_factor)
     AppCompatSeekBar mScaleFactor;
 
-    @Bind(R.id.value_scale_factor)
+    @BindView(R.id.value_scale_factor)
     TextView mValueScaleFactor;
 
-    @Bind(R.id.seek_bar_animation_time)
+    @BindView(R.id.seek_bar_animation_time)
     AppCompatSeekBar mAnimationTime;
 
-    @Bind(R.id.value_animation_time)
+    @BindView(R.id.value_animation_time)
     TextView mValueAnimationTime;
 
     private Settings mSettings;

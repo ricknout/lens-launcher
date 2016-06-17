@@ -15,7 +15,7 @@ import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import nickrout.lenslauncher.R;
 
@@ -26,16 +26,16 @@ public class AboutActivity extends BaseActivity {
 
     private static final String TAG = "AboutActivity";
 
-    @Bind(R.id.text_view_about)
+    @BindView(R.id.text_view_about)
     TextView mTextViewAbout;
 
-    @Bind(R.id.backdrop)
+    @BindView(R.id.backdrop)
     ImageView mImageAbout;
 
-    @Bind(R.id.collapsing_toolbar)
+    @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbar;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     @Override

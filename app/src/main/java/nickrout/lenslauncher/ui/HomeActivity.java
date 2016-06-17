@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import nickrout.lenslauncher.R;
@@ -31,10 +31,10 @@ public class HomeActivity extends BaseActivity implements Observer {
 
     private final static String TAG = "HomeActivity";
 
-    @Bind(R.id.lens_view_apps)
+    @BindView(R.id.lens_view_apps)
     LensView mLensView;
 
-    @Bind(R.id.progress_home)
+    @BindView(R.id.progress_home)
     MaterialProgressBar mProgress;
 
     private PackageManager mPackageManager;

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 23
@@ -30,5 +31,6 @@ dependencies {
     compile 'com.github.satyan:sugar:1.5'
     compile 'com.afollestad.material-dialogs:core:0.8.5.8'
     compile 'com.afollestad.material-dialogs:commons:0.8.5.8'
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.1.0'
+    apt 'com.jakewharton:butterknife-compiler:8.1.0'
 }
