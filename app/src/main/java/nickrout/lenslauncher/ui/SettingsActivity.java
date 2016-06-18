@@ -75,6 +75,8 @@ public class SettingsActivity extends BaseActivity
     private ArrayList<App> mApps;
     private MaterialDialog mSortTypeDialog;
     private MaterialDialog mIconPackDialog;
+    private MaterialDialog mBackgroundDialog;
+    private ColorChooserDialog mBackgroundColorDialog;
     private ColorChooserDialog mHighlightColorDialog;
 
     public interface LensInterface {
@@ -268,6 +270,58 @@ public class SettingsActivity extends BaseActivity
         LauncherUtil.resetPreferredLauncherAndOpenChooser(getApplicationContext());
     }
 
+    public void showBackgroundDialog() {
+        String[] availableBackgrounds = getResources().getStringArray(R.array.backgrounds);
+        final ArrayList<String> backgroundNames = new ArrayList<>();
+        for (int i = 0; i < availableBackgrounds.length; i++) {
+            backgroundNames.add(availableBackgrounds[i]);
+        }
+        String selectedBackground = mSettings.getString(Settings.KEY_BACKGROUND);
+        int selectedIndex = backgroundNames.indexOf(selectedBackground);
+        mBackgroundDialog = new MaterialDialog.Builder(SettingsActivity.this)
+                .title(R.string.setting_background)
+                .items(R.array.backgrounds)
+                .alwaysCallSingleChoiceCallback()
+                .itemsCallbackSingleChoice(selectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        String selection = backgroundNames.get(which);
+                        if (selection.equals("Wallpaper")) {
+                            mSettings.save(Settings.KEY_BACKGROUND, selection);
+                            if (mSettingsInterface != null) {
+                                mSettingsInterface.onValuesUpdated();
+                            }
+                            dismissBackgroundDialog();
+                            showWallpaperPicker();
+
+                        } else if (selection.equals("Color")) {
+                            dismissBackgroundDialog();
+                            showBackgroundColorDialog();
+                        }
+                        return true;
+                    }
+                })
+                .show();
+    }
+
+    public void showWallpaperPicker() {
+        Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
+        startActivity(Intent.createChooser(intent, "Select Wallpaper"));
+    }
+
+    public void showBackgroundColorDialog() {
+        mBackgroundColorDialog = new ColorChooserDialog.Builder(this, R.string.setting_background_color)
+                .titleSub(R.string.setting_background_color)
+                .accentMode(false)
+                .doneButton(R.string.md_done_label)
+                .cancelButton(R.string.md_cancel_label)
+                .backButton(R.string.md_back_label)
+                .preselect(Color.parseColor(mSettings.getString(Settings.KEY_BACKGROUND_COLOR)))
+                .dynamicButtonColor(false)
+                .allowUserColorInputAlpha(false)
+                .show();
+    }
+
     public void showHighlightColorDialog() {
         mHighlightColorDialog = new ColorChooserDialog.Builder(this, R.string.setting_highlight_color)
                 .titleSub(R.string.setting_highlight_color)
@@ -284,7 +338,12 @@ public class SettingsActivity extends BaseActivity
     @Override
     public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
         String hexColor = String.format("#%06X", (0xFFFFFFFF & selectedColor));
-        mSettings.save(Settings.KEY_TOUCH_SELECTION_COLOR, hexColor);
+        if (mBackgroundColorDialog!= null && mBackgroundColorDialog.getId() == dialog.getId()) {
+            mSettings.save(Settings.KEY_BACKGROUND, "Color");
+            mSettings.save(Settings.KEY_BACKGROUND_COLOR, hexColor);
+        } else if (mHighlightColorDialog!= null && mHighlightColorDialog.getId() == dialog.getId()) {
+            mSettings.save(Settings.KEY_TOUCH_SELECTION_COLOR, hexColor);
+        }
         if (mSettingsInterface != null) {
             mSettingsInterface.onValuesUpdated();
         }
@@ -302,10 +361,17 @@ public class SettingsActivity extends BaseActivity
         }
     }
 
+    private void dismissBackgroundDialog() {
+        if (mBackgroundDialog != null && mBackgroundDialog.isShowing()) {
+            mBackgroundDialog.dismiss();
+        }
+    }
+
     private void dismissAllDialogs() {
         dismissSortTypeDialog();
         dismissIconPackDialog();
-        // Highlight color dialog does not need to be dismissed
+        dismissBackgroundDialog();
+        // Color dialogs do not need to be dismissed
     }
 
     @Override

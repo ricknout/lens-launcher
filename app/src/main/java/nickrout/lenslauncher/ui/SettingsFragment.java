@@ -43,6 +43,14 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
     @BindView(R.id.text_view_selected_home_launcher)
     TextView mHomeLauncherTextView;
 
+    @OnClick(R.id.layout_background)
+    public void onBackgroundClick() {
+        showBackgroundDialog();
+    }
+
+    @Bind(R.id.text_view_selected_background)
+    TextView mBackgroundTextView;
+
     @OnClick(R.id.layout_highlight_color)
     public void onHighlightColorClick() {
         showHighlightColorDialog();
@@ -132,6 +140,7 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
             homeLauncher = LauncherUtil.getHomeLauncherName(getActivity().getApplication());
         }
         mHomeLauncherTextView.setText(homeLauncher);
+        mBackgroundTextView.setText(mSettings.getString(Settings.KEY_BACKGROUND));
         mHighlightColorTextView.setText(highlightColor);
         GradientDrawable colorDrawable = new GradientDrawable();
         colorDrawable.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
@@ -153,6 +162,12 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
     private void showHomeLauncherChooser() {
         if (getActivity() != null && getActivity() instanceof SettingsActivity) {
             ((SettingsActivity) getActivity()).showHomeLauncherChooser();
+        }
+    }
+
+    private void showBackgroundDialog() {
+        if (getActivity() != null && getActivity() instanceof SettingsActivity) {
+            ((SettingsActivity) getActivity()).showBackgroundDialog();
         }
     }
 

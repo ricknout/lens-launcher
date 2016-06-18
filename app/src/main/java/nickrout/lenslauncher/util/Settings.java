@@ -18,8 +18,10 @@ public class Settings {
     public static final boolean DEFAULT_SHOW_NAME_APP_HOVER = true;
     public static final boolean DEFAULT_SHOW_TOUCH_SELECTION = false;
     public static final boolean DEFAULT_SHOW_NEW_APP_TAG = true;
-    public static final String DEFAULT_TOUCH_SELECTION_COLOR = "#FFF50057"; /* Unable to access strings.xml from here */
-    public static final String DEFAULT_ICON_PACK_LABEL_NAME = "Default Icon Pack"; /* Unable to access strings.xml from here */
+    public static final String DEFAULT_BACKGROUND = "Wallpaper";
+    public static final String DEFAULT_BACKGROUND_COLOR = "#FFF8BBD0";
+    public static final String DEFAULT_TOUCH_SELECTION_COLOR = "#FFF50057";
+    public static final String DEFAULT_ICON_PACK_LABEL_NAME = "Default Icon Pack";
     public static final int DEFAULT_SORT_TYPE = 0;
 
     // These values are for the progress bars, their real values = (MAX_VALUE / INTERVAL (eg. 2)) + MIN_VALUE
@@ -49,6 +51,8 @@ public class Settings {
     public static final String KEY_SHOW_NAME_APP_HOVER = "show_name_app_hover";
     public static final String KEY_SHOW_TOUCH_SELECTION = "show_touch_selection";
     public static final String KEY_SHOW_NEW_APP_TAG = "show_new_tag_app";
+    public static final String KEY_BACKGROUND = "background";
+    public static final String KEY_BACKGROUND_COLOR = "background_color";
     public static final String KEY_TOUCH_SELECTION_COLOR = "show_touch_selection_color";
     public static final String KEY_ICON_PACK_LABEL_NAME = "icon_pack_label_name";
     public static final String KEY_SORT_TYPE = "sort_type";
@@ -120,7 +124,11 @@ public class Settings {
     }
 
     public String getString(String name) {
-        if (name.equals(KEY_TOUCH_SELECTION_COLOR)) {
+        if (name.equals(KEY_BACKGROUND)) {
+            return sharedPreferences().getString(name, DEFAULT_BACKGROUND);
+        } else if (name.equals(KEY_BACKGROUND_COLOR)) {
+            return sharedPreferences().getString(name, DEFAULT_BACKGROUND_COLOR);
+        } else if (name.equals(KEY_TOUCH_SELECTION_COLOR)) {
             return sharedPreferences().getString(name, DEFAULT_TOUCH_SELECTION_COLOR);
         } else if (name.equals(KEY_ICON_PACK_LABEL_NAME)) {
             return sharedPreferences().getString(name, DEFAULT_ICON_PACK_LABEL_NAME);

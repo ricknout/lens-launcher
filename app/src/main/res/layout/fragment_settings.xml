@@ -80,6 +80,51 @@
             android:background="@color/colorDivider" />
 
         <RelativeLayout
+            android:id="@+id/layout_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:paddingBottom="16dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_highlight_color"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_view_selected_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="#FFFFFF" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/image_view_selected_background"
+                android:layout_width="@dimen/diameter_highlight_color_switch"
+                android:layout_height="@dimen/diameter_highlight_color_switch"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDivider" />
+
+        <RelativeLayout
             android:id="@+id/layout_highlight_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

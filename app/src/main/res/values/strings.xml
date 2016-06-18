@@ -21,9 +21,11 @@
     <string name="setting_show_name_app_hover">Show Name on App Hover</string>
     <string name="setting_show_touch_selection">Show Touch Selection</string>
     <string name="setting_show_new_app_tag">Show New App Tag</string>
+    <string name="setting_background_color">Background Color</string>
     <string name="setting_highlight_color">Highlight Color</string>
     <string name="setting_icon_pack">Icon Pack</string>
     <string name="setting_home_launcher">Home Launcher</string>
+    <string name="setting_background">Background</string>
     <string name="setting_default_icon_pack">Default Icon Pack</string>
     <string name="setting_default_sort_selected">@string/setting_sort_type_label_ascending</string>
     <string name="setting_sort_type_label_ascending">App Name (Ascending)</string>

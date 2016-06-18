@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -102,6 +103,9 @@ public class LensView extends View {
         mAppIcons = new ArrayList<>();
         mDrawType = DrawType.APPS;
         setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTransparent));
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setBackground(ContextCompat.getDrawable(getContext(), R.drawable.workspace_bg));
+        }*/
         mSettings = new Settings(getContext());
         setupPaints();
     }

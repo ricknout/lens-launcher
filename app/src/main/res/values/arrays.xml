@@ -5,4 +5,9 @@
         <item>com.gau.go.launcherex.theme</item>
     </array>
 
+    <array name="backgrounds">
+        <item>Wallpaper</item>
+        <item>Color</item>
+    </array>
+
 </resources>
