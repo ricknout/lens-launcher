@@ -244,7 +244,9 @@ public class SettingsActivity extends BaseActivity
         final ArrayList<String> iconPackNames = new ArrayList<>();
         iconPackNames.add(getString(R.string.setting_default_icon_pack));
         for (int i = 0; i < availableIconPacks.size(); i++) {
-            iconPackNames.add(availableIconPacks.get(i).mName);
+            if (iconPackNames.size() > 0 && !iconPackNames.contains(availableIconPacks.get(i).mName)) {
+                iconPackNames.add(availableIconPacks.get(i).mName);
+            }
         }
         String selectedPackageName = mSettings.getString(Settings.KEY_ICON_PACK_LABEL_NAME);
         int selectedIndex = iconPackNames.indexOf(selectedPackageName);

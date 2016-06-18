@@ -3,6 +3,7 @@
 
     <array name="icon_pack_launchers">
         <item>com.gau.go.launcherex.theme</item>
+        <item>org.adw.launcher.THEMES</item>
     </array>
 
     <array name="backgrounds">
