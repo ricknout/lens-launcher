@@ -48,8 +48,11 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
         showBackgroundDialog();
     }
 
-    @Bind(R.id.text_view_selected_background)
+    @BindView(R.id.text_view_selected_background)
     TextView mBackgroundTextView;
+
+    @BindView(R.id.image_view_selected_background_color)
+    ImageView mBackgroundColorImageView;
 
     @OnClick(R.id.layout_highlight_color)
     public void onHighlightColorClick() {
@@ -140,12 +143,23 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
             homeLauncher = LauncherUtil.getHomeLauncherName(getActivity().getApplication());
         }
         mHomeLauncherTextView.setText(homeLauncher);
-        mBackgroundTextView.setText(mSettings.getString(Settings.KEY_BACKGROUND));
+        if (mSettings.getString(Settings.KEY_BACKGROUND).equals("Color")) {
+            String backgroundColor = "#" + mSettings.getString(Settings.KEY_BACKGROUND_COLOR).substring(3);
+            mBackgroundTextView.setText(backgroundColor);
+            mBackgroundColorImageView.setVisibility(View.VISIBLE);
+            GradientDrawable backgroundColorDrawable = new GradientDrawable();
+            backgroundColorDrawable.setColor(Color.parseColor(mSettings.getString(Settings.KEY_BACKGROUND_COLOR)));
+            backgroundColorDrawable.setCornerRadius(getResources().getDimension(R.dimen.radius_highlight_color_switch));
+            mBackgroundColorImageView.setImageDrawable(backgroundColorDrawable);
+        } else {
+            mBackgroundTextView.setText(mSettings.getString(Settings.KEY_BACKGROUND));
+            mBackgroundColorImageView.setVisibility(View.GONE);
+        }
         mHighlightColorTextView.setText(highlightColor);
-        GradientDrawable colorDrawable = new GradientDrawable();
-        colorDrawable.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
-        colorDrawable.setCornerRadius(getResources().getDimension(R.dimen.radius_highlight_color_switch));
-        mHighlightColorImageView.setImageDrawable(colorDrawable);
+        GradientDrawable highlightColorDrawable = new GradientDrawable();
+        highlightColorDrawable.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
+        highlightColorDrawable.setCornerRadius(getResources().getDimension(R.dimen.radius_highlight_color_switch));
+        mHighlightColorImageView.setImageDrawable(highlightColorDrawable);
         mVibrateAppHover.setChecked(mSettings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER));
         mVibrateAppLaunch.setChecked(mSettings.getBoolean(Settings.KEY_VIBRATE_APP_LAUNCH));
         mShowNameAppHover.setChecked(mSettings.getBoolean(Settings.KEY_SHOW_NAME_APP_HOVER));

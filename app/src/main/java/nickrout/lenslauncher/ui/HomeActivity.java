@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -47,7 +46,6 @@ public class HomeActivity extends BaseActivity implements Observer {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            w.setBackgroundDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.workspace_bg));
         }
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);

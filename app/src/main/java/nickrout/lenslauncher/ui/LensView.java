@@ -9,13 +9,13 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.drawable.NinePatchDrawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -39,6 +39,7 @@ public class LensView extends View {
 
     private Paint mPaintIcons;
     private Paint mPaintCircles;
+    private Paint mPaintBackgroundColor;
     private Paint mPaintTouchSelection;
     private Paint mPaintText;
     private Paint mPaintNewAppTag;
@@ -58,6 +59,8 @@ public class LensView extends View {
     private boolean mAnimationHiding = false;
 
     private int mNumberOfCircles;
+
+    private NinePatchDrawable mWorkspaceBackground;
 
     private Settings mSettings;
 
@@ -103,9 +106,7 @@ public class LensView extends View {
         mAppIcons = new ArrayList<>();
         mDrawType = DrawType.APPS;
         setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTransparent));
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setBackground(ContextCompat.getDrawable(getContext(), R.drawable.workspace_bg));
-        }*/
+        mWorkspaceBackground = (NinePatchDrawable) ContextCompat.getDrawable(getContext(), R.drawable.workspace_bg);
         mSettings = new Settings(getContext());
         setupPaints();
     }
@@ -121,6 +122,11 @@ public class LensView extends View {
         mPaintCircles.setAntiAlias(true);
         mPaintCircles.setStyle(Paint.Style.FILL);
         mPaintCircles.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+
+        mPaintBackgroundColor = new Paint();
+        mPaintBackgroundColor.setAntiAlias(true);
+        mPaintBackgroundColor.setStyle(Paint.Style.FILL);
+        mPaintBackgroundColor.setColor(Color.parseColor(mSettings.getString(Settings.KEY_BACKGROUND_COLOR)));
 
         mPaintTouchSelection = new Paint();
         mPaintTouchSelection.setAntiAlias(true);
@@ -151,7 +157,12 @@ public class LensView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (mDrawType == DrawType.APPS) {
+            mPaintBackgroundColor.setColor(Color.parseColor(mSettings.getString(Settings.KEY_BACKGROUND_COLOR)));
             mPaintNewAppTag.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
+            if (mSettings.getString(Settings.KEY_BACKGROUND).equals("Color")) {
+                drawBackgroundColor(canvas);
+            }
+            drawWorkspaceBackground(canvas);
             if (mApps != null) {
                 drawGrid(canvas, mApps.size());
             }
@@ -212,6 +223,18 @@ public class LensView extends View {
             }
         }
         return super.onTouchEvent(event);
+    }
+
+    private void drawWorkspaceBackground(Canvas canvas) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Rect rect = new Rect(0, 0, getWidth(), getHeight());
+            mWorkspaceBackground.setBounds(rect);
+            mWorkspaceBackground.draw(canvas);
+        }
+    }
+
+    private void drawBackgroundColor(Canvas canvas) {
+        canvas.drawRect(0, 0, getWidth(), getHeight(), mPaintBackgroundColor);
     }
 
     private void drawTouchSelection(Canvas canvas) {

@@ -99,7 +99,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/setting_highlight_color"
+                    android:text="@string/setting_background"
                     android:textStyle="bold" />
 
                 <TextView
@@ -111,7 +111,7 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/image_view_selected_background"
+                android:id="@+id/image_view_selected_background_color"
                 android:layout_width="@dimen/diameter_highlight_color_switch"
                 android:layout_height="@dimen/diameter_highlight_color_switch"
                 android:layout_alignParentRight="true"
