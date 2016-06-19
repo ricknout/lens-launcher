@@ -55,6 +55,12 @@ public class HomeActivity extends BaseActivity implements Observer {
         LoadedObservable.getInstance().addObserver(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mLensView.invalidate();
+    }
+
     private void sendUpdateAppsBroadcast() {
         Intent refreshAppsIntent = new Intent(getApplication(), BroadcastReceivers.AppsUpdatedReceiver.class);
         sendBroadcast(refreshAppsIntent);

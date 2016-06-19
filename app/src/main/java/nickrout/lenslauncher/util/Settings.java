@@ -25,7 +25,7 @@ public class Settings {
     public static final int DEFAULT_SORT_TYPE = 0;
 
     // These values are for the progress bars, their real values = (MAX_VALUE / INTERVAL (eg. 2)) + MIN_VALUE
-    public static final int MAX_MIN_ICON_SIZE = 20;
+    public static final int MAX_MIN_ICON_SIZE = 30;
     public static final int MAX_DISTORTION_FACTOR = 8;
     public static final int MAX_SCALE_FACTOR = 4;
     public static final int MAX_ANIMATION_TIME = 600;

@@ -12,7 +12,7 @@
 
     <!-- Settings Strings -->
     <string name="setting_lens_diameter">Lens Diameter</string>
-    <string name="setting_min_icon_size">Minimum Icon Size</string>
+    <string name="setting_min_icon_size">Icon Size</string>
     <string name="setting_distortion_factor">Distortion Factor</string>
     <string name="setting_scale_factor">Scale Factor</string>
     <string name="setting_animation_time">Animation Time</string>
