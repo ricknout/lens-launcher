@@ -3,14 +3,12 @@ package nickrout.lenslauncher.adapter;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -169,9 +167,19 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter {
                 case R.id.menu_item_element_open:
                     AppUtil.launchComponent(mApp.getPackageName().toString(), mApp.getName().toString(), mContext);
                     return true;
+                case R.id.menu_item_element_app_info:
+                    try {
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.parse("package:" + mApp.getPackageName()));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        Toast.makeText(mContext, R.string.error_app_not_found, Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
                 case R.id.menu_item_element_uninstall:
                     try {
-                        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Intent intent = new Intent(Intent.ACTION_DELETE);
                         intent.setData(Uri.parse("package:" + mApp.getPackageName()));
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(intent);

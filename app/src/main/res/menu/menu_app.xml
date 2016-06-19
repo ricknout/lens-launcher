@@ -7,6 +7,11 @@
         android:visible="true" />
 
     <item
+        android:id="@+id/menu_item_element_app_info"
+        android:title="@string/menu_app_info"
+        android:visible="true" />
+
+    <item
         android:id="@+id/menu_item_element_uninstall"
         android:title="@string/menu_app_uninstall"
         android:visible="true" />
