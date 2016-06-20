@@ -44,7 +44,7 @@
     <string name="menu_title_reset_defaults">Reset Default Settings</string>
     <string name="menu_title_change_home_launcher">Change Home Launcher</string>
     <string name="menu_title_show_apps">Show Apps</string>
-    <string name="menu_app_open">Open</string>
+    <string name="menu_app_open"><b>Open</b></string>
     <string name="menu_app_info">App Info</string>
     <string name="menu_app_uninstall">Uninstall</string>
 
