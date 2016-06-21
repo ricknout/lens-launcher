@@ -247,13 +247,8 @@ public class LensView extends View {
         int systemOffsetHorizontal = 0;
         int orientation = getResources().getConfiguration().orientation;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mDrawType != DrawType.CIRCLES) {
-            systemOffsetVertical = (int) getResources().getDimension(R.dimen.margin_system);
-            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                systemOffsetVertical = 2 * (int) getResources().getDimension(R.dimen.margin_system);
-            } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                systemOffsetVertical = (int) getResources().getDimension(R.dimen.margin_system);
-                systemOffsetHorizontal = 2 * (int) getResources().getDimension(R.dimen.margin_system);
-            }
+            systemOffsetVertical = (int) getResources().getDimension(R.dimen.offset_system_vertical);
+            systemOffsetHorizontal = (int) getResources().getDimension(R.dimen.offset_system_horizontal);
         }
         Grid grid = LensCalculator.calculateGrid(getContext(), getWidth() - systemOffsetHorizontal, getHeight() - systemOffsetVertical, itemCount, orientation);
         mInsideRect = false;

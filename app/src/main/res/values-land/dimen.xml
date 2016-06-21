@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Lens Dimensions -->
+    <dimen name="offset_system_vertical">30dp</dimen>
+    <dimen name="offset_system_horizontal">80dp</dimen>
+
+</resources>
