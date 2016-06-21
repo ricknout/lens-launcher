@@ -12,7 +12,7 @@
         <nickrout.lenslauncher.ui.LensView
             android:id="@+id/lens_view_settings"
             android:layout_width="match_parent"
-            android:layout_height="360dp" />
+            android:layout_height="@dimen/height_lens_preview" />
 
         <View
             android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package nickrout.lenslauncher.ui;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -100,6 +101,14 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
         setupViews();
         assignValues();
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getActivity() != null && getActivity() instanceof SettingsActivity) {
+            ((SettingsActivity) getActivity()).setSettingsInterface(this);
+        }
     }
 
     private void setupViews() {

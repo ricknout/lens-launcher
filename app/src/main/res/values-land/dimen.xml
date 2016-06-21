@@ -4,5 +4,6 @@
     <!-- Lens Dimensions -->
     <dimen name="offset_system_vertical">30dp</dimen>
     <dimen name="offset_system_horizontal">80dp</dimen>
+    <dimen name="height_lens_preview">240dp</dimen>
 
 </resources>

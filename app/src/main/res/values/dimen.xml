@@ -12,6 +12,7 @@
     <dimen name="offset_system_horizontal">0dp</dimen>
     <dimen name="radius_new_app_tag">3dp</dimen>
     <dimen name="margin_new_app_tag">6dp</dimen>
+    <dimen name="height_lens_preview">360dp</dimen>
 
     <!-- Settings Dimensions -->
     <dimen name="diameter_highlight_color_switch">32dp</dimen>

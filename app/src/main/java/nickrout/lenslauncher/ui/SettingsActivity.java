@@ -2,7 +2,6 @@ package nickrout.lenslauncher.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -71,7 +70,6 @@ public class SettingsActivity extends BaseActivity
     private FragmentPagerAdapter mPagerAdapter;
 
     private Settings mSettings;
-    private PackageManager mPackageManager;
     private ArrayList<App> mApps;
     private MaterialDialog mSortTypeDialog;
     private MaterialDialog mIconPackDialog;
@@ -137,7 +135,6 @@ public class SettingsActivity extends BaseActivity
             }
         });
         mSettings = new Settings(this);
-        mPackageManager = getPackageManager();
         mApps = AppsSingleton.getInstance().getApps();
         LoadedObservable.getInstance().addObserver(this);
     }
@@ -410,15 +407,12 @@ public class SettingsActivity extends BaseActivity
             switch (position) {
                 case 0:
                     LensFragment lensFragment = LensFragment.newInstance();
-                    SettingsActivity.this.setLensInterface(lensFragment);
                     return lensFragment;
                 case 1:
                     AppsFragment appsFragment = AppsFragment.newInstance();
-                    SettingsActivity.this.setAppsInterface(appsFragment);
                     return appsFragment;
                 case 2:
                     SettingsFragment settingsFragment = SettingsFragment.newInstance();
-                    SettingsActivity.this.setSettingsInterface(settingsFragment);
                     return settingsFragment;
             }
             return new Fragment();

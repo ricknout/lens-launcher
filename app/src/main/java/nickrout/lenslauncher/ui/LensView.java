@@ -171,7 +171,7 @@ public class LensView extends View {
                 drawTouchSelection(canvas);
             }
         } else if (mDrawType == DrawType.CIRCLES) {
-            mNumberOfCircles = getWidth() / 10;
+            mNumberOfCircles = getHeight() / 10;
             mTouchX = getWidth() / 2;
             mTouchY = getHeight() / 2;
             drawGrid(canvas, mNumberOfCircles);

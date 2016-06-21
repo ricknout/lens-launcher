@@ -1,5 +1,6 @@
 package nickrout.lenslauncher.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -69,6 +70,14 @@ public class LensFragment extends Fragment implements SettingsActivity.LensInter
         setupViews();
         assignValues();
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getActivity() != null && getActivity() instanceof SettingsActivity) {
+            ((SettingsActivity) getActivity()).setLensInterface(this);
+        }
     }
 
     private void setupViews() {

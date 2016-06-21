@@ -1,5 +1,6 @@
 package nickrout.lenslauncher.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -58,6 +59,14 @@ public class AppsFragment extends Fragment implements SettingsActivity.AppsInter
         mSettings = new Settings(getActivity());
         setupRecycler(AppsSingleton.getInstance().getApps());
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getActivity() != null && getActivity() instanceof SettingsActivity) {
+            ((SettingsActivity) getActivity()).setAppsInterface(this);
+        }
     }
 
     private void sendRefreshAppsBroadcast() {
