@@ -1,6 +1,7 @@
 package nickrout.lenslauncher.util;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.RectF;
 import android.util.DisplayMetrics;
@@ -13,13 +14,19 @@ import nickrout.lenslauncher.model.Grid;
 public class LensCalculator {
 
     // Algorithm for calculating equispaced grid
-    public static Grid calculateGrid(Context context, int screenWidth, int screenHeight, int itemCount) {
+    public static Grid calculateGrid(Context context, int screenWidth, int screenHeight, int itemCount, int orientation) {
         Grid grid = new Grid();
         grid.setItemCount(itemCount);
         double multiplier = Math.sqrt((double) itemCount);
-        int itemCountHorizontal = (int) Math.ceil(multiplier * ((double) screenWidth / (double) screenHeight));
+        int itemCountHorizontal, itemCountVertical;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            itemCountHorizontal = (int) Math.ceil(multiplier * ((double) screenWidth / (double) screenHeight));
+            itemCountVertical = (int) Math.ceil((double) itemCount / (double) itemCountHorizontal);
+        } else {
+            itemCountVertical = (int) Math.ceil(multiplier * ((double) screenHeight / (double) screenWidth));
+            itemCountHorizontal = (int) Math.ceil((double) itemCount / (double) itemCountVertical);
+        }
         grid.setItemCountHorizontal(itemCountHorizontal);
-        int itemCountVertical = (int) Math.ceil((double) itemCount / (double) itemCountHorizontal);
         grid.setItemCountVertical(itemCountVertical);
         Settings settings = new Settings(context);
         float itemSize = LensCalculator.convertDpToPixel(settings.getFloat(Settings.KEY_MIN_ICON_SIZE), context);
@@ -29,18 +36,6 @@ public class LensCalculator {
         float spacingVertical = (((float) screenHeight) - ((float) itemCountVertical * itemSize)) / ((float) (itemCountVertical + 1));
         grid.setSpacingVertical(spacingVertical);
         return grid;
-    }
-
-    // Algorithm for determining grid offset in order to center vertically
-    public static float calculateGridOffset(Grid grid, float height) {
-        if (grid.getItemCount() > 0) {
-            float offsetTop = grid.getSpacingVertical();
-            double actualItemCountVertical = Math.ceil((double) (((float) grid.getItemCount()) / ((float) grid.getItemCountHorizontal())));
-            float offsetBottom = height - (((float) actualItemCountVertical) * (grid.getSpacingVertical() + grid.getItemSize()));
-            float offsetAverage = (offsetTop + offsetBottom) / 2.0f;
-            return offsetAverage - offsetTop;
-        }
-        return 0.0f;
     }
 
     // Algorithm for circular distance

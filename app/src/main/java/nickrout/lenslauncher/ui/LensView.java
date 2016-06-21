@@ -2,6 +2,7 @@ package nickrout.lenslauncher.ui;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -242,14 +243,21 @@ public class LensView extends View {
     }
 
     private void drawGrid(Canvas canvas, int itemCount) {
-        int systemOffset = 0;
+        int systemOffsetVertical = 0;
+        int systemOffsetHorizontal = 0;
+        int orientation = getResources().getConfiguration().orientation;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mDrawType != DrawType.CIRCLES) {
-            systemOffset = (int) getResources().getDimension(R.dimen.margin_system);
+            systemOffsetVertical = (int) getResources().getDimension(R.dimen.margin_system);
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                systemOffsetVertical = 2 * (int) getResources().getDimension(R.dimen.margin_system);
+            } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                systemOffsetVertical = (int) getResources().getDimension(R.dimen.margin_system);
+                systemOffsetHorizontal = 2 * (int) getResources().getDimension(R.dimen.margin_system);
+            }
         }
-        Grid grid = LensCalculator.calculateGrid(getContext(), getWidth(), getHeight() - 2 * systemOffset, itemCount);
+        Grid grid = LensCalculator.calculateGrid(getContext(), getWidth() - systemOffsetHorizontal, getHeight() - systemOffsetVertical, itemCount, orientation);
         mInsideRect = false;
         int selectIndex = -1;
-        float offset = LensCalculator.calculateGridOffset(grid, getHeight() - 2 * systemOffset);
         RectF rectToSelect = null;
 
         for (float y = 0.0f; y < (float) grid.getItemCountVertical(); y += 1.0f) {
@@ -260,8 +268,8 @@ public class LensView extends View {
 
                 if (currentItem <= grid.getItemCount() || mDrawType == DrawType.CIRCLES) {
                     RectF rect = new RectF();
-                    rect.left = (x + 1.0f) * grid.getSpacingHorizontal() + x * grid.getItemSize();
-                    rect.top = systemOffset + offset + (y + 1.0f) * grid.getSpacingVertical() + y * grid.getItemSize();
+                    rect.left = systemOffsetHorizontal / 2 + (x + 1.0f) * grid.getSpacingHorizontal() + x * grid.getItemSize();
+                    rect.top = systemOffsetVertical / 2 + (y + 1.0f) * grid.getSpacingVertical() + y * grid.getItemSize();
                     rect.right = rect.left + grid.getItemSize();
                     rect.bottom = rect.top + grid.getItemSize();
 
