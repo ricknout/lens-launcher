@@ -124,7 +124,7 @@ public class LensFragment extends Fragment implements SettingsActivity.LensInter
         mScaleFactor.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float appropriateProgress = (float) progress / 2.0f + Settings.MIN_SCALE_FACTOR;
+                float appropriateProgress = (float) progress / 5.0f + Settings.MIN_SCALE_FACTOR;
                 String scaleFactor = appropriateProgress + "";
                 mValueScaleFactor.setText(scaleFactor);
                 mSettings.save(Settings.KEY_SCALE_FACTOR, appropriateProgress);
@@ -166,7 +166,7 @@ public class LensFragment extends Fragment implements SettingsActivity.LensInter
         mDistortionFactor.setProgress((int) (2.0f * (mSettings.getFloat(Settings.KEY_DISTORTION_FACTOR) - Settings.MIN_DISTORTION_FACTOR)));
         String distortionFactor = mSettings.getFloat(Settings.KEY_DISTORTION_FACTOR) + "";
         mValueDistortionFactor.setText(distortionFactor);
-        mScaleFactor.setProgress((int) (2.0f * (mSettings.getFloat(Settings.KEY_SCALE_FACTOR) - Settings.MIN_SCALE_FACTOR)));
+        mScaleFactor.setProgress((int) (5.0f * (mSettings.getFloat(Settings.KEY_SCALE_FACTOR) - Settings.MIN_SCALE_FACTOR)));
         String scaleFactor = mSettings.getFloat(Settings.KEY_SCALE_FACTOR) + "";
         mValueScaleFactor.setText(scaleFactor);
         mAnimationTime.setProgress((int) (2 * (mSettings.getLong(Settings.KEY_ANIMATION_TIME) - Settings.MIN_ANIMATION_TIME)));

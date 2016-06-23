@@ -26,8 +26,8 @@ public class Settings {
 
     // These values are for the progress bars, their real values = (MAX_VALUE / INTERVAL (eg. 2)) + MIN_VALUE
     public static final int MAX_MIN_ICON_SIZE = 30;
-    public static final int MAX_DISTORTION_FACTOR = 8;
-    public static final int MAX_SCALE_FACTOR = 4;
+    public static final int MAX_DISTORTION_FACTOR = 9;
+    public static final int MAX_SCALE_FACTOR = 5;
     public static final int MAX_ANIMATION_TIME = 600;
 
     public static final int SHOW_NEW_APP_TAG_DURATION = 12 * 60 * 60 * 1000; /* An app has the new tag for twelve hours. If openCount >= 1, the new tag is not drawn. */
