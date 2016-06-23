@@ -2,7 +2,6 @@ package nickrout.lenslauncher.ui;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -171,7 +170,7 @@ public class LensView extends View {
                 drawTouchSelection(canvas);
             }
         } else if (mDrawType == DrawType.CIRCLES) {
-            mNumberOfCircles = getHeight() / 10;
+            mNumberOfCircles = 100;
             mTouchX = getWidth() / 2;
             mTouchY = getHeight() / 2;
             drawGrid(canvas, mNumberOfCircles);
@@ -245,12 +244,11 @@ public class LensView extends View {
     private void drawGrid(Canvas canvas, int itemCount) {
         int systemOffsetVertical = 0;
         int systemOffsetHorizontal = 0;
-        int orientation = getResources().getConfiguration().orientation;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mDrawType != DrawType.CIRCLES) {
             systemOffsetVertical = (int) getResources().getDimension(R.dimen.offset_system_vertical);
             systemOffsetHorizontal = (int) getResources().getDimension(R.dimen.offset_system_horizontal);
         }
-        Grid grid = LensCalculator.calculateGrid(getContext(), getWidth() - systemOffsetHorizontal, getHeight() - systemOffsetVertical, itemCount, orientation);
+        Grid grid = LensCalculator.calculateGrid(getContext(), getWidth() - systemOffsetHorizontal, getHeight() - systemOffsetVertical, itemCount);
         mInsideRect = false;
         int selectIndex = -1;
         RectF rectToSelect = null;
