@@ -233,7 +233,13 @@ public class IconPackManager {
             int h = backImage.getHeight();
 
             // create a bitmap for the result
-            Bitmap result = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+            Bitmap result;
+            try {
+                result = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+            } catch (OutOfMemoryError e) {
+                e.printStackTrace();
+                return null;
+            }
             Canvas mCanvas = new Canvas(result);
 
             // draw the background first
@@ -241,8 +247,14 @@ public class IconPackManager {
 
             // create a mutable mask bitmap with the same mask
             Bitmap scaledBitmap = defaultBitmap;
-            if (defaultBitmap != null && (defaultBitmap.getWidth() > w || defaultBitmap.getHeight() > h))
-                Bitmap.createScaledBitmap(defaultBitmap, (int) (w * mFactor), (int) (h * mFactor), false);
+            if (defaultBitmap != null && (defaultBitmap.getWidth() > w || defaultBitmap.getHeight() > h)) {
+                try {
+                    Bitmap.createScaledBitmap(defaultBitmap, (int) (w * mFactor), (int) (h * mFactor), false);
+                } catch (OutOfMemoryError e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
 
             if (mMaskImage != null) {
                 // draw the scaled bitmap with mask
