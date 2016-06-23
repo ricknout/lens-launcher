@@ -17,9 +17,14 @@ public class LensCalculator {
         Grid grid = new Grid();
         grid.setItemCount(itemCount);
         int itemCountHorizontal, itemCountVertical;
-        double optimalSquareSize = calculateOptimalSquareSize(screenWidth, screenHeight, itemCount);
-        itemCountHorizontal = (int) Math.ceil(screenWidth / optimalSquareSize);
-        itemCountVertical = (int) Math.ceil((double) itemCount / (double) itemCountHorizontal);
+        if (itemCount == 0 || itemCount == 1) {
+            itemCountHorizontal = itemCount;
+            itemCountVertical = itemCount;
+        } else {
+            double optimalSquareSize = calculateOptimalSquareSize(screenWidth, screenHeight, itemCount);
+            itemCountHorizontal = (int) Math.ceil(screenWidth / optimalSquareSize);
+            itemCountVertical = (int) Math.ceil((double) itemCount / (double) itemCountHorizontal);
+        }
         grid.setItemCountHorizontal(itemCountHorizontal);
         grid.setItemCountVertical(itemCountVertical);
         Settings settings = new Settings(context);
