@@ -144,7 +144,7 @@ public class SettingsActivity extends BaseActivity
         super.onPause();
         if (AppsSingleton.getInstance().doesNeedUpdate()) {
             AppsSingleton.getInstance().setNeedsUpdate(false);
-            sendSortAppsBroadcast();
+            sendEditAppsBroadcast();
         }
     }
 
@@ -212,9 +212,9 @@ public class SettingsActivity extends BaseActivity
         sendBroadcast(refreshAppsIntent);
     }
 
-    private void sendSortAppsBroadcast() {
-        Intent sortAppsIntent = new Intent(SettingsActivity.this, BroadcastReceivers.AppsSortedReceiver.class);
-        sendBroadcast(sortAppsIntent);
+    private void sendEditAppsBroadcast() {
+        Intent editAppsIntent = new Intent(SettingsActivity.this, BroadcastReceivers.AppsEditedReceiver.class);
+        sendBroadcast(editAppsIntent);
     }
 
     private void showSortTypeDialog() {
@@ -233,7 +233,7 @@ public class SettingsActivity extends BaseActivity
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         mSettings.save(sortTypes.get(which));
-                        sendSortAppsBroadcast();
+                        sendEditAppsBroadcast();
                         return true;
                     }
                 })

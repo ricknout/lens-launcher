@@ -5,14 +5,14 @@ import java.util.Observable;
 /**
  * Created by nickrout on 2016/04/08.
  */
-public class UpdateObservable extends Observable {
-    private static UpdateObservable instance = new UpdateObservable();
+public class UpdatedObservable extends Observable {
+    private static UpdatedObservable instance = new UpdatedObservable();
 
-    public static UpdateObservable getInstance() {
+    public static UpdatedObservable getInstance() {
         return instance;
     }
 
-    private UpdateObservable() {
+    private UpdatedObservable() {
     }
 
     public void updateValue(Object data) {

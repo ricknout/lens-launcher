@@ -12,14 +12,14 @@ public class BroadcastReceivers {
     public static class AppsUpdatedReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            UpdateObservable.getInstance().update();
+            UpdatedObservable.getInstance().update();
         }
     }
 
-    public static class AppsSortedReceiver extends BroadcastReceiver {
+    public static class AppsEditedReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            SortedObservable.getInstance().update();
+            EditedObservable.getInstance().update();
         }
     }
 

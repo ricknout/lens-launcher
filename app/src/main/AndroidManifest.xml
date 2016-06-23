@@ -76,7 +76,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".background.BroadcastReceivers$AppsSortedReceiver">
+        <receiver android:name=".background.BroadcastReceivers$AppsEditedReceiver">
         </receiver>
 
         <receiver android:name=".background.BroadcastReceivers$AppsLoadedReceiver">

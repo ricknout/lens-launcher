@@ -6,8 +6,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import nickrout.lenslauncher.background.SortAppsTask;
-import nickrout.lenslauncher.background.SortedObservable;
-import nickrout.lenslauncher.background.UpdateObservable;
+import nickrout.lenslauncher.background.EditedObservable;
+import nickrout.lenslauncher.background.UpdatedObservable;
 import nickrout.lenslauncher.background.UpdateAppsTask;
 
 /**
@@ -18,17 +18,17 @@ public class LensLauncherApplication extends SugarApp implements Observer {
     @Override
     public void onCreate() {
         super.onCreate();
-        UpdateObservable.getInstance().addObserver(this);
-        SortedObservable.getInstance().addObserver(this);
+        UpdatedObservable.getInstance().addObserver(this);
+        EditedObservable.getInstance().addObserver(this);
         updateApps();
     }
 
     @Override
     public void update(Observable observable, Object data) {
-        if (observable instanceof UpdateObservable) {
+        if (observable instanceof UpdatedObservable) {
             updateApps();
-        } else if (observable instanceof SortedObservable) {
-            sortApps();
+        } else if (observable instanceof EditedObservable) {
+            editApps();
         }
     }
 
@@ -40,7 +40,7 @@ public class LensLauncherApplication extends SugarApp implements Observer {
                 .execute();
     }
 
-    private void sortApps() {
+    private void editApps() {
         new SortAppsTask(
                 getApplicationContext(),
                 this)

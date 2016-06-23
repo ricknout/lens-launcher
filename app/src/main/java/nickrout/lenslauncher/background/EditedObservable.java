@@ -5,14 +5,14 @@ import java.util.Observable;
 /**
  * Created by nicholasrout on 2016/06/23.
  */
-public class SortedObservable extends Observable {
-    private static SortedObservable instance = new SortedObservable();
+public class EditedObservable extends Observable {
+    private static EditedObservable instance = new EditedObservable();
 
-    public static SortedObservable getInstance() {
+    public static EditedObservable getInstance() {
         return instance;
     }
 
-    private SortedObservable() {
+    private EditedObservable() {
     }
 
     public void updateValue(Object data) {
