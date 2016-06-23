@@ -35,11 +35,11 @@ import butterknife.OnClick;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.util.AppSorter;
-import nickrout.lenslauncher.util.AppsSingleton;
-import nickrout.lenslauncher.util.BroadcastReceivers;
+import nickrout.lenslauncher.AppsSingleton;
+import nickrout.lenslauncher.background.BroadcastReceivers;
 import nickrout.lenslauncher.util.IconPackManager;
 import nickrout.lenslauncher.util.LauncherUtil;
-import nickrout.lenslauncher.util.LoadedObservable;
+import nickrout.lenslauncher.background.LoadedObservable;
 import nickrout.lenslauncher.util.Settings;
 
 /**
@@ -144,7 +144,7 @@ public class SettingsActivity extends BaseActivity
         super.onPause();
         if (AppsSingleton.getInstance().doesNeedUpdate()) {
             AppsSingleton.getInstance().setNeedsUpdate(false);
-            sendUpdateAppsBroadcast();
+            sendSortAppsBroadcast();
         }
     }
 

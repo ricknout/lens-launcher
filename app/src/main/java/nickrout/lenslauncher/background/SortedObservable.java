@@ -1,4 +1,4 @@
-package nickrout.lenslauncher.util;
+package nickrout.lenslauncher.background;
 
 import java.util.Observable;
 

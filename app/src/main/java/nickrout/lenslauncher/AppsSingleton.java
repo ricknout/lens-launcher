@@ -1,4 +1,4 @@
-package nickrout.lenslauncher.util;
+package nickrout.lenslauncher;
 
 import android.graphics.Bitmap;
 

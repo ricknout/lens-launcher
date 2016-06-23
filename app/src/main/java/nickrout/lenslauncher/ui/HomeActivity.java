@@ -1,6 +1,5 @@
 package nickrout.lenslauncher.ui;
 
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -19,9 +18,8 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.model.AppPersistent;
-import nickrout.lenslauncher.util.AppsSingleton;
-import nickrout.lenslauncher.util.BroadcastReceivers;
-import nickrout.lenslauncher.util.LoadedObservable;
+import nickrout.lenslauncher.AppsSingleton;
+import nickrout.lenslauncher.background.LoadedObservable;
 
 /**
  * Created by nickrout on 2016/04/02.
@@ -59,11 +57,6 @@ public class HomeActivity extends BaseActivity implements Observer {
     protected void onResume() {
         super.onResume();
         mLensView.invalidate();
-    }
-
-    private void sendUpdateAppsBroadcast() {
-        Intent refreshAppsIntent = new Intent(getApplication(), BroadcastReceivers.AppsUpdatedReceiver.class);
-        sendBroadcast(refreshAppsIntent);
     }
 
     private void assignApps(ArrayList<App> apps, ArrayList<Bitmap> appIcons) {

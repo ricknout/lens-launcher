@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nickrout.lenslauncher.R;
+import nickrout.lenslauncher.background.BroadcastReceivers;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.model.AppPersistent;
 import nickrout.lenslauncher.ui.BaseActivity;

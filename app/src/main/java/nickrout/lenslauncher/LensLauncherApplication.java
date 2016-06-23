@@ -5,10 +5,10 @@ import com.orm.SugarApp;
 import java.util.Observable;
 import java.util.Observer;
 
-import nickrout.lenslauncher.util.SortAppsTask;
-import nickrout.lenslauncher.util.SortedObservable;
-import nickrout.lenslauncher.util.UpdateObservable;
-import nickrout.lenslauncher.util.UpdateAppsTask;
+import nickrout.lenslauncher.background.SortAppsTask;
+import nickrout.lenslauncher.background.SortedObservable;
+import nickrout.lenslauncher.background.UpdateObservable;
+import nickrout.lenslauncher.background.UpdateAppsTask;
 
 /**
  * Created by nicholasrout on 2016/06/12.

@@ -1,4 +1,4 @@
-package nickrout.lenslauncher.util;
+package nickrout.lenslauncher.background;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

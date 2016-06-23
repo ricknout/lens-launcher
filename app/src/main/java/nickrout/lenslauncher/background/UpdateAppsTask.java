@@ -1,20 +1,25 @@
-package nickrout.lenslauncher.util;
+package nickrout.lenslauncher.background;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import java.util.ArrayList;
 
 import nickrout.lenslauncher.model.App;
+import nickrout.lenslauncher.util.AppUtil;
+import nickrout.lenslauncher.AppsSingleton;
+import nickrout.lenslauncher.util.Settings;
 
 /**
- * Created by nicholasrout on 2016/06/23.
+ * Created by rish on 26/5/16.
  */
-public class SortAppsTask extends AsyncTask<Void, Void, Void> {
+public class UpdateAppsTask extends AsyncTask<Void, Void, Void> {
 
+    private PackageManager mPackageManager;
     private Context mContext;
     private Application mApplication;
     private Settings mSettings;
@@ -22,11 +27,13 @@ public class SortAppsTask extends AsyncTask<Void, Void, Void> {
     private ArrayList<App> mApps;
     private ArrayList<Bitmap> mAppIcons;
 
-    public SortAppsTask(Context context,
-                        Application application) {
-        mContext = context;
-        mApplication = application;
-        mSettings = new Settings(mContext);
+    public UpdateAppsTask(PackageManager packageManager,
+                           Context context,
+                           Application application) {
+        this.mPackageManager = packageManager;
+        this.mContext = context;
+        this.mApplication = application;
+        this.mSettings = new Settings(context);
     }
 
     @Override
@@ -36,8 +43,12 @@ public class SortAppsTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        ArrayList<App> apps = AppsSingleton.getInstance().getApps();
-        AppSorter.sort(apps, mSettings.getSortType());
+        ArrayList<App> apps = AppUtil.getApps(
+                mPackageManager,
+                mContext,
+                mApplication,
+                mSettings.getString(Settings.KEY_ICON_PACK_LABEL_NAME),
+                mSettings.getSortType());
         mApps = new ArrayList<>();
         mAppIcons = new ArrayList<>();
         for (int i = 0; i < apps.size(); i++) {

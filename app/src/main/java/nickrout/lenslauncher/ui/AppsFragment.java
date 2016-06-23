@@ -21,8 +21,8 @@ import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.adapter.AppRecyclerAdapter;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.util.AppSorter;
-import nickrout.lenslauncher.util.AppsSingleton;
-import nickrout.lenslauncher.util.BroadcastReceivers;
+import nickrout.lenslauncher.AppsSingleton;
+import nickrout.lenslauncher.background.BroadcastReceivers;
 import nickrout.lenslauncher.util.Settings;
 
 /**

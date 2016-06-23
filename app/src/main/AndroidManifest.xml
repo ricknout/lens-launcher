@@ -66,7 +66,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".util.BroadcastReceivers$AppsUpdatedReceiver">
+        <receiver android:name=".background.BroadcastReceivers$AppsUpdatedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
@@ -76,10 +76,10 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".util.BroadcastReceivers$AppsSortedReceiver">
+        <receiver android:name=".background.BroadcastReceivers$AppsSortedReceiver">
         </receiver>
 
-        <receiver android:name=".util.BroadcastReceivers$AppsLoadedReceiver">
+        <receiver android:name=".background.BroadcastReceivers$AppsLoadedReceiver">
         </receiver>
 
     </application>

@@ -25,7 +25,7 @@ import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.model.AppPersistent;
 import nickrout.lenslauncher.util.AppUtil;
-import nickrout.lenslauncher.util.AppsSingleton;
+import nickrout.lenslauncher.AppsSingleton;
 
 public class AppRecyclerAdapter extends RecyclerView.Adapter {
 
