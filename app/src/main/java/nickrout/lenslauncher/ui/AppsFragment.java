@@ -69,12 +69,12 @@ public class AppsFragment extends Fragment implements SettingsActivity.AppsInter
         }
     }
 
-    private void sendRefreshAppsBroadcast() {
+    private void sendSortAppsBroadcast() {
         if (getActivity() == null) {
             return;
         }
-        Intent refreshAppsIntent = new Intent(getActivity(), BroadcastReceivers.AppsUpdatedReceiver.class);
-        getActivity().sendBroadcast(refreshAppsIntent);
+        Intent sortAppsIntent = new Intent(getActivity(), BroadcastReceivers.AppsSortedReceiver.class);
+        getActivity().sendBroadcast(sortAppsIntent);
     }
 
     private void setupRecycler(ArrayList<App> apps) {
@@ -98,7 +98,7 @@ public class AppsFragment extends Fragment implements SettingsActivity.AppsInter
     public void onDefaultsReset() {
         if (mSettings.getSortType() != AppSorter.SortType.values()[Settings.DEFAULT_SORT_TYPE]) {
             mSettings.save(Settings.KEY_SORT_TYPE, Settings.DEFAULT_SORT_TYPE);
-            sendRefreshAppsBroadcast();
+            sendSortAppsBroadcast();
         }
     }
 

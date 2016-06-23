@@ -212,6 +212,11 @@ public class SettingsActivity extends BaseActivity
         sendBroadcast(refreshAppsIntent);
     }
 
+    private void sendSortAppsBroadcast() {
+        Intent sortAppsIntent = new Intent(SettingsActivity.this, BroadcastReceivers.AppsSortedReceiver.class);
+        sendBroadcast(sortAppsIntent);
+    }
+
     private void showSortTypeDialog() {
         final List<AppSorter.SortType> sortTypes = new ArrayList<>(EnumSet.allOf(AppSorter.SortType.class));
         final List<String> sortTypeStrings = new ArrayList<>();
@@ -228,7 +233,7 @@ public class SettingsActivity extends BaseActivity
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         mSettings.save(sortTypes.get(which));
-                        sendUpdateAppsBroadcast();
+                        sendSortAppsBroadcast();
                         return true;
                     }
                 })

@@ -15,6 +15,7 @@ import java.util.List;
 
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.model.App;
+import nickrout.lenslauncher.model.AppPersistent;
 import nickrout.lenslauncher.ui.BaseActivity;
 
 /**
@@ -84,11 +85,21 @@ public class AppUtil {
             }
             componentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             try {
+                // Launch Component
                 context.startActivity(componentIntent);
                 if (context instanceof BaseActivity) {
                     ((BaseActivity) context).overridePendingTransition(
                         R.anim.fade_in, R.anim.fade_out
                     );
+                }
+                // Increment app open count
+                AppPersistent.incrementAppCount(packageName, name);
+                // Resort apps (if open count selected)
+                Settings settings = new Settings(context);
+                if (settings.getSortType() == AppSorter.SortType.OPEN_COUNT_ASCENDING ||
+                        settings.getSortType() == AppSorter.SortType.OPEN_COUNT_DESCENDING) {
+                    Intent sortAppsIntent = new Intent(context, BroadcastReceivers.AppsSortedReceiver.class);
+                    context.sendBroadcast(sortAppsIntent);
                 }
             } catch (ActivityNotFoundException e) {
                 Toast.makeText(context, R.string.error_app_not_found, Toast.LENGTH_SHORT).show();

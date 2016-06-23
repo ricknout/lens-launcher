@@ -32,8 +32,8 @@
     <string name="setting_sort_type_label_descending">App Name (Descending)</string>
     <string name="setting_sort_type_install_date_ascending">Newest First</string>
     <string name="setting_sort_type_install_date_descending">Oldest First</string>
-    <string name="setting_sort_type_open_count_ascending">Most Opened First</string>
-    <string name="setting_sort_type_open_count_descending">Least Opened First</string>
+    <string name="setting_sort_type_open_count_ascending">Most Opened</string>
+    <string name="setting_sort_type_open_count_descending">Least Opened</string>
     <string name="setting_sort_type_icon_color_ascending">Icon Color (Light to Dark)</string>
     <string name="setting_sort_type_icon_color_descending">Icon Color (Dark to Light)</string>
     <string name="setting_app_arranger">@string/activity_title_arranger</string>

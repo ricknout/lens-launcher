@@ -392,9 +392,6 @@ public class LensView extends View {
                     (String) mApps.get(mSelectIndex).getPackageName(),
                     (String) mApps.get(mSelectIndex).getName(),
                     getContext());
-            AppPersistent.incrementAppCount(
-                    (String) mApps.get(mSelectIndex).getPackageName(),
-                    (String) mApps.get(mSelectIndex).getName());
         }
     }
 

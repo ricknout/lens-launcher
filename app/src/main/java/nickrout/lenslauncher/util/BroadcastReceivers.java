@@ -16,6 +16,13 @@ public class BroadcastReceivers {
         }
     }
 
+    public static class AppsSortedReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            SortedObservable.getInstance().update();
+        }
+    }
+
     public static class AppsLoadedReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
