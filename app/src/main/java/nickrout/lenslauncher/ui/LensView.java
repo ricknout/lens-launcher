@@ -131,7 +131,7 @@ public class LensView extends View {
         mPaintTouchSelection = new Paint();
         mPaintTouchSelection.setAntiAlias(true);
         mPaintTouchSelection.setStyle(Paint.Style.STROKE);
-        mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
+        mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_HIGHLIGHT_COLOR)));
         mPaintTouchSelection.setStrokeWidth(getResources().getDimension(R.dimen.stroke_width_touch_selection));
 
         mPaintText = new Paint();
@@ -145,7 +145,7 @@ public class LensView extends View {
         mPaintNewAppTag = new Paint();
         mPaintNewAppTag.setAntiAlias(true);
         mPaintNewAppTag.setStyle(Paint.Style.FILL);
-        mPaintNewAppTag.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
+        mPaintNewAppTag.setColor(Color.parseColor(mSettings.getString(Settings.KEY_HIGHLIGHT_COLOR)));
         mPaintNewAppTag.setDither(true);
         mPaintNewAppTag.setShadowLayer(getResources().getDimension(R.dimen.shadow_text),
                 getResources().getDimension(R.dimen.shadow_text),
@@ -158,7 +158,7 @@ public class LensView extends View {
         super.onDraw(canvas);
         if (mDrawType == DrawType.APPS) {
             mPaintBackgroundColor.setColor(Color.parseColor(mSettings.getString(Settings.KEY_BACKGROUND_COLOR)));
-            mPaintNewAppTag.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
+            mPaintNewAppTag.setColor(Color.parseColor(mSettings.getString(Settings.KEY_HIGHLIGHT_COLOR)));
             if (mSettings.getString(Settings.KEY_BACKGROUND).equals("Color")) {
                 drawBackgroundColor(canvas);
             }
@@ -441,12 +441,12 @@ public class LensView extends View {
             super.applyTransformation(interpolatedTime, t);
             if (mShow) {
                 mAnimationMultiplier = interpolatedTime;
-                mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
+                mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_HIGHLIGHT_COLOR)));
                 mPaintTouchSelection.setAlpha((int) (255.0f * interpolatedTime));
                 mPaintText.setAlpha((int) (255.0f * interpolatedTime));
             } else {
                 mAnimationMultiplier = 1.0f - interpolatedTime;
-                mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
+                mPaintTouchSelection.setColor(Color.parseColor(mSettings.getString(Settings.KEY_HIGHLIGHT_COLOR)));
                 mPaintTouchSelection.setAlpha((int) (255.0f * (1.0f - interpolatedTime)));
                 mPaintText.setAlpha((int) (255.0f * (1.0f - interpolatedTime)));
             }

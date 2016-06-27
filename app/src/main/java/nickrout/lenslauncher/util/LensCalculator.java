@@ -28,7 +28,7 @@ public class LensCalculator {
         grid.setItemCountHorizontal(itemCountHorizontal);
         grid.setItemCountVertical(itemCountVertical);
         Settings settings = new Settings(context);
-        float itemSize = LensCalculator.convertDpToPixel(settings.getFloat(Settings.KEY_MIN_ICON_SIZE), context);
+        float itemSize = LensCalculator.convertDpToPixel(settings.getFloat(Settings.KEY_ICON_SIZE), context);
         grid.setItemSize(itemSize);
         float spacingHorizontal = (((float) screenWidth) - ((float) itemCountHorizontal * itemSize)) / ((float) (itemCountHorizontal + 1));
         grid.setSpacingHorizontal(spacingHorizontal);

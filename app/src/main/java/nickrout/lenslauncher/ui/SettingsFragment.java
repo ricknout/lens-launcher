@@ -146,7 +146,7 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
 
     private void assignValues() {
         mIconPackTextView.setText(mSettings.getString(Settings.KEY_ICON_PACK_LABEL_NAME));
-        String highlightColor = "#" + mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR).substring(3);
+        String highlightColor = "#" + mSettings.getString(Settings.KEY_HIGHLIGHT_COLOR).substring(3);
         String homeLauncher = "";
         if (getActivity() != null) {
             homeLauncher = LauncherUtil.getHomeLauncherName(getActivity().getApplication());
@@ -166,7 +166,7 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
         }
         mHighlightColorTextView.setText(highlightColor);
         GradientDrawable highlightColorDrawable = new GradientDrawable();
-        highlightColorDrawable.setColor(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)));
+        highlightColorDrawable.setColor(Color.parseColor(mSettings.getString(Settings.KEY_HIGHLIGHT_COLOR)));
         highlightColorDrawable.setCornerRadius(getResources().getDimension(R.dimen.radius_highlight_color_switch));
         mHighlightColorImageView.setImageDrawable(highlightColorDrawable);
         mVibrateAppHover.setChecked(mSettings.getBoolean(Settings.KEY_VIBRATE_APP_HOVER));
@@ -217,7 +217,7 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
         mSettings.save(Settings.KEY_SHOW_NAME_APP_HOVER, Settings.DEFAULT_SHOW_NAME_APP_HOVER);
         mSettings.save(Settings.KEY_SHOW_TOUCH_SELECTION, Settings.DEFAULT_SHOW_TOUCH_SELECTION);
         mSettings.save(Settings.KEY_SHOW_NEW_APP_TAG, Settings.DEFAULT_SHOW_NEW_APP_TAG);
-        mSettings.save(Settings.KEY_TOUCH_SELECTION_COLOR, Settings.DEFAULT_TOUCH_SELECTION_COLOR);
+        mSettings.save(Settings.KEY_HIGHLIGHT_COLOR, Settings.DEFAULT_HIGHLIGHT_COLOR);
         mSettings.save(Settings.KEY_ICON_PACK_LABEL_NAME, Settings.DEFAULT_ICON_PACK_LABEL_NAME);
     }
 }

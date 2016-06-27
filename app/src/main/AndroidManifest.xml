@@ -29,7 +29,8 @@
             android:launchMode="singleTask"
             android:stateNotNeeded="true"
             android:taskAffinity=""
-            android:theme="@style/HomeTheme">
+            android:theme="@style/HomeTheme"
+            android:resizeableActivity="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />
@@ -58,7 +59,8 @@
 
         <activity
             android:name=".ui.FakeLauncherActivity"
-            android:enabled="false">
+            android:enabled="false"
+            android:resizeableActivity="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />

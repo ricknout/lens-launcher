@@ -82,14 +82,14 @@ public class LensFragment extends Fragment implements SettingsActivity.LensInter
 
     private void setupViews() {
         mLensView.setDrawType(LensView.DrawType.CIRCLES);
-        mMinIconSize.setMax(Settings.MAX_MIN_ICON_SIZE);
+        mMinIconSize.setMax(Settings.MAX_ICON_SIZE);
         mMinIconSize.setOnSeekBarChangeListener(new AppCompatSeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int appropriateProgress = progress + (int) Settings.MIN_MIN_ICON_SIZE;
+                int appropriateProgress = progress + (int) Settings.MIN_ICON_SIZE;
                 String minIconSize = appropriateProgress + "dp";
                 mValueMinIconSize.setText(minIconSize);
-                mSettings.save(Settings.KEY_MIN_ICON_SIZE, (float) appropriateProgress);
+                mSettings.save(Settings.KEY_ICON_SIZE, (float) appropriateProgress);
                 mLensView.invalidate();
             }
 
@@ -160,8 +160,8 @@ public class LensFragment extends Fragment implements SettingsActivity.LensInter
     }
 
     private void assignValues() {
-        mMinIconSize.setProgress((int) mSettings.getFloat(Settings.KEY_MIN_ICON_SIZE) - (int) Settings.MIN_MIN_ICON_SIZE);
-        String minIconSize = (int) mSettings.getFloat(Settings.KEY_MIN_ICON_SIZE) + "dp";
+        mMinIconSize.setProgress((int) mSettings.getFloat(Settings.KEY_ICON_SIZE) - (int) Settings.MIN_ICON_SIZE);
+        String minIconSize = (int) mSettings.getFloat(Settings.KEY_ICON_SIZE) + "dp";
         mValueMinIconSize.setText(minIconSize);
         mDistortionFactor.setProgress((int) (2.0f * (mSettings.getFloat(Settings.KEY_DISTORTION_FACTOR) - Settings.MIN_DISTORTION_FACTOR)));
         String distortionFactor = mSettings.getFloat(Settings.KEY_DISTORTION_FACTOR) + "";
@@ -181,7 +181,7 @@ public class LensFragment extends Fragment implements SettingsActivity.LensInter
     }
 
     private void resetToDefault() {
-        mSettings.save(Settings.KEY_MIN_ICON_SIZE, Settings.DEFAULT_MIN_ICON_SIZE);
+        mSettings.save(Settings.KEY_ICON_SIZE, Settings.DEFAULT_ICON_SIZE);
         mSettings.save(Settings.KEY_DISTORTION_FACTOR, Settings.DEFAULT_DISTORTION_FACTOR);
         mSettings.save(Settings.KEY_SCALE_FACTOR, Settings.DEFAULT_SCALE_FACTOR);
         mSettings.save(Settings.KEY_ANIMATION_TIME, Settings.DEFAULT_ANIMATION_TIME);

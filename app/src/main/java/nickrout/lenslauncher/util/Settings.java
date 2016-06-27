@@ -9,7 +9,7 @@ import android.preference.PreferenceManager;
  */
 public class Settings {
 
-    public static final float DEFAULT_MIN_ICON_SIZE = 18.0f;
+    public static final float DEFAULT_ICON_SIZE = 18.0f;
     public static final float DEFAULT_DISTORTION_FACTOR = 2.5f;
     public static final float DEFAULT_SCALE_FACTOR = 1.0f;
     public static final long DEFAULT_ANIMATION_TIME = 200;
@@ -20,19 +20,19 @@ public class Settings {
     public static final boolean DEFAULT_SHOW_NEW_APP_TAG = true;
     public static final String DEFAULT_BACKGROUND = "Wallpaper";
     public static final String DEFAULT_BACKGROUND_COLOR = "#FFF8BBD0";
-    public static final String DEFAULT_TOUCH_SELECTION_COLOR = "#FFF50057";
+    public static final String DEFAULT_HIGHLIGHT_COLOR = "#FFF50057";
     public static final String DEFAULT_ICON_PACK_LABEL_NAME = "Default Icon Pack";
     public static final int DEFAULT_SORT_TYPE = 0;
 
     // These values are for the progress bars, their real values = (MAX_VALUE / INTERVAL (eg. 2)) + MIN_VALUE
-    public static final int MAX_MIN_ICON_SIZE = 30;
+    public static final int MAX_ICON_SIZE = 30;
     public static final int MAX_DISTORTION_FACTOR = 9;
     public static final int MAX_SCALE_FACTOR = 5;
     public static final int MAX_ANIMATION_TIME = 600;
 
     public static final int SHOW_NEW_APP_TAG_DURATION = 12 * 60 * 60 * 1000; /* An app has the new tag for twelve hours. If openCount >= 1, the new tag is not drawn. */
 
-    public static final float MIN_MIN_ICON_SIZE = 10.0f;
+    public static final float MIN_ICON_SIZE = 10.0f;
     public static final float MIN_DISTORTION_FACTOR = 0.5f;
     public static final float MIN_SCALE_FACTOR = 1.0f;
     public static final long MIN_ANIMATION_TIME = 100;
@@ -42,7 +42,7 @@ public class Settings {
     public static final boolean DEFAULT_BOOLEAN = false;
     public static final String DEFAULT_STRING = "";
 
-    public static final String KEY_MIN_ICON_SIZE = "min_icon_size";
+    public static final String KEY_ICON_SIZE = "min_icon_size";
     public static final String KEY_DISTORTION_FACTOR = "distortion_factor";
     public static final String KEY_SCALE_FACTOR = "scale_factor";
     public static final String KEY_ANIMATION_TIME = "animation_time";
@@ -53,7 +53,7 @@ public class Settings {
     public static final String KEY_SHOW_NEW_APP_TAG = "show_new_tag_app";
     public static final String KEY_BACKGROUND = "background";
     public static final String KEY_BACKGROUND_COLOR = "background_color";
-    public static final String KEY_TOUCH_SELECTION_COLOR = "show_touch_selection_color";
+    public static final String KEY_HIGHLIGHT_COLOR = "show_touch_selection_color";
     public static final String KEY_ICON_PACK_LABEL_NAME = "icon_pack_label_name";
     public static final String KEY_SORT_TYPE = "sort_type";
 
@@ -76,13 +76,13 @@ public class Settings {
     }
 
     public float getFloat(String name) {
-        if (name.equals(KEY_MIN_ICON_SIZE)) {
-            if (sharedPreferences().getFloat(name, DEFAULT_MIN_ICON_SIZE) < MIN_MIN_ICON_SIZE) {
-                save(name, MIN_MIN_ICON_SIZE);
-            } else if (sharedPreferences().getFloat(name, DEFAULT_MIN_ICON_SIZE) > getMaxFloatValue(name)) {
+        if (name.equals(KEY_ICON_SIZE)) {
+            if (sharedPreferences().getFloat(name, DEFAULT_ICON_SIZE) < MIN_ICON_SIZE) {
+                save(name, MIN_ICON_SIZE);
+            } else if (sharedPreferences().getFloat(name, DEFAULT_ICON_SIZE) > getMaxFloatValue(name)) {
                 save(name, getMaxFloatValue(name));
             }
-            return sharedPreferences().getFloat(name, DEFAULT_MIN_ICON_SIZE);
+            return sharedPreferences().getFloat(name, DEFAULT_ICON_SIZE);
         } else if (name.equals(KEY_DISTORTION_FACTOR)) {
             if (sharedPreferences().getFloat(name, DEFAULT_DISTORTION_FACTOR) < MIN_DISTORTION_FACTOR) {
                 save(name, MIN_DISTORTION_FACTOR);
@@ -128,8 +128,8 @@ public class Settings {
             return sharedPreferences().getString(name, DEFAULT_BACKGROUND);
         } else if (name.equals(KEY_BACKGROUND_COLOR)) {
             return sharedPreferences().getString(name, DEFAULT_BACKGROUND_COLOR);
-        } else if (name.equals(KEY_TOUCH_SELECTION_COLOR)) {
-            return sharedPreferences().getString(name, DEFAULT_TOUCH_SELECTION_COLOR);
+        } else if (name.equals(KEY_HIGHLIGHT_COLOR)) {
+            return sharedPreferences().getString(name, DEFAULT_HIGHLIGHT_COLOR);
         } else if (name.equals(KEY_ICON_PACK_LABEL_NAME)) {
             return sharedPreferences().getString(name, DEFAULT_ICON_PACK_LABEL_NAME);
         } else {
@@ -172,8 +172,8 @@ public class Settings {
     }
 
     public float getMaxFloatValue(String name) {
-        if (name.equals(KEY_MIN_ICON_SIZE)) {
-            return (float) MAX_MIN_ICON_SIZE + MIN_MIN_ICON_SIZE;
+        if (name.equals(KEY_ICON_SIZE)) {
+            return (float) MAX_ICON_SIZE + MIN_ICON_SIZE;
         } else if (name.equals(KEY_DISTORTION_FACTOR)) {
             return (float) MAX_DISTORTION_FACTOR / 2 + MIN_DISTORTION_FACTOR;
         } else if (name.equals(KEY_SCALE_FACTOR)) {

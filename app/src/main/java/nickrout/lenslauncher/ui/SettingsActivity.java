@@ -50,6 +50,10 @@ public class SettingsActivity extends BaseActivity
 
     private static final String TAG = "SettingsActivity";
 
+    private static final String COLOR_TAG_BACKGROUND = "BackgroundColor";
+    private static final String COLOR_TAG_HIGHLIGHT = "HighlightColor";
+
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -323,6 +327,7 @@ public class SettingsActivity extends BaseActivity
                 .preselect(Color.parseColor(mSettings.getString(Settings.KEY_BACKGROUND_COLOR)))
                 .dynamicButtonColor(false)
                 .allowUserColorInputAlpha(false)
+                .tag(COLOR_TAG_BACKGROUND)
                 .show();
     }
 
@@ -333,20 +338,21 @@ public class SettingsActivity extends BaseActivity
                 .doneButton(R.string.md_done_label)
                 .cancelButton(R.string.md_cancel_label)
                 .backButton(R.string.md_back_label)
-                .preselect(Color.parseColor(mSettings.getString(Settings.KEY_TOUCH_SELECTION_COLOR)))
+                .preselect(Color.parseColor(mSettings.getString(Settings.KEY_HIGHLIGHT_COLOR)))
                 .dynamicButtonColor(false)
                 .allowUserColorInputAlpha(false)
+                .tag(COLOR_TAG_HIGHLIGHT)
                 .show();
     }
 
     @Override
     public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
-        String hexColor = String.format("#%06X", (0xFFFFFFFF & selectedColor));
-        if (mBackgroundColorDialog!= null && mBackgroundColorDialog.getId() == dialog.getId()) {
+        String hexColor = String.format("#%06X", selectedColor);
+        if (dialog.tag().equals(COLOR_TAG_BACKGROUND)) {
             mSettings.save(Settings.KEY_BACKGROUND, "Color");
             mSettings.save(Settings.KEY_BACKGROUND_COLOR, hexColor);
-        } else if (mHighlightColorDialog!= null && mHighlightColorDialog.getId() == dialog.getId()) {
-            mSettings.save(Settings.KEY_TOUCH_SELECTION_COLOR, hexColor);
+        } else if (dialog.tag().equals(COLOR_TAG_HIGHLIGHT)) {
+            mSettings.save(Settings.KEY_HIGHLIGHT_COLOR, hexColor);
         }
         if (mSettingsInterface != null) {
             mSettingsInterface.onValuesUpdated();
@@ -411,14 +417,11 @@ public class SettingsActivity extends BaseActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    LensFragment lensFragment = LensFragment.newInstance();
-                    return lensFragment;
+                    return LensFragment.newInstance();
                 case 1:
-                    AppsFragment appsFragment = AppsFragment.newInstance();
-                    return appsFragment;
+                    return AppsFragment.newInstance();
                 case 2:
-                    SettingsFragment settingsFragment = SettingsFragment.newInstance();
-                    return settingsFragment;
+                    return SettingsFragment.newInstance();
             }
             return new Fragment();
         }
