@@ -9,8 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.graphics.drawable.NinePatchDrawable;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
@@ -60,9 +58,9 @@ public class LensView extends View {
 
     private int mNumberOfCircles;
 
-    private NinePatchDrawable mWorkspaceBackground;
-
     private Settings mSettings;
+
+    private Rect mInsets = new Rect();
 
     public enum DrawType {
         APPS,
@@ -106,9 +104,14 @@ public class LensView extends View {
         mAppIcons = new ArrayList<>();
         mDrawType = DrawType.APPS;
         setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTransparent));
-        mWorkspaceBackground = (NinePatchDrawable) ContextCompat.getDrawable(getContext(), R.drawable.workspace_bg);
         mSettings = new Settings(getContext());
         setupPaints();
+    }
+
+    @Override
+    protected boolean fitSystemWindows(Rect insets) {
+        mInsets = insets;
+        return true;
     }
 
     private void setupPaints() {
@@ -162,7 +165,6 @@ public class LensView extends View {
             if (mSettings.getString(Settings.KEY_BACKGROUND).equals("Color")) {
                 drawBackgroundColor(canvas);
             }
-            drawWorkspaceBackground(canvas);
             if (mApps != null) {
                 drawGrid(canvas, mApps.size());
             }
@@ -225,14 +227,6 @@ public class LensView extends View {
         return super.onTouchEvent(event);
     }
 
-    private void drawWorkspaceBackground(Canvas canvas) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Rect rect = new Rect(0, 0, getWidth(), getHeight());
-            mWorkspaceBackground.setBounds(rect);
-            mWorkspaceBackground.draw(canvas);
-        }
-    }
-
     private void drawBackgroundColor(Canvas canvas) {
         canvas.drawRect(0, 0, getWidth(), getHeight(), mPaintBackgroundColor);
     }
@@ -242,13 +236,11 @@ public class LensView extends View {
     }
 
     private void drawGrid(Canvas canvas, int itemCount) {
-        int systemOffsetVertical = 0;
-        int systemOffsetHorizontal = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && mDrawType != DrawType.CIRCLES) {
-            systemOffsetVertical = (int) getResources().getDimension(R.dimen.offset_system_vertical);
-            systemOffsetHorizontal = (int) getResources().getDimension(R.dimen.offset_system_horizontal);
-        }
-        Grid grid = LensCalculator.calculateGrid(getContext(), getWidth() - systemOffsetHorizontal, getHeight() - systemOffsetVertical, itemCount);
+        Grid grid = LensCalculator.calculateGrid(
+                getContext(),
+                getWidth() - (mInsets.left + mInsets.right),
+                getHeight() - (mInsets.top + mInsets.bottom),
+                itemCount);
         mInsideRect = false;
         int selectIndex = -1;
         RectF rectToSelect = null;
@@ -261,8 +253,8 @@ public class LensView extends View {
 
                 if (currentItem <= grid.getItemCount() || mDrawType == DrawType.CIRCLES) {
                     RectF rect = new RectF();
-                    rect.left = systemOffsetHorizontal / 2 + (x + 1.0f) * grid.getSpacingHorizontal() + x * grid.getItemSize();
-                    rect.top = systemOffsetVertical / 2 + (y + 1.0f) * grid.getSpacingVertical() + y * grid.getItemSize();
+                    rect.left = mInsets.left + (x + 1.0f) * grid.getSpacingHorizontal() + x * grid.getItemSize();
+                    rect.top = mInsets.top + (y + 1.0f) * grid.getSpacingVertical() + y * grid.getItemSize();
                     rect.right = rect.left + grid.getItemSize();
                     rect.bottom = rect.top + grid.getItemSize();
 
