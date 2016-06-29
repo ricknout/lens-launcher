@@ -9,6 +9,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.drawable.NinePatchDrawable;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
@@ -37,7 +39,6 @@ public class LensView extends View {
 
     private Paint mPaintIcons;
     private Paint mPaintCircles;
-    private Paint mPaintBackgroundColor;
     private Paint mPaintTouchSelection;
     private Paint mPaintText;
     private Paint mPaintNewAppTag;
@@ -60,7 +61,9 @@ public class LensView extends View {
 
     private Settings mSettings;
 
-    private Rect mInsets = new Rect();
+    private NinePatchDrawable mWorkspaceBackgroundDrawable;
+
+    private Rect mInsets = new Rect(0, 0, 0, 0);
 
     public enum DrawType {
         APPS,
@@ -106,6 +109,7 @@ public class LensView extends View {
         setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTransparent));
         mSettings = new Settings(getContext());
         setupPaints();
+        mWorkspaceBackgroundDrawable = (NinePatchDrawable) ContextCompat.getDrawable(getContext(), R.drawable.workspace_bg);
     }
 
     @Override
@@ -125,11 +129,6 @@ public class LensView extends View {
         mPaintCircles.setAntiAlias(true);
         mPaintCircles.setStyle(Paint.Style.FILL);
         mPaintCircles.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-
-        mPaintBackgroundColor = new Paint();
-        mPaintBackgroundColor.setAntiAlias(true);
-        mPaintBackgroundColor.setStyle(Paint.Style.FILL);
-        mPaintBackgroundColor.setColor(Color.parseColor(mSettings.getString(Settings.KEY_BACKGROUND_COLOR)));
 
         mPaintTouchSelection = new Paint();
         mPaintTouchSelection.setAntiAlias(true);
@@ -160,11 +159,8 @@ public class LensView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (mDrawType == DrawType.APPS) {
-            mPaintBackgroundColor.setColor(Color.parseColor(mSettings.getString(Settings.KEY_BACKGROUND_COLOR)));
             mPaintNewAppTag.setColor(Color.parseColor(mSettings.getString(Settings.KEY_HIGHLIGHT_COLOR)));
-            if (mSettings.getString(Settings.KEY_BACKGROUND).equals("Color")) {
-                drawBackgroundColor(canvas);
-            }
+            drawWorkspaceBackground(canvas);
             if (mApps != null) {
                 drawGrid(canvas, mApps.size());
             }
@@ -227,8 +223,12 @@ public class LensView extends View {
         return super.onTouchEvent(event);
     }
 
-    private void drawBackgroundColor(Canvas canvas) {
-        canvas.drawRect(0, 0, getWidth(), getHeight(), mPaintBackgroundColor);
+    private void drawWorkspaceBackground(Canvas canvas) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Rect rect = new Rect(0, 0, getWidth(), getHeight());
+            mWorkspaceBackgroundDrawable.setBounds(rect);
+            mWorkspaceBackgroundDrawable.draw(canvas);
+        }
     }
 
     private void drawTouchSelection(Canvas canvas) {
