@@ -19,6 +19,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
 import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -31,7 +32,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import nickrout.lenslauncher.R;
 
@@ -67,7 +67,7 @@ public class IconPackManager {
         Resources mIconPackRes = null;
 
         public void load() {
-            // load appfilter.xml from the icon pack package
+            // Load appfilter.xml from the icon pack package
             PackageManager pm = mApplication.getPackageManager();
             try {
                 XmlPullParser xpp = null;
@@ -76,7 +76,7 @@ public class IconPackManager {
                 if (appfilterid > 0) {
                     xpp = mIconPackRes.getXml(appfilterid);
                 } else {
-                    // no resource found, try to open it from assets folder
+                    // No resource found, try to open it from assets folder
                     try {
                         InputStream appfilterstream = mIconPackRes.getAssets().open("appfilter.xml");
 
@@ -177,7 +177,7 @@ public class IconPackManager {
                 }
                 return bitmap;
             } else {
-                // try to get a resource with the component filename
+                // Try to get a resource with the component filename
                 if (componentName != null) {
                     int start = componentName.indexOf("{") + 1;
                     int end = componentName.indexOf("}", start);
@@ -201,8 +201,7 @@ public class IconPackManager {
                 return defaultBitmap;
             }
             // Get a random back image
-            Random random = new Random();
-            Bitmap backImage = mBackImages.get(random.nextInt(mBackImages.size()));
+            Bitmap backImage = getMostAppropriateBackImage(defaultBitmap);
             int backImageWidth = backImage.getWidth();
             int backImageHeight = backImage.getHeight();
             // Create a bitmap for the result
@@ -264,6 +263,25 @@ public class IconPackManager {
             }
             // Return result
             return result;
+        }
+
+        private Bitmap getMostAppropriateBackImage(Bitmap defaultBitmap) {
+            if (mBackImages.size() == 1) {
+                return mBackImages.get(0);
+            }
+            @ColorInt int defaultPaletteColor = ColorUtil.getPaletteColorFromBitmap(defaultBitmap);
+            float defaultHueColor = ColorUtil.getHueColorFromColor(defaultPaletteColor);
+            float difference = Float.MAX_VALUE;
+            int index = 0;
+            for (int i = 0; i < mBackImages.size(); i++) {
+                @ColorInt int backPaletteColor = ColorUtil.getPaletteColorFromBitmap(mBackImages.get(i));
+                float backHueColor = ColorUtil.getHueColorFromColor(backPaletteColor);
+                if (Math.abs(defaultHueColor - backHueColor) < difference) {
+                    difference = Math.abs(defaultHueColor - backHueColor);
+                    index = i;
+                }
+            }
+            return mBackImages.get(index);
         }
     }
 
