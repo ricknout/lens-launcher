@@ -15,6 +15,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -34,10 +36,21 @@ import java.util.Random;
 import nickrout.lenslauncher.R;
 
 public class IconPackManager {
+
     private static final String TAG = "IconPackManager";
+
     private Application mApplication;
 
     public class IconPack {
+
+        public IconPack() {
+            mPaint = new Paint();
+            mPaint.setAntiAlias(true);
+            mPaint.setStyle(Paint.Style.FILL);
+            mPaint.setFilterBitmap(true);
+            mPaint.setDither(true);
+        }
+
         public String mPackageName;
         public String mName;
 
@@ -49,6 +62,8 @@ public class IconPackManager {
         private Bitmap mFrontImage = null;
         private float mFactor = 1.0f;
 
+        private Paint mPaint;
+
         Resources mIconPackRes = null;
 
         public void load() {
@@ -56,13 +71,12 @@ public class IconPackManager {
             PackageManager pm = mApplication.getPackageManager();
             try {
                 XmlPullParser xpp = null;
-
                 mIconPackRes = pm.getResourcesForApplication(mPackageName);
                 int appfilterid = mIconPackRes.getIdentifier("appfilter", "xml", mPackageName);
                 if (appfilterid > 0) {
                     xpp = mIconPackRes.getXml(appfilterid);
                 } else {
-                    // no resource found, try to open it from assests folder
+                    // no resource found, try to open it from assets folder
                     try {
                         InputStream appfilterstream = mIconPackRes.getAssets().open("appfilter.xml");
 
@@ -99,7 +113,6 @@ public class IconPackManager {
                                     mFrontImage = loadBitmap(drawableName);
                                 }
                             } else if (xpp.getName().equals("scale")) {
-                                // mFactor
                                 if (xpp.getAttributeCount() > 0 && xpp.getAttributeName(0).equals("factor")) {
                                     try {
                                         mFactor = Float.valueOf(xpp.getAttributeValue(0));
@@ -146,45 +159,10 @@ public class IconPackManager {
             return null;
         }
 
-        private Drawable loadDrawable(String drawableName) {
-            int id = mIconPackRes.getIdentifier(drawableName, "drawable", mPackageName);
-            if (id > 0) {
-                Drawable bitmap = mIconPackRes.getDrawable(id);
-                return bitmap;
-            }
-            return null;
-        }
-
-        public Drawable getDrawableIconForPackage(String appPackageName, Drawable defaultDrawable) {
-            if (!mLoaded)
-                load();
-
-            PackageManager pm = mApplication.getPackageManager();
-            Intent launchIntent = pm.getLaunchIntentForPackage(appPackageName);
-            String componentName = null;
-            if (launchIntent != null)
-                componentName = pm.getLaunchIntentForPackage(appPackageName).getComponent().toString();
-            String drawable = mPackagesDrawables.get(componentName);
-            if (drawable != null) {
-                return loadDrawable(drawable);
-            } else {
-                // try to get a resource with the component filename
-                if (componentName != null) {
-                    int start = componentName.indexOf("{") + 1;
-                    int end = componentName.indexOf("}", start);
-                    if (end > start) {
-                        drawable = componentName.substring(start, end).toLowerCase(Locale.getDefault()).replace(".", "_").replace("/", "_");
-                        if (mIconPackRes.getIdentifier(drawable, "drawable", mPackageName) > 0)
-                            return loadDrawable(drawable);
-                    }
-                }
-            }
-            return defaultDrawable;
-        }
-
         public Bitmap getIconForPackage(String appPackageName, Bitmap defaultBitmap) {
-            if (!mLoaded)
+            if (!mLoaded) {
                 load();
+            }
 
             PackageManager pm = mApplication.getPackageManager();
             Intent launchIntent = pm.getLaunchIntentForPackage(appPackageName);
@@ -195,7 +173,7 @@ public class IconPackManager {
             if (drawable != null) {
                 Bitmap bitmap = loadBitmap(drawable);
                 if (bitmap == null) {
-                    return generateBitmap(appPackageName, defaultBitmap);
+                    return generateBitmap(defaultBitmap);
                 }
                 return bitmap;
             } else {
@@ -210,109 +188,98 @@ public class IconPackManager {
                     }
                 }
             }
-            return generateBitmap(appPackageName, defaultBitmap);
+            return generateBitmap(defaultBitmap);
         }
 
-        private Bitmap generateBitmap(String appPackageName, Bitmap defaultBitmap) {
-            // the key for the cache is the icon pack package name and the app package name
-            String key = mPackageName + ":" + appPackageName;
-
-            // if generated bitmaps cache already contains the package name return it
-            //      Bitmap cachedBitmap = BitmapCache.getInstance(mApplication).getBitmap(key);
-            // if (cachedBitmap != null)
-            //      return cachedBitmap;
-
-            // if no support images in the icon pack return the bitmap itself
-            if (mBackImages.size() == 0)
+        private Bitmap generateBitmap(Bitmap defaultBitmap) {
+            // No need to go through below process id defaultBitmap is null
+            if (defaultBitmap == null) {
+                return null;
+            }
+            // If no back images, return default app icon
+            if (mBackImages.size() == 0) {
                 return defaultBitmap;
-
-            Random r = new Random();
-            int backImageInd = r.nextInt(mBackImages.size());
-            Bitmap backImage = mBackImages.get(backImageInd);
-            int w = backImage.getWidth();
-            int h = backImage.getHeight();
-
-            // create a bitmap for the result
+            }
+            // Get a random back image
+            Random random = new Random();
+            Bitmap backImage = mBackImages.get(random.nextInt(mBackImages.size()));
+            int backImageWidth = backImage.getWidth();
+            int backImageHeight = backImage.getHeight();
+            // Create a bitmap for the result
             Bitmap result;
             try {
-                result = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+                result = Bitmap.createBitmap(backImageWidth, backImageHeight, Bitmap.Config.ARGB_8888);
             } catch (OutOfMemoryError e) {
                 e.printStackTrace();
                 return null;
             }
-            Canvas mCanvas = new Canvas(result);
-
-            // draw the background first
-            mCanvas.drawBitmap(backImage, 0, 0, null);
-
-            // create a mutable mask bitmap with the same mask
-            Bitmap scaledBitmap = defaultBitmap;
-            if (defaultBitmap != null && (defaultBitmap.getWidth() > w || defaultBitmap.getHeight() > h)) {
-                try {
-                    Bitmap.createScaledBitmap(defaultBitmap, (int) (w * mFactor), (int) (h * mFactor), false);
-                } catch (OutOfMemoryError e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-
+            // Instantiate a canvas to combine the icon / background
+            Canvas canvas = new Canvas(result);
+            // Draw the background first
+            canvas.drawBitmap(backImage, 0, 0, null);
+            // Create rects for scaling the default bitmap
+            Rect srcRect = new Rect(
+                    0,
+                    0,
+                    defaultBitmap.getWidth(),
+                    defaultBitmap.getHeight()
+            );
+            float scaledWidth = mFactor * ((float) backImageWidth);
+            float scaledHeight = mFactor * ((float) backImageHeight);
+            RectF destRect = new RectF(
+                    ((float) backImageWidth) / 2.0f - scaledWidth / 2.0f,
+                    ((float) backImageHeight) / 2.0f - scaledHeight / 2.0f,
+                    ((float) backImageWidth) / 2.0f + scaledWidth / 2.0f,
+                    ((float) backImageHeight) / 2.0f + scaledHeight / 2.0f
+            );
+            // Handle mask image
             if (mMaskImage != null) {
-                // draw the scaled bitmap with mask
-                Bitmap mutableMask;
+                // First get mask bitmap
+                Bitmap mask;
                 try {
-                    mutableMask = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+                    mask = Bitmap.createBitmap(backImageWidth, backImageHeight, Bitmap.Config.ARGB_8888);
                 } catch (OutOfMemoryError e) {
                     e.printStackTrace();
                     return null;
                 }
-                Canvas maskCanvas = new Canvas(mutableMask);
-                maskCanvas.drawBitmap(mMaskImage, 0, 0, new Paint());
-
-                // paint the bitmap with mask into the result
-                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-                if (scaledBitmap != null) {
-                    mCanvas.drawBitmap(scaledBitmap, (w - scaledBitmap.getWidth()) / 2, (h - scaledBitmap.getHeight()) / 2, null);
-                } else {
-                    return null;
-                }
-                mCanvas.drawBitmap(mutableMask, 0, 0, paint);
-                paint.setXfermode(null);
-            } else { // draw the scaled bitmap without mask
-                if (scaledBitmap != null) {
-                    mCanvas.drawBitmap(scaledBitmap, (w - scaledBitmap.getWidth()) / 2, (h - scaledBitmap.getHeight()) / 2, null);
-                } else {
-                    return null;
-                }
+                // Make a temp mask canvas
+                Canvas maskCanvas = new Canvas(mask);
+                // Draw the bitmap with mask into the result
+                maskCanvas.drawBitmap(
+                        defaultBitmap, srcRect, destRect, mPaint
+                );
+                mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+                maskCanvas.drawBitmap(mMaskImage, 0, 0, mPaint);
+                mPaint.setXfermode(null);
+                canvas.drawBitmap(mask, 0, 0, mPaint);
+            } else {
+                // Draw the scaled bitmap without mask
+                canvas.drawBitmap(
+                        defaultBitmap, srcRect, destRect, mPaint
+                );
             }
-
-            // paint the front
+            // Draw the front image
             if (mFrontImage != null) {
-                mCanvas.drawBitmap(mFrontImage, 0, 0, null);
+                canvas.drawBitmap(mFrontImage, 0, 0, mPaint);
             }
-
-            // store the bitmap in cache
-            // BitmapCache.getInstance(mApplication).putBitmap(key, result);
-
-            // return it
+            // Return result
             return result;
         }
     }
 
-    private ArrayList<IconPack> iconPacksList = null;
+    private ArrayList<IconPack> mIconPacks = null;
 
     public ArrayList<IconPack> getAvailableIconPacksWithIcons(boolean forceReload, Application application) {
         mApplication = application;
 
-        if (iconPacksList == null || forceReload) {
-            iconPacksList = new ArrayList<>();
+        if (mIconPacks == null || forceReload) {
+            mIconPacks = new ArrayList<>();
 
             PackageManager pm = mApplication.getPackageManager();
 
             /**
-             * TODO: Add more Launchers (package names) here, if required.
-             * Currently Lens Launcher supports all icon packs supported by GoLauncher.
-             * Create a set by filter the list to contain unique icon packs only.
+             * Currently Lens Launcher supports all icon packs supported by GoLauncher / EX
+             * Create a set by filter the list to contain unique icon packs only
              */
             List<ResolveInfo> rinfo = new ArrayList<>();
             for (String launcher : mApplication.getResources().getStringArray(R.array.icon_pack_launchers)) {
@@ -327,12 +294,12 @@ public class IconPackManager {
                 try {
                     ai = pm.getApplicationInfo(ip.mPackageName, PackageManager.GET_META_DATA);
                     ip.mName = mApplication.getPackageManager().getApplicationLabel(ai).toString();
-                    iconPacksList.add(ip);
+                    mIconPacks.add(ip);
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
             }
         }
-        return iconPacksList;
+        return mIconPacks;
     }
 }
