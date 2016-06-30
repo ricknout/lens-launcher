@@ -159,6 +159,9 @@ public class LensView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (mDrawType == DrawType.APPS) {
+            if (mSettings.getString(Settings.KEY_BACKGROUND).equals("Color")) {
+                canvas.drawColor(Color.parseColor(mSettings.getString(Settings.KEY_BACKGROUND_COLOR)));
+            }
             mPaintNewAppTag.setColor(Color.parseColor(mSettings.getString(Settings.KEY_HIGHLIGHT_COLOR)));
             drawWorkspaceBackground(canvas);
             if (mApps != null) {

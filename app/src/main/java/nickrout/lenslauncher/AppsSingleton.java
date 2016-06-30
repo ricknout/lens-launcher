@@ -14,7 +14,6 @@ public class AppsSingleton {
 
     private ArrayList<App> mApps;
     private ArrayList<Bitmap> mAppIcons;
-    private boolean mNeedsUpdate;
 
     private AppsSingleton() {}
 
@@ -49,13 +48,5 @@ public class AppsSingleton {
 
     public void setAppIcons(ArrayList<Bitmap> appIcons) {
         mAppIcons = appIcons;
-    }
-
-    public boolean doesNeedUpdate() {
-        return mNeedsUpdate;
-    }
-
-    public void setNeedsUpdate(boolean needsUpdate) {
-        mNeedsUpdate = needsUpdate;
     }
 }

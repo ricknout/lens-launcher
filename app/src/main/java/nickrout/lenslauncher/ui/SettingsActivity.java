@@ -144,15 +144,6 @@ public class SettingsActivity extends BaseActivity
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        if (AppsSingleton.getInstance().doesNeedUpdate()) {
-            AppsSingleton.getInstance().setNeedsUpdate(false);
-            sendEditAppsBroadcast();
-        }
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_settings, menu);
@@ -219,6 +210,11 @@ public class SettingsActivity extends BaseActivity
     private void sendEditAppsBroadcast() {
         Intent editAppsIntent = new Intent(SettingsActivity.this, BroadcastReceivers.AppsEditedReceiver.class);
         sendBroadcast(editAppsIntent);
+    }
+
+    private void sendBackgroundChangedBroadcast() {
+        Intent changeBackgroundIntent = new Intent(SettingsActivity.this, BroadcastReceivers.BackgroundChangedReceiver.class);
+        sendBroadcast(changeBackgroundIntent);
     }
 
     private void showSortTypeDialog() {
@@ -296,6 +292,7 @@ public class SettingsActivity extends BaseActivity
                         String selection = backgroundNames.get(which);
                         if (selection.equals("Wallpaper")) {
                             mSettings.save(Settings.KEY_BACKGROUND, selection);
+                            sendBackgroundChangedBroadcast();
                             if (mSettingsInterface != null) {
                                 mSettingsInterface.onValuesUpdated();
                             }
@@ -351,6 +348,7 @@ public class SettingsActivity extends BaseActivity
         if (dialog.tag().equals(COLOR_TAG_BACKGROUND)) {
             mSettings.save(Settings.KEY_BACKGROUND, "Color");
             mSettings.save(Settings.KEY_BACKGROUND_COLOR, hexColor);
+            sendBackgroundChangedBroadcast();
         } else if (dialog.tag().equals(COLOR_TAG_HIGHLIGHT)) {
             mSettings.save(Settings.KEY_HIGHLIGHT_COLOR, hexColor);
         }

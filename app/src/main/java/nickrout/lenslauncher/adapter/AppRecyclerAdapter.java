@@ -22,10 +22,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import nickrout.lenslauncher.R;
+import nickrout.lenslauncher.background.BroadcastReceivers;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.model.AppPersistent;
+import nickrout.lenslauncher.ui.SettingsActivity;
 import nickrout.lenslauncher.util.AppUtil;
-import nickrout.lenslauncher.AppsSingleton;
 
 public class AppRecyclerAdapter extends RecyclerView.Adapter {
 
@@ -133,13 +134,25 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter {
             }
         }
 
+        private void sendChangeAppsVisibilityBroadcast() {
+            if (mContext == null) {
+                return;
+            }
+            if (!(mContext instanceof SettingsActivity)) {
+                return;
+            }
+            SettingsActivity settingsActivity = (SettingsActivity) mContext;
+            Intent changeAppsVisibilityIntent = new Intent(settingsActivity, BroadcastReceivers.AppsVisibilityChangedReceiver.class);
+            settingsActivity.sendBroadcast(changeAppsVisibilityIntent);
+        }
+
         public void setOnClickListeners() {
             mToggleAppVisibility.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mApp != null) {
+                        sendChangeAppsVisibilityBroadcast();
                         toggleAppVisibility(mApp);
-                        AppsSingleton.getInstance().setNeedsUpdate(true);
                     } else {
                         Snackbar.make(mContainer, mContext.getString(R.string.error_app_not_found), Snackbar.LENGTH_LONG).show();
                     }

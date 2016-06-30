@@ -29,8 +29,7 @@
             android:launchMode="singleTask"
             android:stateNotNeeded="true"
             android:taskAffinity=""
-            android:theme="@style/HomeTheme"
-            android:resizeableActivity="false">
+            android:theme="@style/HomeTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />
@@ -59,8 +58,7 @@
 
         <activity
             android:name=".ui.FakeLauncherActivity"
-            android:enabled="false"
-            android:resizeableActivity="false">
+            android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />
@@ -81,7 +79,13 @@
         <receiver android:name=".background.BroadcastReceivers$AppsEditedReceiver">
         </receiver>
 
+        <receiver android:name=".background.BroadcastReceivers$AppsVisibilityChangedReceiver">
+        </receiver>
+
         <receiver android:name=".background.BroadcastReceivers$AppsLoadedReceiver">
+        </receiver>
+
+        <receiver android:name=".background.BroadcastReceivers$BackgroundChangedReceiver">
         </receiver>
 
     </application>

@@ -23,10 +23,24 @@ public class BroadcastReceivers {
         }
     }
 
+    public static class AppsVisibilityChangedReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            VisibilityChangedObservable.getInstance().update();
+        }
+    }
+
     public static class AppsLoadedReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             LoadedObservable.getInstance().update();
+        }
+    }
+
+    public static class BackgroundChangedReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            BackgroundChangedObservable.getInstance().update();
         }
     }
 }

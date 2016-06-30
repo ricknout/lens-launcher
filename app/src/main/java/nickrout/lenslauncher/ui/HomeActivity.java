@@ -4,11 +4,8 @@ import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,11 +18,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import nickrout.lenslauncher.R;
+import nickrout.lenslauncher.background.BackgroundChangedObservable;
+import nickrout.lenslauncher.background.VisibilityChangedObservable;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.model.AppPersistent;
 import nickrout.lenslauncher.AppsSingleton;
 import nickrout.lenslauncher.background.LoadedObservable;
-import nickrout.lenslauncher.util.Settings;
 
 /**
  * Created by nickrout on 2016/04/02.
@@ -43,7 +41,6 @@ public class HomeActivity extends BaseActivity implements Observer {
     private PackageManager mPackageManager;
     private ArrayList<App> mApps;
     private ArrayList<Bitmap> mAppIcons;
-    private Settings mSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +53,8 @@ public class HomeActivity extends BaseActivity implements Observer {
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         assignApps(AppsSingleton.getInstance().getApps(), AppsSingleton.getInstance().getAppIcons());
         LoadedObservable.getInstance().addObserver(this);
-        mSettings = new Settings(this);
+        VisibilityChangedObservable.getInstance().addObserver(this);
+        BackgroundChangedObservable.getInstance().addObserver(this);
     }
 
     @Override
@@ -85,19 +83,8 @@ public class HomeActivity extends BaseActivity implements Observer {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private void setBackground() {
         mLensView.invalidate();
-        if (mSettings.getString(Settings.KEY_BACKGROUND).equals("Color")) {
-            getWindow().setBackgroundDrawable(new ColorDrawable(
-                    Color.parseColor(mSettings.getString(Settings.KEY_BACKGROUND_COLOR))
-            ));
-        } else {
-            getWindow().setBackgroundDrawable(new ColorDrawable(
-                    Color.TRANSPARENT
-            ));
-        }
     }
 
     private void assignApps(ArrayList<App> apps, ArrayList<Bitmap> appIcons) {
@@ -136,6 +123,10 @@ public class HomeActivity extends BaseActivity implements Observer {
 
     @Override
     public void update(Observable observable, Object data) {
-        assignApps(AppsSingleton.getInstance().getApps(), AppsSingleton.getInstance().getAppIcons());
+        if (observable instanceof LoadedObservable || observable instanceof VisibilityChangedObservable) {
+            assignApps(AppsSingleton.getInstance().getApps(), AppsSingleton.getInstance().getAppIcons());
+        } else if (observable instanceof BackgroundChangedObservable) {
+            setBackground();
+        }
     }
 }
