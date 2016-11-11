@@ -3,6 +3,7 @@ package nickrout.lenslauncher.adapter;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
@@ -178,7 +179,10 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter {
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_item_element_open:
-                    AppUtil.launchComponent(mApp.getPackageName().toString(), mApp.getName().toString(), mContext);
+                    AppUtil.launchComponent(
+                            mContext,
+                            mApp.getPackageName().toString(), mApp.getName().toString(),
+                            mMenu, new Rect(0, 0, mMenu.getMeasuredWidth(), mMenu.getMeasuredHeight()));
                     return true;
                 case R.id.menu_item_element_app_info:
                     try {
