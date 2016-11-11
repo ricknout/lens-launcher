@@ -114,7 +114,7 @@ public class AppUtil {
         Bundle optionsBundle = null;
         if (source != null) {
             ActivityOptionsCompat options;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && bounds != null) {
                 // Clip reveal animation for Marshmallow and above
                 options = ActivityOptionsCompat.makeClipRevealAnimation(source, bounds.left, bounds.top, bounds.width(), bounds.height());
             } else {

@@ -389,6 +389,7 @@ public class LensView extends View {
                     (String) mApps.get(mSelectIndex).getPackageName(),
                     (String) mApps.get(mSelectIndex).getName(),
                     this,
+                    mRectToSelect == null ? null :
                     new Rect((int) mRectToSelect.left, (int) mRectToSelect.top,
                             (int) mRectToSelect.right, (int) mRectToSelect.bottom));
         }
