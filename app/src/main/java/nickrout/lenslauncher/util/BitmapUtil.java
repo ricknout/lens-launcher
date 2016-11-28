@@ -85,7 +85,14 @@ public class BitmapUtil {
         try {
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
             Resources resources = packageManager.getResourcesForApplication(applicationInfo);
-            return resIdToBitmap(resources, resId);
+            Bitmap bitmap = resIdToBitmap(resources, resId);
+            if (bitmap == null) {
+                final Drawable drawable =resources.getDrawable(resId);
+                if (drawable != null) {
+                    bitmap = drawableToBitmap(drawable);
+                }
+            }
+            return bitmap;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return null;
