@@ -1,5 +1,6 @@
 package nickrout.lenslauncher.util;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.v7.graphics.Palette;
@@ -12,9 +13,13 @@ import nickrout.lenslauncher.model.App;
 public class ColorUtil {
 
     public static @ColorInt int getPaletteColorFromApp(App app) {
+        return getPaletteColorFromBitmap(app.getIcon());
+    }
+
+    public static @ColorInt int getPaletteColorFromBitmap(Bitmap bitmap) {
         Palette palette;
         try {
-            palette = Palette.from(app.getIcon()).generate();
+            palette = Palette.from(bitmap).generate();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             return Color.BLACK;
@@ -34,8 +39,12 @@ public class ColorUtil {
     }
 
     public static float getHueColorFromApp(App app) {
+        return getHueColorFromColor(app.getPaletteColor());
+    }
+
+    public static float getHueColorFromColor(@ColorInt int color) {
         float[] hsvValues = new float[3];
-        Color.colorToHSV(app.getPaletteColor(), hsvValues);
+        Color.colorToHSV(color, hsvValues);
         return hsvValues[0];
     }
 }

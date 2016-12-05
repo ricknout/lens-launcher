@@ -47,6 +47,7 @@ public class LensView extends View {
     private float mTouchY = -Float.MAX_VALUE;
 
     private boolean mInsideRect = false;
+    private RectF mRectToSelect = new RectF(0, 0, 0, 0);
     private boolean mMustVibrate = true;
     private int mSelectIndex;
 
@@ -246,7 +247,7 @@ public class LensView extends View {
                 itemCount);
         mInsideRect = false;
         int selectIndex = -1;
-        RectF rectToSelect = null;
+        mRectToSelect = null;
 
         for (float y = 0.0f; y < (float) grid.getItemCountVertical(); y += 1.0f) {
             for (float x = 0.0f; x < (float) grid.getItemCountHorizontal(); x += 1.0f) {
@@ -284,7 +285,7 @@ public class LensView extends View {
                         if (LensCalculator.isInsideRect(mTouchX, mTouchY, rect)) {
                             mInsideRect = true;
                             selectIndex = currentIndex;
-                            rectToSelect = rect;
+                            mRectToSelect = rect;
                         }
                     }
 
@@ -315,8 +316,8 @@ public class LensView extends View {
             performHoverVibration();
         }
 
-        if (rectToSelect != null && mDrawType == DrawType.APPS && mApps != null && mSelectIndex >= 0) {
-            drawAppName(canvas, rectToSelect);
+        if (mRectToSelect != null && mDrawType == DrawType.APPS && mApps != null && mSelectIndex >= 0) {
+            drawAppName(canvas, mRectToSelect);
         }
     }
 
@@ -384,9 +385,13 @@ public class LensView extends View {
     private void launchApp() {
         if (mPackageManager != null && mApps != null && mSelectIndex >= 0) {
             AppUtil.launchComponent(
+                    getContext(),
                     (String) mApps.get(mSelectIndex).getPackageName(),
                     (String) mApps.get(mSelectIndex).getName(),
-                    getContext());
+                    this,
+                    mRectToSelect == null ? null :
+                    new Rect((int) mRectToSelect.left, (int) mRectToSelect.top,
+                            (int) mRectToSelect.right, (int) mRectToSelect.bottom));
         }
     }
 

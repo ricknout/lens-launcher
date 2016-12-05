@@ -8,6 +8,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,7 +22,6 @@ import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.background.BroadcastReceivers;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.model.AppPersistent;
-import nickrout.lenslauncher.ui.BaseActivity;
 
 /**
  * Created by nickrout on 2016/04/02.
@@ -76,7 +80,7 @@ public class AppUtil {
     }
 
     // Launch apps, for launcher :-P
-    public static void launchComponent(String packageName, String name, Context context) {
+    public static void launchComponent(Context context, String packageName, String name, View view, Rect bounds) {
         if (packageName != null && name != null) {
             Intent componentIntent = new Intent();
             componentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -87,12 +91,7 @@ public class AppUtil {
             componentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             try {
                 // Launch Component
-                context.startActivity(componentIntent);
-                if (context instanceof BaseActivity) {
-                    ((BaseActivity) context).overridePendingTransition(
-                        R.anim.fade_in, R.anim.fade_out
-                    );
-                }
+                context.startActivity(componentIntent, getLauncherOptionsBundle(context, view, bounds));
                 // Increment app open count
                 AppPersistent.incrementAppCount(packageName, name);
                 // Resort apps (if open count selected)
@@ -108,5 +107,21 @@ public class AppUtil {
         } else {
             Toast.makeText(context, R.string.error_app_not_found, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private static Bundle getLauncherOptionsBundle(Context context, View source, Rect bounds) {
+        Bundle optionsBundle = null;
+        if (source != null) {
+            ActivityOptionsCompat options;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && bounds != null) {
+                // Clip reveal animation for Marshmallow and above
+                options = ActivityOptionsCompat.makeClipRevealAnimation(source, bounds.left, bounds.top, bounds.width(), bounds.height());
+            } else {
+                // Fade animation otherwise
+                options = ActivityOptionsCompat.makeCustomAnimation(context, R.anim.fade_in, R.anim.fade_out);
+            }
+            optionsBundle = options.toBundle();
+        }
+        return optionsBundle;
     }
 }
