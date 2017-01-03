@@ -41,3 +41,7 @@ captures/
 
 # Keystore files
 *.jks
+
+# Android SDK
+/android-sdk.zip
+/android-studio
