@@ -1,0 +1,11 @@
+version: '2'
+services:
+  gradle:
+    image: openjdk
+    working_dir: /app
+    environment:
+      - ANDROID_HOME=/app/android-studio
+    command: bash /app/docker-entrypoint.sh
+    volumes:
+      - '.:/app'
+      - '~/.gradle:/root/.gradle'
