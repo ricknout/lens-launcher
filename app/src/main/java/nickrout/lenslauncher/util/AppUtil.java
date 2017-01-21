@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Toast;
 
@@ -66,12 +67,13 @@ public class AppUtil {
                 app.setPackageName(resolveInfo.activityInfo.packageName);
                 app.setName(resolveInfo.activityInfo.name);
                 app.setIconResId(resolveInfo.activityInfo.getIconResource());
-                Bitmap defaultBitmap = BitmapUtil.packageNameToBitmap(packageManager, resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.getIconResource());
+                Bitmap defaultBitmap = BitmapUtil.packageNameToBitmap(
+                        context, packageManager, resolveInfo.activityInfo.packageName, resolveInfo.activityInfo.getIconResource());
                 if (selectedIconPack != null)
                     app.setIcon(selectedIconPack.getIconForPackage(app.getPackageName().toString(), defaultBitmap));
                 else
                     app.setIcon(defaultBitmap);
-				app.setPaletteColor(ColorUtil.getPaletteColorFromApp(app));
+                app.setPaletteColor(ColorUtil.getPaletteColorFromApp(app));
                 apps.add(app);
             }
         }
@@ -91,7 +93,7 @@ public class AppUtil {
             componentIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             try {
                 // Launch Component
-                context.startActivity(componentIntent, getLauncherOptionsBundle(context, view, bounds));
+                ContextCompat.startActivity(context, componentIntent, getLauncherOptionsBundle(context, view, bounds));
                 // Increment app open count
                 AppPersistent.incrementAppCount(packageName, name);
                 // Resort apps (if open count selected)

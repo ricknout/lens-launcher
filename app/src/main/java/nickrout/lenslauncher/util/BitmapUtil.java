@@ -1,5 +1,6 @@
 package nickrout.lenslauncher.util;
 
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 
 /**
  * Created by nickrout on 2016/04/02.
@@ -81,19 +83,19 @@ public class BitmapUtil {
     }
 
     // Get bitmap from app package name (with res id)
-    public static Bitmap packageNameToBitmap(PackageManager packageManager, String packageName, int resId) {
+    public static Bitmap packageNameToBitmap(Context context, PackageManager packageManager, String packageName, int resId) {
         try {
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
             Resources resources = packageManager.getResourcesForApplication(applicationInfo);
             Bitmap bitmap = resIdToBitmap(resources, resId);
             if (bitmap == null) {
-                final Drawable drawable =resources.getDrawable(resId);
+                final Drawable drawable = ContextCompat.getDrawable(context, resId);
                 if (drawable != null) {
                     bitmap = drawableToBitmap(drawable);
                 }
             }
             return bitmap;
-        } catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException | Resources.NotFoundException e) {
             e.printStackTrace();
             return null;
         }

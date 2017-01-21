@@ -1,0 +1,6 @@
+<resources>
+
+    <!-- App Bar Themes -->
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
+
+</resources>

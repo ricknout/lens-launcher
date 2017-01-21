@@ -31,7 +31,8 @@
                 android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax"
-                android:src="@drawable/im_about" />
+                android:src="@drawable/im_about"
+                tools:ignore="contentDescription" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

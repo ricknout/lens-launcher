@@ -33,6 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import nickrout.lenslauncher.R;
+import nickrout.lenslauncher.background.NightModeObservable;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.util.AppSorter;
 import nickrout.lenslauncher.AppsSingleton;
@@ -40,6 +41,7 @@ import nickrout.lenslauncher.background.BroadcastReceivers;
 import nickrout.lenslauncher.util.IconPackManager;
 import nickrout.lenslauncher.util.LauncherUtil;
 import nickrout.lenslauncher.background.LoadedObservable;
+import nickrout.lenslauncher.util.NightModeUtil;
 import nickrout.lenslauncher.util.Settings;
 
 /**
@@ -73,10 +75,10 @@ public class SettingsActivity extends BaseActivity
 
     private FragmentPagerAdapter mPagerAdapter;
 
-    private Settings mSettings;
     private ArrayList<App> mApps;
     private MaterialDialog mSortTypeDialog;
     private MaterialDialog mIconPackDialog;
+    private MaterialDialog mNightModeDialog;
     private MaterialDialog mBackgroundDialog;
     private ColorChooserDialog mBackgroundColorDialog;
     private ColorChooserDialog mHighlightColorDialog;
@@ -138,9 +140,9 @@ public class SettingsActivity extends BaseActivity
             public void onPageScrollStateChanged(int state) {
             }
         });
-        mSettings = new Settings(this);
         mApps = AppsSingleton.getInstance().getApps();
         LoadedObservable.getInstance().addObserver(this);
+        NightModeObservable.getInstance().addObserver(this);
     }
 
     @Override
@@ -180,7 +182,7 @@ public class SettingsActivity extends BaseActivity
                         if (mAppsInterface != null) {
                             mAppsInterface.onDefaultsReset();
                         }
-                         break;
+                        break;
                     case 2:
                         if (mSettingsInterface != null) {
                             mSettingsInterface.onDefaultsReset();
@@ -196,9 +198,13 @@ public class SettingsActivity extends BaseActivity
 
     @Override
     public void update(Observable observable, Object data) {
-        mApps = AppsSingleton.getInstance().getApps();
-        if (mAppsInterface != null) {
-            mAppsInterface.onAppsUpdated(mApps);
+        if (observable instanceof LoadedObservable) {
+            mApps = AppsSingleton.getInstance().getApps();
+            if (mAppsInterface != null) {
+                mAppsInterface.onAppsUpdated(mApps);
+            }
+        } else if (observable instanceof NightModeObservable) {
+            updateNightMode();
         }
     }
 
@@ -215,6 +221,11 @@ public class SettingsActivity extends BaseActivity
     private void sendBackgroundChangedBroadcast() {
         Intent changeBackgroundIntent = new Intent(SettingsActivity.this, BroadcastReceivers.BackgroundChangedReceiver.class);
         sendBroadcast(changeBackgroundIntent);
+    }
+
+    public void sendNightModeBroadcast() {
+        Intent nightModeIntent = new Intent(SettingsActivity.this, BroadcastReceivers.NightModeReceiver.class);
+        sendBroadcast(nightModeIntent);
     }
 
     private void showSortTypeDialog() {
@@ -274,6 +285,34 @@ public class SettingsActivity extends BaseActivity
         LauncherUtil.resetPreferredLauncherAndOpenChooser(getApplicationContext());
     }
 
+    public void showNightModeChooser() {
+        String[] availableNightModes = getResources().getStringArray(R.array.night_modes);
+        final ArrayList<String> nightModes = new ArrayList<>();
+        for (int i = 0; i < availableNightModes.length; i++) {
+            nightModes.add(availableNightModes[i]);
+        }
+        String selectedNightMode = NightModeUtil.getNightModeDisplayName(mSettings.getNightMode());
+        int selectedIndex = nightModes.indexOf(selectedNightMode);
+        mNightModeDialog = new MaterialDialog.Builder(SettingsActivity.this)
+                .title(R.string.setting_night_mode)
+                .items(R.array.night_modes)
+                .alwaysCallSingleChoiceCallback()
+                .itemsCallbackSingleChoice(selectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        String selection = nightModes.get(which);
+                        mSettings.save(Settings.KEY_NIGHT_MODE, NightModeUtil.getNightModeFromDisplayName(selection));
+                        sendNightModeBroadcast();
+                        if (mSettingsInterface != null) {
+                            mSettingsInterface.onValuesUpdated();
+                        }
+                        dismissBackgroundDialog();
+                        return true;
+                    }
+                })
+                .show();
+    }
+
     public void showBackgroundDialog() {
         String[] availableBackgrounds = getResources().getStringArray(R.array.backgrounds);
         final ArrayList<String> backgroundNames = new ArrayList<>();
@@ -298,7 +337,6 @@ public class SettingsActivity extends BaseActivity
                             }
                             dismissBackgroundDialog();
                             showWallpaperPicker();
-
                         } else if (selection.equals("Color")) {
                             dismissBackgroundDialog();
                             showBackgroundColorDialog();
@@ -369,6 +407,12 @@ public class SettingsActivity extends BaseActivity
         }
     }
 
+    private void dismissNightModeDialog() {
+        if (mNightModeDialog != null && mNightModeDialog.isShowing()) {
+            mNightModeDialog.dismiss();
+        }
+    }
+
     private void dismissBackgroundDialog() {
         if (mBackgroundDialog != null && mBackgroundDialog.isShowing()) {
             mBackgroundDialog.dismiss();
@@ -378,6 +422,7 @@ public class SettingsActivity extends BaseActivity
     private void dismissAllDialogs() {
         dismissSortTypeDialog();
         dismissIconPackDialog();
+        dismissNightModeDialog();
         dismissBackgroundDialog();
         // Color dialogs do not need to be dismissed
     }

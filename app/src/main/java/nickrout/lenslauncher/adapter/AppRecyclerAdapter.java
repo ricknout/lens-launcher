@@ -148,6 +148,15 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter {
         }
 
         public void setOnClickListeners() {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AppUtil.launchComponent(
+                            mContext,
+                            mApp.getPackageName().toString(), mApp.getName().toString(),
+                            itemView, new Rect(0, 0, itemView.getMeasuredWidth(), itemView.getMeasuredHeight()));
+                }
+            });
             mToggleAppVisibility.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -165,11 +174,7 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     PopupMenu popupMenu = new PopupMenu(mContext, view);
                     popupMenu.setOnMenuItemClickListener(AppViewHolder.this);
-                    if (mApp.getPackageName().equals("nickrout.lenslauncher")) {
-                        popupMenu.inflate(R.menu.menu_app_lens_launcher);
-                    } else {
-                        popupMenu.inflate(R.menu.menu_app);
-                    }
+                    popupMenu.inflate(R.menu.menu_app);
                     popupMenu.show();
                 }
             });
@@ -178,12 +183,6 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.menu_item_element_open:
-                    AppUtil.launchComponent(
-                            mContext,
-                            mApp.getPackageName().toString(), mApp.getName().toString(),
-                            mMenu, new Rect(0, 0, mMenu.getMeasuredWidth(), mMenu.getMeasuredHeight()));
-                    return true;
                 case R.id.menu_item_element_app_info:
                     try {
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);

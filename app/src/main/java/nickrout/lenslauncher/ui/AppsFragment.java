@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -88,7 +89,7 @@ public class AppsFragment extends Fragment implements SettingsActivity.AppsInter
         mRecycler.setVisibility(View.VISIBLE);
         mAppRecyclerAdapter = new AppRecyclerAdapter(getActivity(), apps);
         mRecycler.setAdapter(mAppRecyclerAdapter);
-        mRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecycler.setLayoutManager(new GridLayoutManager(getActivity(), getResources().getInteger(R.integer.columns_apps)));
         mRecycler.setItemAnimator(new DefaultItemAnimator());
         mRecycler.scrollToPosition(mScrolledItemIndex);
         mScrolledItemIndex = 0;
