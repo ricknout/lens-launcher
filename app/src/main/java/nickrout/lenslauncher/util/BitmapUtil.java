@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 
 /**
  * Created by nickrout on 2016/04/02.
@@ -89,7 +88,7 @@ public class BitmapUtil {
             Resources resources = packageManager.getResourcesForApplication(applicationInfo);
             Bitmap bitmap = resIdToBitmap(resources, resId);
             if (bitmap == null) {
-                final Drawable drawable = ContextCompat.getDrawable(context, resId);
+                Drawable drawable = packageManager.getApplicationIcon(packageName);
                 if (drawable != null) {
                     bitmap = drawableToBitmap(drawable);
                 }
