@@ -65,6 +65,12 @@ public class HomeActivity extends BaseActivity implements Observer {
         setupTransparentSystemBarsForLollipop();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupTransparentSystemBarsForLollipop();
+    }
+
     /**
      * Sets up transparent navigation and status bars in Lollipop.
      * This method is a no-op for other platform versions.
