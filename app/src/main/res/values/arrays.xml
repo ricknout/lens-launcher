@@ -11,4 +11,11 @@
         <item>Color</item>
     </array>
 
+    <array name="night_modes">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Auto</item>
+        <item>Follow System</item>
+    </array>
+
 </resources>

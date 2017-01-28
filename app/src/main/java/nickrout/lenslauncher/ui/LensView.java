@@ -129,7 +129,7 @@ public class LensView extends View {
         mPaintCircles = new Paint();
         mPaintCircles.setAntiAlias(true);
         mPaintCircles.setStyle(Paint.Style.FILL);
-        mPaintCircles.setColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+        mPaintCircles.setColor(ContextCompat.getColor(getContext(), R.color.colorCircles));
 
         mPaintTouchSelection = new Paint();
         mPaintTouchSelection.setAntiAlias(true);
@@ -390,8 +390,8 @@ public class LensView extends View {
                     (String) mApps.get(mSelectIndex).getName(),
                     this,
                     mRectToSelect == null ? null :
-                    new Rect((int) mRectToSelect.left, (int) mRectToSelect.top,
-                            (int) mRectToSelect.right, (int) mRectToSelect.bottom));
+                            new Rect((int) mRectToSelect.left, (int) mRectToSelect.top,
+                                    (int) mRectToSelect.right, (int) mRectToSelect.bottom));
         }
     }
 

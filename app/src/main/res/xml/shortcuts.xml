@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:shortcutId="settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_settings"
+        android:shortcutShortLabel="@string/activity_title_settings"
+        android:shortcutLongLabel="@string/activity_title_settings">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="nickrout.lenslauncher"
+            android:targetClass="nickrout.lenslauncher.ui.SettingsActivity" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="apps"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_apps"
+        android:shortcutShortLabel="@string/activity_title_apps"
+        android:shortcutLongLabel="@string/activity_title_apps">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="nickrout.lenslauncher"
+            android:targetClass="nickrout.lenslauncher.ui.HomeActivity" />
+    </shortcut>
+
+</shortcuts>

@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.util.LauncherUtil;
+import nickrout.lenslauncher.util.NightModeUtil;
 import nickrout.lenslauncher.util.Settings;
 
 /**
@@ -43,6 +44,14 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
 
     @BindView(R.id.text_view_selected_home_launcher)
     TextView mHomeLauncherTextView;
+
+    @OnClick(R.id.layout_night_mode)
+    public void onNightModeClick() {
+        showNightModeChooser();
+    }
+
+    @BindView(R.id.text_view_selected_night_mode)
+    TextView mNightModeTextView;
 
     @OnClick(R.id.layout_background)
     public void onBackgroundClick() {
@@ -152,6 +161,7 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
             homeLauncher = LauncherUtil.getHomeLauncherName(getActivity().getApplication());
         }
         mHomeLauncherTextView.setText(homeLauncher);
+        mNightModeTextView.setText(NightModeUtil.getNightModeDisplayName(mSettings.getNightMode()));
         if (mSettings.getString(Settings.KEY_BACKGROUND).equals("Color")) {
             String backgroundColor = "#" + mSettings.getString(Settings.KEY_BACKGROUND_COLOR).substring(3);
             mBackgroundTextView.setText(backgroundColor);
@@ -188,6 +198,12 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
         }
     }
 
+    private void showNightModeChooser() {
+        if (getActivity() != null && getActivity() instanceof SettingsActivity) {
+            ((SettingsActivity) getActivity()).showNightModeChooser();
+        }
+    }
+
     private void showBackgroundDialog() {
         if (getActivity() != null && getActivity() instanceof SettingsActivity) {
             ((SettingsActivity) getActivity()).showBackgroundDialog();
@@ -219,5 +235,9 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
         mSettings.save(Settings.KEY_SHOW_NEW_APP_TAG, Settings.DEFAULT_SHOW_NEW_APP_TAG);
         mSettings.save(Settings.KEY_HIGHLIGHT_COLOR, Settings.DEFAULT_HIGHLIGHT_COLOR);
         mSettings.save(Settings.KEY_ICON_PACK_LABEL_NAME, Settings.DEFAULT_ICON_PACK_LABEL_NAME);
+        mSettings.save(Settings.KEY_NIGHT_MODE, Settings.DEFAULT_NIGHT_MODE);
+        if (getActivity() != null && getActivity() instanceof SettingsActivity) {
+            ((SettingsActivity) getActivity()).sendNightModeBroadcast();
+        }
     }
 }

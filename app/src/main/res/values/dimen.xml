@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ELEMENT resources (dimen)*>
+    <!ELEMENT dimen (#PCDATA)>
+    <!ATTLIST dimen
+        name CDATA #REQUIRED>
+    ]>
 <resources>
 
     <!-- Lens Dimensions -->
@@ -27,8 +33,12 @@
     <dimen name="width_app_icon">48dp</dimen>
     <dimen name="height_app_action_button">64dp</dimen>
     <dimen name="radius_corner_card">4dp</dimen>
+    <dimen name="margin_app">8dp</dimen>
 
     <!-- General -->
     <dimen name="margin_fab">16dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin_apps">8dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 
 </resources>

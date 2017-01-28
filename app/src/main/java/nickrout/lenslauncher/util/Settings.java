@@ -3,6 +3,7 @@ package nickrout.lenslauncher.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatDelegate;
 
 /**
  * Created by nicholasrout on 2016/04/02.
@@ -23,6 +24,7 @@ public class Settings {
     public static final String DEFAULT_HIGHLIGHT_COLOR = "#FFF50057";
     public static final String DEFAULT_ICON_PACK_LABEL_NAME = "Default Icon Pack";
     public static final int DEFAULT_SORT_TYPE = 0;
+    public static final int DEFAULT_NIGHT_MODE = AppCompatDelegate.MODE_NIGHT_NO;
 
     // These values are for the progress bars, their real values = (MAX_VALUE / INTERVAL (eg. 2)) + MIN_VALUE
     public static final int MAX_ICON_SIZE = 30;
@@ -56,6 +58,7 @@ public class Settings {
     public static final String KEY_HIGHLIGHT_COLOR = "show_touch_selection_color";
     public static final String KEY_ICON_PACK_LABEL_NAME = "icon_pack_label_name";
     public static final String KEY_SORT_TYPE = "sort_type";
+    public static final String KEY_NIGHT_MODE = "night_mode";
 
     private Context mContext;
     private SharedPreferences mPrefs;
@@ -69,6 +72,23 @@ public class Settings {
             mPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         }
         return mPrefs;
+    }
+
+    public void save(String name, int value) {
+        sharedPreferences().edit().putInt(name, value).commit();
+    }
+
+    public @AppCompatDelegate.NightMode int getNightMode() {
+        switch (sharedPreferences().getInt(KEY_NIGHT_MODE, DEFAULT_NIGHT_MODE)) {
+            case AppCompatDelegate.MODE_NIGHT_AUTO:
+                return AppCompatDelegate.MODE_NIGHT_AUTO;
+            case AppCompatDelegate.MODE_NIGHT_NO:
+                return AppCompatDelegate.MODE_NIGHT_NO;
+            case AppCompatDelegate.MODE_NIGHT_YES:
+                return AppCompatDelegate.MODE_NIGHT_YES;
+            default:
+                return AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+        }
     }
 
     public void save(String name, float value) {
@@ -160,10 +180,6 @@ public class Settings {
 
     public void save(AppSorter.SortType value) {
         save(KEY_SORT_TYPE, value.ordinal());
-    }
-
-    public void save(String name, int value) {
-        sharedPreferences().edit().putInt(name, value).commit();
     }
 
     public AppSorter.SortType getSortType() {

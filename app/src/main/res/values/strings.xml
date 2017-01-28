@@ -4,6 +4,8 @@
     <string name="app_name"><b>Lens</b> Launcher</string>
     <string name="activity_title_about">About</string>
     <string name="activity_title_arranger">Order &amp; Visibility</string>
+    <string name="activity_title_settings">Settings</string>
+    <string name="activity_title_apps">Apps</string>
 
     <!-- Tab Strings -->
     <string name="tab_lens">Lens</string>
@@ -25,6 +27,7 @@
     <string name="setting_highlight_color">Highlight Color</string>
     <string name="setting_icon_pack">Icon Pack</string>
     <string name="setting_home_launcher">Home Launcher</string>
+    <string name="setting_night_mode">Night Mode Theme</string>
     <string name="setting_background">Background</string>
     <string name="setting_default_icon_pack">Default Icon Pack</string>
     <string name="setting_default_sort_selected">@string/setting_sort_type_label_ascending</string>

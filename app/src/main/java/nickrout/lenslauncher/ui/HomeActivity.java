@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.background.BackgroundChangedObservable;
+import nickrout.lenslauncher.background.NightModeObservable;
 import nickrout.lenslauncher.background.VisibilityChangedObservable;
 import nickrout.lenslauncher.model.App;
 import nickrout.lenslauncher.model.AppPersistent;
@@ -55,6 +56,7 @@ public class HomeActivity extends BaseActivity implements Observer {
         LoadedObservable.getInstance().addObserver(this);
         VisibilityChangedObservable.getInstance().addObserver(this);
         BackgroundChangedObservable.getInstance().addObserver(this);
+        NightModeObservable.getInstance().addObserver(this);
     }
 
     @Override
@@ -127,6 +129,8 @@ public class HomeActivity extends BaseActivity implements Observer {
             assignApps(AppsSingleton.getInstance().getApps(), AppsSingleton.getInstance().getAppIcons());
         } else if (observable instanceof BackgroundChangedObservable) {
             setBackground();
+        } else if (observable instanceof NightModeObservable) {
+            updateNightMode();
         }
     }
 }

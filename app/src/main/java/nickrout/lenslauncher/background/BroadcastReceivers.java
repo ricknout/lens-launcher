@@ -43,4 +43,11 @@ public class BroadcastReceivers {
             BackgroundChangedObservable.getInstance().update();
         }
     }
+
+    public static class NightModeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            NightModeObservable.getInstance().update();
+        }
+    }
 }

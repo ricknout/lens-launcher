@@ -15,14 +15,18 @@ import android.view.ViewAnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import nickrout.lenslauncher.R;
+import nickrout.lenslauncher.background.NightModeObservable;
 
 /**
  * Created by nickrout on 2016/04/06.
  */
-public class AboutActivity extends BaseActivity {
+public class AboutActivity extends BaseActivity implements Observer {
 
     private static final String TAG = "AboutActivity";
 
@@ -53,6 +57,7 @@ public class AboutActivity extends BaseActivity {
                 circularRevealAboutImage();
             }
         }, 150);
+        NightModeObservable.getInstance().addObserver(this);
     }
 
     private void circularRevealAboutImage() {
@@ -95,5 +100,12 @@ public class AboutActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        if (observable instanceof NightModeObservable) {
+            updateNightMode();
+        }
     }
 }
