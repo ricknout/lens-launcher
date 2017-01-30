@@ -60,8 +60,8 @@ public class HomeActivity extends BaseActivity implements Observer {
     }
 
     @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
+    protected void onResume() {
+        super.onResume();
         setupTransparentSystemBarsForLollipop();
     }
 
