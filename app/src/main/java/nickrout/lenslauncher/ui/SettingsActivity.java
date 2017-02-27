@@ -395,6 +395,10 @@ public class SettingsActivity extends BaseActivity
         }
     }
 
+    @Override
+    public void onColorChooserDismissed(@NonNull ColorChooserDialog dialog) {
+    }
+
     private void dismissSortTypeDialog() {
         if (mSortTypeDialog != null && mSortTypeDialog.isShowing()) {
             mSortTypeDialog.dismiss();
