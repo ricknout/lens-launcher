@@ -27,7 +27,7 @@ public class Settings {
     public static final int DEFAULT_NIGHT_MODE = AppCompatDelegate.MODE_NIGHT_NO;
 
     // These values are for the progress bars, their real values = (MAX_VALUE / INTERVAL (eg. 2)) + MIN_VALUE
-    public static final int MAX_ICON_SIZE = 30;
+    public static final int MAX_ICON_SIZE = 45;
     public static final int MAX_DISTORTION_FACTOR = 9;
     public static final int MAX_SCALE_FACTOR = 5;
     public static final int MAX_ANIMATION_TIME = 600;
