@@ -363,7 +363,7 @@ public class SettingsActivity extends BaseActivity
                 .dynamicButtonColor(false)
                 .allowUserColorInputAlpha(false)
                 .tag(COLOR_TAG_BACKGROUND)
-                .show();
+                .show(this);
     }
 
     public void showHighlightColorDialog() {
@@ -377,7 +377,7 @@ public class SettingsActivity extends BaseActivity
                 .dynamicButtonColor(false)
                 .allowUserColorInputAlpha(false)
                 .tag(COLOR_TAG_HIGHLIGHT)
-                .show();
+                .show(this);
     }
 
     @Override
