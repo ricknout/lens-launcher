@@ -16,6 +16,7 @@ import android.util.AttributeSet;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -59,6 +60,8 @@ public class LensView extends View {
     private boolean mAnimationHiding = false;
 
     private int mNumberOfCircles;
+    private float mTouchSlop;
+    private boolean mMoving;
 
     private Settings mSettings;
 
@@ -111,6 +114,7 @@ public class LensView extends View {
         mSettings = new Settings(getContext());
         setupPaints();
         mWorkspaceBackgroundDrawable = (NinePatchDrawable) ContextCompat.getDrawable(getContext(), R.drawable.workspace_bg);
+        mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
     }
 
     @Override
@@ -195,11 +199,21 @@ public class LensView extends View {
                         mTouchY = event.getY();
                     }
                     mSelectIndex = -1;
-                    LensAnimation lensShowAnimation = new LensAnimation(true);
-                    startAnimation(lensShowAnimation);
+                    mMoving = false;
+                    invalidate();
                     return true;
                 }
                 case MotionEvent.ACTION_MOVE: {
+                    if (!mMoving && Math.sqrt(Math.pow(event.getX() - mTouchX, 2) + Math.pow(event.getY() - mTouchY, 2)) > mTouchSlop) {
+                        mMoving = true;
+                        LensAnimation lensShowAnimation = new LensAnimation(true);
+                        startAnimation(lensShowAnimation);
+                    }
+
+                    if (!mMoving) {
+                        return true;
+                    }
+
                     if (event.getX() < 0.0f) {
                         mTouchX = 0.0f;
                     } else {
@@ -215,8 +229,13 @@ public class LensView extends View {
                 }
                 case MotionEvent.ACTION_UP: {
                     performLaunchVibration();
-                    LensAnimation lensHideAnimation = new LensAnimation(false);
-                    startAnimation(lensHideAnimation);
+                    if (mMoving) {
+                        LensAnimation lensHideAnimation = new LensAnimation(false);
+                        startAnimation(lensHideAnimation);
+                        mMoving = false;
+                    } else {
+                        launchApp();
+                    }
                     return true;
                 }
                 default: {
@@ -344,7 +363,7 @@ public class LensView extends View {
     }
 
     private void drawAppName(Canvas canvas, RectF rect) {
-        if (mSettings.getBoolean(Settings.KEY_SHOW_NAME_APP_HOVER)) {
+        if (mSettings.getBoolean(Settings.KEY_SHOW_NAME_APP_HOVER) && mMoving) {
             canvas.drawText((String) mApps.get(mSelectIndex).getLabel(),
                     rect.centerX(),
                     rect.top - getResources().getDimension(R.dimen.margin_lens_text),
