@@ -1,6 +1,6 @@
 package nickrout.lenslauncher.util;
 
-import android.support.v7.app.AppCompatDelegate;
+import androidx.appcompat.app.AppCompatDelegate;
 
 /**
  * Created by nicholasrout on 2017/01/15.

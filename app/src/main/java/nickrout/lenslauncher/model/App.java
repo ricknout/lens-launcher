@@ -1,7 +1,7 @@
 package nickrout.lenslauncher.model;
 
 import android.graphics.Bitmap;
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 
 /**
  * Created by nickrout on 2016/04/02.
