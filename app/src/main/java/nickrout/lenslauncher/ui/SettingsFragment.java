@@ -1,5 +1,7 @@
 package nickrout.lenslauncher.ui;
 
+import static nickrout.lenslauncher.Pro.PRO;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import nickrout.lenslauncher.Pro;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.util.LauncherUtil;
 import nickrout.lenslauncher.util.NightModeUtil;
@@ -29,14 +32,6 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
 
     private static final String TAG = "SettingsFragment";
 
-    @OnClick(R.id.layout_icon_pack)
-    public void onIconPackClick() {
-        showIconPackDialog();
-    }
-
-    @BindView(R.id.text_view_selected_icon_pack)
-    TextView mIconPackTextView;
-
     @OnClick(R.id.layout_home_launcher)
     public void onHomeLauncherClick() {
         showHomeLauncherChooser();
@@ -45,17 +40,43 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
     @BindView(R.id.text_view_selected_home_launcher)
     TextView mHomeLauncherTextView;
 
+    @OnClick(R.id.layout_icon_pack)
+    public void onIconPackClick() {
+        if (PRO) {
+            showIconPackDialog();
+        } else {
+            showPro();
+        }
+    }
+
+    @BindView(R.id.text_view_selected_icon_pack)
+    TextView mIconPackTextView;
+
+    @BindView(R.id.pro_icon_pack)
+    View mProIconPack;
+
     @OnClick(R.id.layout_night_mode)
     public void onNightModeClick() {
-        showNightModeChooser();
+        if (PRO) {
+            showNightModeChooser();
+        } else {
+            showPro();
+        }
     }
 
     @BindView(R.id.text_view_selected_night_mode)
     TextView mNightModeTextView;
 
+    @BindView(R.id.pro_night_mode)
+    View mProNightMode;
+
     @OnClick(R.id.layout_background)
     public void onBackgroundClick() {
-        showBackgroundDialog();
+        if (PRO) {
+            showBackgroundDialog();
+        } else {
+            showPro();
+        }
     }
 
     @BindView(R.id.text_view_selected_background)
@@ -64,9 +85,16 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
     @BindView(R.id.image_view_selected_background_color)
     ImageView mBackgroundColorImageView;
 
+    @BindView(R.id.pro_background)
+    View mProBackground;
+
     @OnClick(R.id.layout_highlight_color)
     public void onHighlightColorClick() {
-        showHighlightColorDialog();
+        if (PRO) {
+            showHighlightColorDialog();
+        } else {
+            showPro();
+        }
     }
 
     @BindView(R.id.text_view_selected_highlight_color)
@@ -75,17 +103,45 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
     @BindView(R.id.image_view_selected_highlight_color)
     ImageView mHighlightColorImageView;
 
+    @BindView(R.id.pro_highlight_color)
+    View mProHighlightColor;
+
+    @OnClick(R.id.switch_vibrate_app_hover_parent)
+    public void onVibrateAppHoverParentClick() {
+        if (!PRO) showPro();
+    }
+
     @BindView(R.id.switch_vibrate_app_hover)
     SwitchCompat mVibrateAppHover;
+
+    @OnClick(R.id.switch_vibrate_app_launch_parent)
+    public void onVibrateAppLaunchParentClick() {
+        if (!PRO) showPro();
+    }
 
     @BindView(R.id.switch_vibrate_app_launch)
     SwitchCompat mVibrateAppLaunch;
 
+    @OnClick(R.id.switch_show_name_app_hover_parent)
+    public void onShowNameAppHoverParentClick() {
+        if (!PRO) showPro();
+    }
+
     @BindView(R.id.switch_show_name_app_hover)
     SwitchCompat mShowNameAppHover;
 
+    @OnClick(R.id.switch_show_new_app_tag_parent)
+    public void onShowNewAppTagParentClick() {
+        if (!PRO) showPro();
+    }
+
     @BindView(R.id.switch_show_new_app_tag)
     SwitchCompat mShowNewAppTag;
+
+    @OnClick(R.id.switch_show_touch_selection_parent)
+    public void onShowTouchSelectionParentClick() {
+        if (!PRO) showPro();
+    }
 
     @BindView(R.id.switch_show_touch_selection)
     SwitchCompat mShowTouchSelection;
@@ -151,6 +207,28 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
                 mSettings.save(Settings.KEY_SHOW_TOUCH_SELECTION, isChecked);
             }
         });
+        if (!PRO) {
+            mVibrateAppHover.setEnabled(false);
+            mVibrateAppHover.setClickable(false);
+            mVibrateAppHover.setFocusable(false);
+            mVibrateAppLaunch.setEnabled(false);
+            mVibrateAppLaunch.setClickable(false);
+            mVibrateAppLaunch.setFocusable(false);
+            mShowNameAppHover.setEnabled(false);
+            mShowNameAppHover.setClickable(false);
+            mShowNameAppHover.setFocusable(false);
+            mShowNewAppTag.setEnabled(false);
+            mShowNewAppTag.setClickable(false);
+            mShowNewAppTag.setFocusable(false);
+            mShowTouchSelection.setEnabled(false);
+            mShowTouchSelection.setClickable(false);
+            mShowTouchSelection.setFocusable(false);
+        } else {
+            mProIconPack.setVisibility(View.GONE);
+            mProNightMode.setVisibility(View.GONE);
+            mProBackground.setVisibility(View.GONE);
+            mProHighlightColor.setVisibility(View.GONE);
+        }
     }
 
     private void assignValues() {
@@ -216,6 +294,10 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
         }
     }
 
+    private void showPro() {
+        if (getActivity() != null) Pro.showPro(getActivity());
+    }
+
     @Override
     public void onDefaultsReset() {
         resetToDefault();
@@ -233,6 +315,8 @@ public class SettingsFragment extends Fragment implements SettingsActivity.Setti
         mSettings.save(Settings.KEY_SHOW_NAME_APP_HOVER, Settings.DEFAULT_SHOW_NAME_APP_HOVER);
         mSettings.save(Settings.KEY_SHOW_TOUCH_SELECTION, Settings.DEFAULT_SHOW_TOUCH_SELECTION);
         mSettings.save(Settings.KEY_SHOW_NEW_APP_TAG, Settings.DEFAULT_SHOW_NEW_APP_TAG);
+        mSettings.save(Settings.KEY_BACKGROUND, Settings.DEFAULT_BACKGROUND);
+        mSettings.save(Settings.KEY_BACKGROUND_COLOR, Settings.DEFAULT_BACKGROUND_COLOR);
         mSettings.save(Settings.KEY_HIGHLIGHT_COLOR, Settings.DEFAULT_HIGHLIGHT_COLOR);
         mSettings.save(Settings.KEY_ICON_PACK_LABEL_NAME, Settings.DEFAULT_ICON_PACK_LABEL_NAME);
         mSettings.save(Settings.KEY_NIGHT_MODE, Settings.DEFAULT_NIGHT_MODE);

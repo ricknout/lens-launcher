@@ -1,7 +1,7 @@
 <resources>
 
     <!-- App & Activity Strings -->
-    <string name="app_name"><b>Lens</b> Launcher</string>
+    <string name="app_name">Lens Launcher</string>
     <string name="activity_title_about">About</string>
     <string name="activity_title_arranger">Order &amp; Visibility</string>
     <string name="activity_title_settings">Settings</string>
@@ -65,5 +65,9 @@
     <!-- About Strings -->
     <string name="about"><![CDATA[Lens Launcher is a unique, efficient way to browse and launch your apps.<br><br>Instead of scrolling long lists or swiping through multiple pages, Lens Launcher implements two unique features:<br><br><b>• An Equispaced Grid that displays all of your apps, regardless of screen size or app count.<br><br>• A Graphical Fisheye Lens to quickly zoom, pan and launch apps using touch gestures.</b><br><br>Lens Launcher also includes a full Settings menu to tweak all aspects of the Lens; Distortion, Scaling, Icon Size, Haptic Feedback, etc.<br><br>The Graphical Fisheye Lens algorithm is derived from methods proposed by Manojit Sarkar and Marc H. Brown. Their original 1993 paper, titled <i>Graphical Fisheye Views</i>, can be found <a href="https://drive.google.com/file/d/0B6Nqy9y098RLa2pqNVFUcUhIZXM/view?usp=sharing">here</a>.<br><br>Lens Launcher is written by Nick Rout<br><a href="https://twitter.com/ricknout">Twitter</a> | <a href="https://plus.google.com/+NicholasRout">Google+</a><br><br>Major contributions have been made by Rish Bhardwaj<br><a href="http://rish.pythonanywhere.com/home">Website</a> | <a href="http://www.linkedin.com/in/bhardwajrish/">LinkedIn</a><br><br>The source code and resources are available on <a href="https://github.com/nicholasrout/lens-launcher">Github</a><br><br>Check out <b>ShortStories</b> by Nick Rout. Interactive stories told through App Shortcuts and Notifications.<br><a href="https://play.google.com/store/apps/details?id=com.nickrout.shortstories">Get it on Google Play</a>]]></string>
     <string name="title_activity_main">MainActivity</string>
+
+    <!-- PRO strings -->
+    <string name="pro">PRO</string>
+    <string name="get_pro">Get Lens Launcher PRO</string>
 
 </resources>
