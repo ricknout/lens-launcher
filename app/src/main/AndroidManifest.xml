@@ -2,6 +2,14 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="nickrout.lenslauncher">
+    
+    <uses-permission android:name="QUERY_ALL_PACKAGES" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
 
     <application
         android:name=".LensLauncherApplication"
