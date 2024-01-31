@@ -1,7 +1,5 @@
 package nickrout.lenslauncher.adapter;
 
-import static nickrout.lenslauncher.Pro.PRO;
-
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +22,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import nickrout.lenslauncher.Pro;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.background.BroadcastReceivers;
 import nickrout.lenslauncher.model.App;
@@ -163,15 +160,11 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter {
             mToggleAppVisibility.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (PRO) {
-                        if (mApp != null) {
-                            sendChangeAppsVisibilityBroadcast();
-                            toggleAppVisibility(mApp);
-                        } else {
-                            Snackbar.make(mContainer, mContext.getString(R.string.error_app_not_found), Snackbar.LENGTH_LONG).show();
-                        }
+                    if (mApp != null) {
+                        sendChangeAppsVisibilityBroadcast();
+                        toggleAppVisibility(mApp);
                     } else {
-                        showPro();
+                        Snackbar.make(mContainer, mContext.getString(R.string.error_app_not_found), Snackbar.LENGTH_LONG).show();
                     }
                 }
             });
@@ -212,10 +205,6 @@ public class AppRecyclerAdapter extends RecyclerView.Adapter {
                     return true;
             }
             return false;
-        }
-
-        private void showPro() {
-            if (mContext != null) Pro.showPro(mContext);
         }
     }
 }

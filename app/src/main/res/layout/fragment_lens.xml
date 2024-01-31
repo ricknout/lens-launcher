@@ -50,18 +50,11 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/seek_bar_min_icon_size_parent"
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/seek_bar_min_icon_size"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.v7.widget.AppCompatSeekBar
-                    android:id="@+id/seek_bar_min_icon_size"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp" />
-
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -85,18 +78,11 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/seek_bar_distortion_factor_parent"
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/seek_bar_distortion_factor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.v7.widget.AppCompatSeekBar
-                    android:id="@+id/seek_bar_distortion_factor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp" />
-
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -120,18 +106,11 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/seek_bar_scale_factor_parent"
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/seek_bar_scale_factor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.v7.widget.AppCompatSeekBar
-                    android:id="@+id/seek_bar_scale_factor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp" />
-
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -155,18 +134,11 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/seek_bar_animation_time_parent"
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/seek_bar_animation_time"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.v7.widget.AppCompatSeekBar
-                    android:id="@+id/seek_bar_animation_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp" />
-
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
 
         </LinearLayout>
 

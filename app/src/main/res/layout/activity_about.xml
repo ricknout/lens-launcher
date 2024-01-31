@@ -48,32 +48,14 @@
         android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/text_view_about"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/pro_about"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/get_pro"
-                android:textStyle="bold"
-                android:textColor="@color/colorWhite"
-                android:background="?attr/colorAccent" />
-
-            <TextView
-                android:id="@+id/text_view_about"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColorHighlight="@color/colorPrimary"
-                android:textColorLink="@color/colorAccent"
-                android:padding="@dimen/padding_about"/>
-
-        </LinearLayout>
+            android:gravity="center"
+            android:textColorHighlight="@color/colorPrimary"
+            android:textColorLink="@color/colorAccent"
+            android:padding="@dimen/padding_about"/>
 
     </android.support.v4.widget.NestedScrollView>
 

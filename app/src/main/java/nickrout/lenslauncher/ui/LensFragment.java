@@ -1,7 +1,5 @@
 package nickrout.lenslauncher.ui;
 
-import static nickrout.lenslauncher.Pro.PRO;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,8 +13,6 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import nickrout.lenslauncher.Pro;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.util.Settings;
 
@@ -30,21 +26,11 @@ public class LensFragment extends Fragment implements SettingsActivity.LensInter
     @BindView(R.id.lens_view_settings)
     LensView mLensView;
 
-    @OnClick(R.id.seek_bar_min_icon_size_parent)
-    public void onMinIconSizeParentClick() {
-        if (!PRO) showPro();
-    }
-
     @BindView(R.id.seek_bar_min_icon_size)
     AppCompatSeekBar mMinIconSize;
 
     @BindView(R.id.value_min_icon_size)
     TextView mValueMinIconSize;
-
-    @OnClick(R.id.seek_bar_distortion_factor_parent)
-    public void onDistortionFactorParentClick() {
-        if (!PRO) showPro();
-    }
 
     @BindView(R.id.seek_bar_distortion_factor)
     AppCompatSeekBar mDistortionFactor;
@@ -52,21 +38,11 @@ public class LensFragment extends Fragment implements SettingsActivity.LensInter
     @BindView(R.id.value_distortion_factor)
     TextView mValueDistortionFactor;
 
-    @OnClick(R.id.seek_bar_scale_factor_parent)
-    public void onScaleFactorParentClick() {
-        if (!PRO) showPro();
-    }
-
     @BindView(R.id.seek_bar_scale_factor)
     AppCompatSeekBar mScaleFactor;
 
     @BindView(R.id.value_scale_factor)
     TextView mValueScaleFactor;
-
-    @OnClick(R.id.seek_bar_animation_time_parent)
-    public void onAnimationTimeParentClick() {
-        if (!PRO) showPro();
-    }
 
     @BindView(R.id.seek_bar_animation_time)
     AppCompatSeekBar mAnimationTime;
@@ -181,20 +157,6 @@ public class LensFragment extends Fragment implements SettingsActivity.LensInter
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        if (!PRO) {
-            mMinIconSize.setEnabled(false);
-            mMinIconSize.setClickable(false);
-            mMinIconSize.setFocusable(false);
-            mDistortionFactor.setEnabled(false);
-            mDistortionFactor.setClickable(false);
-            mDistortionFactor.setFocusable(false);
-            mScaleFactor.setEnabled(false);
-            mScaleFactor.setClickable(false);
-            mScaleFactor.setFocusable(false);
-            mAnimationTime.setEnabled(false);
-            mAnimationTime.setClickable(false);
-            mAnimationTime.setFocusable(false);
-        }
     }
 
     private void assignValues() {
@@ -210,10 +172,6 @@ public class LensFragment extends Fragment implements SettingsActivity.LensInter
         mAnimationTime.setProgress((int) (2 * (mSettings.getLong(Settings.KEY_ANIMATION_TIME) - Settings.MIN_ANIMATION_TIME)));
         String animationTime = mSettings.getLong(Settings.KEY_ANIMATION_TIME) + "ms";
         mValueAnimationTime.setText(animationTime);
-    }
-
-    private void showPro() {
-        if (getActivity() != null) Pro.showPro(getActivity());
     }
 
     @Override

@@ -1,7 +1,5 @@
 package nickrout.lenslauncher.ui;
 
-import static nickrout.lenslauncher.Pro.PRO;
-
 import android.animation.Animator;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +20,6 @@ import java.util.Observer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import nickrout.lenslauncher.Pro;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.background.NightModeObservable;
 
@@ -44,9 +41,6 @@ public class AboutActivity extends BaseActivity implements Observer {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
-    @BindView(R.id.pro_about)
-    View mProAbout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,16 +77,6 @@ public class AboutActivity extends BaseActivity implements Observer {
     }
 
     private void setupViews() {
-        if (PRO) {
-            mProAbout.setVisibility(View.GONE);
-        } else {
-            mProAbout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Pro.showPro(view.getContext());
-                }
-            });
-        }
         mTextViewAbout.setText(Html.fromHtml(getString(R.string.about)));
         mTextViewAbout.setMovementMethod(LinkMovementMethod.getInstance());
     }

@@ -1,7 +1,5 @@
 package nickrout.lenslauncher.ui;
 
-import static nickrout.lenslauncher.Pro.PRO;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -34,7 +32,6 @@ import java.util.Observer;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import nickrout.lenslauncher.Pro;
 import nickrout.lenslauncher.R;
 import nickrout.lenslauncher.background.NightModeObservable;
 import nickrout.lenslauncher.model.App;
@@ -73,11 +70,7 @@ public class SettingsActivity extends BaseActivity
 
     @OnClick(R.id.fab_sort)
     public void onSortClicked() {
-        if (PRO) {
-            showSortTypeDialog();
-        } else {
-            showPro();
-        }
+        showSortTypeDialog();
     }
 
     private FragmentPagerAdapter mPagerAdapter;
@@ -385,10 +378,6 @@ public class SettingsActivity extends BaseActivity
                 .allowUserColorInputAlpha(false)
                 .tag(COLOR_TAG_HIGHLIGHT)
                 .show(this);
-    }
-
-    private void showPro() {
-        Pro.showPro(this);
     }
 
     @Override
