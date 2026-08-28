@@ -7,8 +7,8 @@ android {
         applicationId "nickrout.lenslauncher"
         minSdkVersion 15
         targetSdkVersion 36
-        versionCode 47
-        versionName "3.0.2"
+        versionCode 48
+        versionName "3.0.3"
     }
     buildTypes {
         release {
