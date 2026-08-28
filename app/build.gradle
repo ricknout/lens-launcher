@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     namespace "nickrout.lenslauncher"
-    compileSdk 34
+    compileSdk 36
     defaultConfig {
         applicationId "nickrout.lenslauncher"
         minSdkVersion 15
-        targetSdkVersion 34
-        versionCode 46
-        versionName "3.0.1"
+        targetSdkVersion 36
+        versionCode 47
+        versionName "3.0.2"
     }
     buildTypes {
         release {
